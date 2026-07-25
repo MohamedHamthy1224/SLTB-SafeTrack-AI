@@ -40,6 +40,12 @@ class QuickSortStrategy(SortStrategy):
 
     def _get_key(self, item, key_field):
         if not key_field:
-            return str(item)
-        val = item.get(key_field) if isinstance(item, dict) else getattr(item, key_field, None)
-        return str(val) if val is not None else ""
+            val = item
+        else:
+            val = item.get(key_field) if isinstance(item, dict) else getattr(item, key_field, None)
+
+        if val is None:
+            return ""
+        if isinstance(val, (int, float)):
+            return val
+        return str(val).lower()

@@ -12,11 +12,18 @@ def _check_sltb_admin_role():
     if claims.get('role') != 'SLTB Admin':
         raise UnauthorizedRoleError("This account is not authorized to access SLTB Admin resources.")
 
+@dashboard_bp.route('/dashboard/overview', methods=['GET'])
+@jwt_required()
+def get_dashboard_overview():
+    _check_sltb_admin_role()
+    data = dashboard_service.get_dashboard_overview()
+    return ResponseFactory.success(data=data, message="Dashboard overview retrieved successfully.")
+
 @dashboard_bp.route('/dashboard', methods=['GET'])
 @jwt_required()
 def get_full_dashboard():
     _check_sltb_admin_role()
-    data = dashboard_service.get_dashboard_data()
+    data = dashboard_service.get_dashboard_overview()
     return ResponseFactory.success(data=data, message="Dashboard data loaded successfully.")
 
 @dashboard_bp.route('/dashboard/summary', methods=['GET'])
@@ -25,24 +32,3 @@ def get_summary():
     _check_sltb_admin_role()
     summary = dashboard_service.dashboard_repo.get_summary_stats()
     return ResponseFactory.success(data=summary)
-
-@dashboard_bp.route('/dashboard/recent-activities', methods=['GET'])
-@jwt_required()
-def get_recent_activities():
-    _check_sltb_admin_role()
-    data = dashboard_service.get_dashboard_data()['recentActivities']
-    return ResponseFactory.success(data=data)
-
-@dashboard_bp.route('/dashboard/latest-buses', methods=['GET'])
-@jwt_required()
-def get_latest_buses():
-    _check_sltb_admin_role()
-    data = dashboard_service.get_dashboard_data()['latestBuses']
-    return ResponseFactory.success(data=data)
-
-@dashboard_bp.route('/dashboard/route-distribution', methods=['GET'])
-@jwt_required()
-def get_route_distribution():
-    _check_sltb_admin_role()
-    data = dashboard_service.get_dashboard_data()['routeDistribution']
-    return ResponseFactory.success(data=data)

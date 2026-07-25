@@ -1,0 +1,120 @@
+/* Settings Page Styles */
+
+.settings-content-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 1rem;
+  width: 100%;
+}
+
+.theme-settings-card {
+  max-width: 680px;
+  width: 100%;
+  padding: 1.75rem 2rem;
+  border-radius: 12px;
+  background-color: var(--bg-light-card);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.theme-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.theme-card-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: #f0f4ff;
+  color: #0240bf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .theme-card-icon-box {
+  background-color: #172a48;
+  color: #60a5fa;
+}
+
+.theme-card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.15rem;
+}
+
+.theme-card-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* ThemeSelect Custom Dropdown */
+.theme-select-box {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  background-color: var(--bg-light-card);
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.theme-select-box:hover,
+.theme-select-box.open {
+  border-color: #0240bf;
+  box-shadow: 0 0 0 3px rgba(2, 64, 191, 0.15);
+}
+
+.theme-select-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background-color: var(--bg-light-card);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  overflow: hidden;
+  padding: 0.35rem;
+}
+
+.theme-select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  transition: background-color 0.15s ease;
+}
+
+.theme-select-option:hover {
+  background-color: #f1f5f9;
+}
+
+.theme-select-option.selected {
+  background-color: #eff6ff;
+  color: #0240bf;
+  font-weight: 600;
+}
+
+/* Mobile Responsive */
+@media (max-width: 640px) {
+  .theme-settings-card {
+    padding: 1.25rem;
+  }
+}

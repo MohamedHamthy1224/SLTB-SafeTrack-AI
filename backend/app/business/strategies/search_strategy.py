@@ -1,9 +1,10 @@
 from abc import ABC, abstractmethod
+from typing import Any, List, Optional
 
 class SearchStrategy(ABC):
 
     @abstractmethod
-    def search(self, items, query, key_field=None):
+    def search(self, items: Any, query: Any, key_field: Optional[str] = None) -> List[Any]:
         """
         Abstract search execution contract.
         :param items: Iterable candidate collection
@@ -12,3 +13,4 @@ class SearchStrategy(ABC):
         :return: Matching items list or single item
         """
         pass
+

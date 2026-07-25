@@ -3,6 +3,7 @@ from datetime import datetime
 
 class RouteModel(db.Model):
     __tablename__ = 'routes'
+    __allow_unmapped__ = True
 
     route_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     route_number = db.Column(db.String(20), nullable=False, unique=True)
@@ -15,6 +16,9 @@ class RouteModel(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     assignments = db.relationship('BusAssignmentModel', backref='route', lazy=True)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
     def to_dict(self):
         return {

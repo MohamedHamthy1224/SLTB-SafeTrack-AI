@@ -1,129 +1,57 @@
-import React, { useState } from 'react';
-import { Search, Bell, Menu } from 'lucide-react';
+import React from 'react';
+import { Menu, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
-import { searchService } from '../../services/searchService';
+import { getProfileImageUrl } from '../../utils/profileImageUrl';
 
-export const Header = ({ onToggleSidebar }) => {
+export const Header = ({ onToggleSidebar, subtitle = "Overview of buses, routes and drivers." }) => {
   const { user } = useAuth();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
-  const [showResultsDropdown, setShowResultsDropdown] = useState(false);
 
-  const handleSearchChange = async (e) => {
-    const val = e.target.value;
-    setSearchQuery(val);
-
-    if (val.trim().length > 0) {
-      setIsSearching(true);
-      setShowResultsDropdown(true);
-      try {
-        const res = await searchService.globalSearch(val.trim());
-        if (res.success && res.data) {
-          setSearchResults(res.data);
-        } else {
-          setSearchResults([]);
-        }
-      } catch (err) {
-        console.error('Global search error:', err);
-        setSearchResults([]);
-      } finally {
-        setIsSearching(false);
-      }
-    } else {
-      setSearchResults([]);
-      setShowResultsDropdown(false);
-    }
-  };
-
-  const fullName = user?.sltb_profile?.full_name || 'Admin User';
-  const designation = user?.sltb_profile?.designation || 'SLTB Administrator';
+  const fullName = user?.sltb_profile?.full_name || user?.fullName || 'Admin User';
+  const designation = user?.sltb_profile?.designation || user?.role_name || 'SLTB Admin';
+  const profileImage = user?.profile_image || user?.profileImage;
+  const avatarUrl = profileImage ? getProfileImageUrl(profileImage, user?.updatedAt) : null;
 
   return (
     <header className="dashboard-header">
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <button 
           onClick={onToggleSidebar} 
-          style={{ background: 'transparent', display: 'flex', alignItems: 'center', color: '#1e293b' }}
+          style={{ background: 'transparent', border: 'none', display: 'flex', alignItems: 'center', color: '#1e293b', cursor: 'pointer' }}
           aria-label="Toggle Sidebar"
         >
           <Menu size={22} />
         </button>
 
         <div className="header-welcome">
-          <h2>Welcome back, Admin!</h2>
-          <p>Here's what's happening with your fleet today.</p>
+          <h2>Welcome back, {fullName}!</h2>
+          <p>{subtitle}</p>
         </div>
       </div>
 
       <div className="header-actions">
-        <div className="header-search">
-          <Search size={16} className="search-icon" />
-          <input 
-            type="text" 
-            placeholder="Search anything..." 
-            className="search-input"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            onBlur={() => setTimeout(() => setShowResultsDropdown(false), 200)}
-            onFocus={() => searchQuery.trim() && setShowResultsDropdown(true)}
-          />
-
-          {showResultsDropdown && (
-            <div style={{
-              position: 'absolute',
-              top: '100%',
-              left: 0,
-              right: 0,
-              marginTop: '0.5rem',
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '8px',
-              boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)',
-              maxHeight: '300px',
-              overflowY: 'auto',
-              zIndex: 1000,
-              padding: '0.5rem'
-            }}>
-              {isSearching ? (
-                <div style={{ padding: '0.75rem', textAlign: 'center', fontSize: '0.8rem', color: '#64748b' }}>
-                  Searching backend...
-                </div>
-              ) : searchResults.length > 0 ? (
-                searchResults.map((item, idx) => (
-                  <div key={idx} style={{
-                    padding: '0.5rem 0.75rem',
-                    borderBottom: '1px solid #f1f5f9',
-                    fontSize: '0.8rem'
-                  }}>
-                    <strong style={{ color: '#0047ff' }}>[{item.type}]</strong> {item.title}
-                    <div style={{ fontSize: '0.725rem', color: '#64748b' }}>{item.subtitle}</div>
-                  </div>
-                ))
-              ) : (
-                <div style={{ padding: '0.75rem', textAlign: 'center', fontSize: '0.8rem', color: '#64748b' }}>
-                  No matching records found.
-                </div>
-              )}
+        <div className="user-profile-menu" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', cursor: 'pointer' }}>
+          <div className="user-avatar" style={{ overflow: 'hidden', width: '38px', height: '38px', borderRadius: '50%', border: '2px solid #e2e8f0' }}>
+            {avatarUrl ? (
+              <img 
+                src={avatarUrl} 
+                alt={fullName} 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                onError={(e) => { e.target.style.display = 'none'; if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex'; }}
+              />
+            ) : null}
+            <div style={{ display: avatarUrl ? 'none' : 'flex', width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', background: '#0240bf', color: '#fff', fontWeight: 600, fontSize: '0.9rem' }}>
+              {fullName.charAt(0).toUpperCase()}
             </div>
-          )}
-        </div>
-
-        <button className="notification-btn" aria-label="Notifications">
-          <Bell size={18} />
-          <span className="notification-badge">3</span>
-        </button>
-
-        <div className="user-profile-menu">
-          <div className="user-avatar">
-            {fullName.charAt(0).toUpperCase()}
           </div>
-          <div className="user-details">
-            <h5>{fullName}</h5>
-            <p>{designation}</p>
+          <div className="user-details" style={{ display: 'flex', flexDirection: 'column' }}>
+            <h5 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: '#0f172a' }}>{fullName}</h5>
+            <p style={{ margin: 0, fontSize: '0.775rem', color: '#64748b' }}>{designation}</p>
           </div>
+          <ChevronDown size={16} style={{ color: '#64748b', marginLeft: '0.25rem' }} />
         </div>
       </div>
     </header>
   );
 };
+
+export default Header;

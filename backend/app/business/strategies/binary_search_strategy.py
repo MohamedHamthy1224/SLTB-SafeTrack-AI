@@ -1,3 +1,4 @@
+from typing import Any, List, Optional
 from app.business.strategies.search_strategy import SearchStrategy
 
 class BinarySearchStrategy(SearchStrategy):
@@ -10,7 +11,7 @@ class BinarySearchStrategy(SearchStrategy):
     on registration numbers, bus numbers, route numbers, or exact numeric IDs.
     """
 
-    def search(self, items, query, key_field=None):
+    def search(self, items: Any, query: Any, key_field: Optional[str] = None) -> List[Any]:
         if not items or query is None or not key_field:
             return []
 

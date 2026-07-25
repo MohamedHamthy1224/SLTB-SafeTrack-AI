@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Bus, 
@@ -16,11 +16,17 @@ import busBgImg from '../../assets/images/sltb_bus_bg.jpg';
 
 export const Sidebar = ({ isOpen, onClose }) => {
   const { logout } = useAuth();
+  const location = useLocation();
 
   const handleLogout = async (e) => {
     e.preventDefault();
     await logout();
   };
+
+  const isBusManagementActive = location.pathname.startsWith('/sltb/buses');
+  const isDriverManagementActive = location.pathname.startsWith('/sltb/drivers');
+  const isRouteManagementActive = location.pathname.startsWith('/sltb/routes');
+  const isProfileActive = location.pathname.startsWith('/sltb/profile');
 
   return (
     <aside className={`dashboard-sidebar ${isOpen ? 'open' : ''}`}>
@@ -45,7 +51,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
 
           <NavLink 
             to="/sltb/buses" 
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+            className={`nav-item ${isBusManagementActive ? 'active' : ''}`}
             onClick={onClose}
           >
             <Bus size={18} />
@@ -54,7 +60,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
 
           <NavLink 
             to="/sltb/drivers" 
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+            className={`nav-item ${isDriverManagementActive ? 'active' : ''}`}
             onClick={onClose}
           >
             <UserCheck size={18} />
@@ -63,7 +69,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
 
           <NavLink 
             to="/sltb/routes" 
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+            className={`nav-item ${isRouteManagementActive ? 'active' : ''}`}
             onClick={onClose}
           >
             <GitFork size={18} />
@@ -82,7 +88,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
 
           <NavLink 
             to="/sltb/profile" 
-            className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+            className={`nav-item ${isProfileActive ? 'active' : ''}`}
             onClick={onClose}
           >
             <User size={18} />

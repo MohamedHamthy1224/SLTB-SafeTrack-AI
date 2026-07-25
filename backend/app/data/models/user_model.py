@@ -11,6 +11,7 @@ class UserModel(db.Model):
     password = db.Column(db.String(255), nullable=False)
     profile_image = db.Column(db.String(255), nullable=True)
     status = db.Column(db.Enum('Active', 'Inactive'), default='Active')
+    theme_preference = db.Column(db.Enum('light', 'dark', 'system'), default='light')
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
@@ -18,7 +19,7 @@ class UserModel(db.Model):
     sessions = db.relationship('UserSessionModel', backref='user', lazy=True)
     activity_logs = db.relationship('UserActivityLogModel', backref='user', lazy=True)
 
-    def __init__(self, role_id=None, username=None, email=None, password=None, profile_image=None, status='Active', **kwargs):
+    def __init__(self, role_id=None, username=None, email=None, password=None, profile_image=None, status='Active', theme_preference='light', **kwargs):
         super().__init__(**kwargs)
         if role_id is not None:
             self.role_id = role_id
@@ -32,8 +33,11 @@ class UserModel(db.Model):
             self.profile_image = profile_image
         if status is not None:
             self.status = status
+        if theme_preference is not None:
+            self.theme_preference = theme_preference
 
     def to_safe_dict(self):
+        pref = self.theme_preference or 'light'
         return {
             'user_id': self.user_id,
             'role_id': self.role_id,
@@ -42,5 +46,7 @@ class UserModel(db.Model):
             'email': self.email,
             'profile_image': self.profile_image,
             'status': self.status,
+            'theme_preference': pref,
+            'themePreference': pref,
             'sltb_profile': self.sltb_profile.to_dict() if self.sltb_profile else None
         }

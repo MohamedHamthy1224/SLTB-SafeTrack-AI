@@ -15,6 +15,13 @@ from app.presentation.controllers.public_controller import public_bp
 from app.presentation.controllers.auth_controller import auth_bp
 from app.presentation.controllers.dashboard_controller import dashboard_bp
 from app.presentation.controllers.search_controller import search_bp
+from app.presentation.controllers.bus_controller import bus_bp
+from app.presentation.controllers.route_option_controller import route_option_bp
+from app.presentation.controllers.driver_option_controller import driver_option_bp
+from app.presentation.controllers.driver_controller import driver_bp
+from app.presentation.controllers.route_controller import route_bp
+from app.presentation.controllers.profile_controller import profile_bp
+from app.presentation.controllers.settings_controller import settings_bp
 from app.commands.password_commands import hash_existing_passwords_command
 
 def create_app(config_name="development"):
@@ -35,6 +42,13 @@ def create_app(config_name="development"):
     app.register_blueprint(auth_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(search_bp)
+    app.register_blueprint(bus_bp)
+    app.register_blueprint(route_bp)
+    app.register_blueprint(route_option_bp)
+    app.register_blueprint(driver_option_bp)
+    app.register_blueprint(driver_bp)
+    app.register_blueprint(profile_bp)
+    app.register_blueprint(settings_bp)
 
     # Register CLI commands
     app.cli.add_command(hash_existing_passwords_command)

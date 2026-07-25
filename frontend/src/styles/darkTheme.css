@@ -1,0 +1,104 @@
+/* Dark Theme Color Variables & Component Overrides */
+
+[data-theme="dark"] {
+  /* Surface & Background Palette */
+  --bg-light-main: #070f1e;
+  --bg-light-card: #0e1a30;
+  --border-light: #1e293b;
+  --text-dark: #f8fafc;
+  --text-secondary: #94a3b8;
+
+  /* Form & Input Palette */
+  --input-bg: #132238;
+  --input-border: #29384e;
+  --input-text: #f8fafc;
+}
+
+/* Dark mode specific component adjustments */
+[data-theme="dark"] body {
+  background-color: #070f1e;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .dashboard-layout {
+  background-color: #070f1e;
+}
+
+[data-theme="dark"] .dashboard-header {
+  background-color: #0b1528;
+  border-bottom-color: #1e293b;
+}
+
+[data-theme="dark"] .header-welcome h2,
+[data-theme="dark"] .user-details h5 {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .header-welcome p,
+[data-theme="dark"] .user-details p {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .section-card,
+[data-theme="dark"] .metric-card {
+  background-color: #0e1a30;
+  border-color: #1e293b;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .section-header h3,
+[data-theme="dark"] .metric-value,
+[data-theme="dark"] .card-title {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .custom-table th {
+  background-color: #0b1528;
+  color: #94a3b8;
+  border-bottom-color: #1e293b;
+}
+
+[data-theme="dark"] .custom-table td {
+  border-bottom-color: #1a273d;
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] .theme-select-box {
+  background-color: #132238;
+  border-color: #29384e;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .form-input:focus,
+[data-theme="dark"] .form-select:focus,
+[data-theme="dark"] .theme-select-box:focus {
+  border-color: #0240bf;
+}
+
+[data-theme="dark"] .theme-select-dropdown {
+  background-color: #0e1a30;
+  border-color: #1e293b;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .theme-select-option {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .theme-select-option:hover {
+  background-color: #172a48;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .theme-select-option.selected {
+  background-color: #1e3a8a;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .date-filter-btn {
+  background-color: #0e1a30;
+  border-color: #1e293b;
+  color: #e2e8f0;
+}

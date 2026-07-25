@@ -199,3 +199,79 @@
     gap: 1rem;
   }
 }
+
+/* Bus Management Module Responsive Breakpoints */
+@media (max-width: 1400px) {
+  .bus-summary-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .bus-summary-cards-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .form-grid-3col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bus-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tech-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .bus-summary-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .bus-filter-panel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filter-search-box, .filter-select-group {
+    width: 100%;
+  }
+
+  .filter-actions {
+    justify-content: flex-end;
+  }
+
+  .form-grid-3col, .form-grid-2col {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid-2col {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+
+  .tech-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn-add-new-bus {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .bus-summary-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}

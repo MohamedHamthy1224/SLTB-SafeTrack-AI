@@ -1,3 +1,4 @@
+from typing import Any, List, Optional
 from app.business.strategies.search_strategy import SearchStrategy
 
 class LinearSearchStrategy(SearchStrategy):
@@ -10,7 +11,7 @@ class LinearSearchStrategy(SearchStrategy):
     case-insensitive partial string or exact property comparison.
     """
 
-    def search(self, items, query, key_field=None):
+    def search(self, items: Any, query: Any, key_field: Optional[str] = None) -> List[Any]:
         if not items or query is None:
             return []
 

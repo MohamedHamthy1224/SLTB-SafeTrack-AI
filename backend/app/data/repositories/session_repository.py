@@ -1,13 +1,13 @@
 from app.data.repositories.base_repository import BaseRepository
 from app.data.models.session_model import UserSessionModel
 from app.data.database import db
-from datetime import datetime
+from datetime import datetime, timezone
 from sqlalchemy.exc import SQLAlchemyError
 
 class SessionRepository(BaseRepository):
 
-    def get_by_id(self, session_id):
-        return UserSessionModel.query.get(session_id)
+    def get_by_id(self, entity_id):
+        return UserSessionModel.query.get(entity_id)
 
     def get_all(self):
         return UserSessionModel.query.all()
@@ -16,7 +16,7 @@ class SessionRepository(BaseRepository):
         try:
             session = UserSessionModel(
                 user_id=user_id,
-                login_time=datetime.utcnow(),
+                login_time=datetime.now(timezone.utc),
                 ip_address=ip_address,
                 device_info=device_info
             )
@@ -31,11 +31,25 @@ class SessionRepository(BaseRepository):
         try:
             session = self.get_by_id(session_id)
             if session:
-                session.logout_time = datetime.utcnow()
+                session.logout_time = datetime.now(timezone.utc)
                 db.session.commit()
             return session
         except SQLAlchemyError:
             db.session.rollback()
+            raise
+
+    def revoke_all_for_user(self, user_id, commit=True):
+        try:
+            active_sessions = UserSessionModel.query.filter_by(user_id=user_id, logout_time=None).all()
+            now = datetime.now(timezone.utc)
+            for s in active_sessions:
+                s.logout_time = now
+            if commit:
+                db.session.commit()
+            return True
+        except SQLAlchemyError:
+            if commit:
+                db.session.rollback()
             raise
 
     def create(self, data):
