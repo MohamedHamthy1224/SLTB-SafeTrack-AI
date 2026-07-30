@@ -38,32 +38,51 @@
   /* Font Families */
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 
-  /* Responsive Fluid Typography */
-  --font-size-xs: clamp(0.7rem, 0.8vw, 0.75rem);
-  --font-size-sm: clamp(0.775rem, 0.9vw, 0.85rem);
-  --font-size-base: clamp(0.85rem, 1vw, 0.95rem);
-  --font-size-lg: clamp(1rem, 1.2vw, 1.15rem);
-  --font-size-xl: clamp(1.2rem, 1.6vw, 1.4rem);
-  --font-size-2xl: clamp(1.5rem, 2.2vw, 1.9rem);
-  --font-size-3xl: clamp(1.8rem, 3.2vw, 2.75rem);
+  /* Enterprise Compact Typography System (15-20% Scale Down) */
+  --fs-title-main: 1.85rem;      /* 30px - 32px */
+  --fs-title-section: 1.4rem;     /* 22px - 24px */
+  --fs-title-card: 0.95rem;      /* 15px - 16px */
+  --fs-card-num: 1.85rem;        /* 30px - 32px */
+  --fs-sidebar-menu: 0.9375rem;  /* 15px */
+  --fs-table-header: 0.875rem;   /* 14px */
+  --fs-table-body: 0.875rem;     /* 14px */
+  --fs-button: 0.875rem;         /* 14px */
+  --fs-label: 0.875rem;          /* 14px */
+  --fs-input: 0.875rem;          /* 14px */
+  --fs-breadcrumb: 0.825rem;     /* 13px - 14px */
+  --fs-badge: 0.8125rem;         /* 13px */
+  --fs-notification: 0.825rem;  /* 13px - 14px */
+  --fs-chart-label: 0.775rem;    /* 12px - 13px */
+  --fs-small: 0.75rem;           /* 12px */
 
-  /* Responsive Spacing */
-  --spacing-container-x: clamp(1rem, 4vw, 4rem);
-  --spacing-container-y: clamp(0.75rem, 2vh, 1.5rem);
+  /* Responsive Fluid Typography Fallbacks */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.825rem;
+  --font-size-base: 0.875rem;
+  --font-size-lg: 1.05rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.65rem;
+  --font-size-3xl: 2.1rem;
+
+  /* Compact Enterprise Spacing */
+  --spacing-container-x: 1.5rem;
+  --spacing-container-y: 1.25rem;
+  --spacing-card-padding: 1.15rem;
+  --spacing-grid-gap: 1.15rem;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-dark: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 3px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 12px -3px rgba(0, 0, 0, 0.08), 0 3px 5px -2px rgba(0, 0, 0, 0.04);
+  --shadow-dark: 0 16px 20px -5px rgba(0, 0, 0, 0.35), 0 8px 8px -5px rgba(0, 0, 0, 0.25);
 
   /* Border Radius */
   --radius-sm: 6px;
   --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-lg: 14px;
   --radius-full: 9999px;
 
   /* Transitions */
-  --transition-fast: all 0.2s ease;
-  --transition-normal: all 0.3s ease;
+  --transition-fast: all 0.15s ease;
+  --transition-normal: all 0.25s ease;
 }

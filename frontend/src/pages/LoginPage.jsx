@@ -19,12 +19,13 @@ import { useAuth } from '../hooks/useAuth';
 import { dashboardService } from '../services/dashboardService';
 import logoImg from '../assets/images/sltb_logo.png';
 import busBgImg from '../assets/images/sltb_bus_bg.jpg';
+import { getDashboardRoute } from '../utils/roleRouter';
 import '../styles/auth.css';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
   
   const [showPassword, setShowPassword] = useState(false);
   const [serverError, setServerError] = useState('');
@@ -53,10 +54,11 @@ export const LoginPage = () => {
   });
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/sltb/dashboard', { replace: true });
+    if (isAuthenticated && user?.role_name) {
+      const targetRoute = getDashboardRoute(user.role_name);
+      navigate(targetRoute, { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, user, navigate]);
 
   useEffect(() => {
     // Fetch live public statistics from backend
@@ -79,8 +81,9 @@ export const LoginPage = () => {
     setIsSubmitting(true);
     try {
       const res = await login(data.identifier, data.password, data.rememberMe);
-      if (res.success) {
-        navigate('/sltb/dashboard');
+      if (res.success && res.data?.user) {
+        const targetRoute = getDashboardRoute(res.data.user.role_name);
+        navigate(targetRoute);
       } else {
         setServerError(res.message || 'Authentication failed.');
       }

@@ -28,8 +28,17 @@ def login():
 
     identifier = data.get('identifier', '').strip()
     password = data.get('password', '')
+    ip_address = request.headers.get('X-Forwarded-For', request.remote_addr)
+    if ip_address and ',' in ip_address:
+        ip_address = ip_address.split(',')[0].strip()
+    device_info = request.headers.get('User-Agent', '')
 
-    result = auth_service.authenticate(identifier, password)
+    result = auth_service.authenticate(
+        identifier, 
+        password, 
+        ip_address=ip_address, 
+        device_info=device_info
+    )
     return ResponseFactory.success(data=result, message="Authentication successful. Welcome to SLTB SafeTrack AI.")
 
 @auth_bp.route('/logout', methods=['POST'])

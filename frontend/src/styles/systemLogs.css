@@ -1,0 +1,563 @@
+/* ============================================================
+   Police System Logs Module – Page Styles
+   Fully responsive, no horizontal page scroll.
+   ============================================================ */
+
+/* ── Container ──────────────────────────────────────────────── */
+.syslog-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1.5rem 1.75rem 2.5rem 1.75rem;
+  font-family: var(--font-main, 'Inter', sans-serif);
+  overflow-x: hidden;
+}
+
+/* ── Page Header ─────────────────────────────────────────────── */
+.syslog-header-section {
+  margin-bottom: 1.25rem;
+}
+
+.syslog-page-title {
+  font-size: var(--fs-title-section, 1.4rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.3rem 0;
+  letter-spacing: -0.01em;
+}
+
+.syslog-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--fs-breadcrumb, 0.825rem);
+  color: #64748b;
+  font-weight: 500;
+}
+
+.syslog-breadcrumb a {
+  color: #64748b;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.syslog-breadcrumb a:hover { color: #0047ff; }
+
+.syslog-breadcrumb .bc-sep { color: #cbd5e1; font-size: 0.75rem; }
+.syslog-breadcrumb .bc-current { color: #334155; font-weight: 700; }
+
+/* ── Summary Cards ───────────────────────────────────────────── */
+.syslog-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.9rem;
+  margin-bottom: 1.15rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.syslog-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.syslog-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+}
+
+.syslog-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.syslog-stat-content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.syslog-stat-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.syslog-stat-value {
+  font-size: 1.7rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.syslog-stat-desc {
+  font-size: 0.69rem;
+  color: #94a3b8;
+  font-weight: 500;
+  margin-top: 0.05rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Filter Bar ──────────────────────────────────────────────── */
+.syslog-filter-bar {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.15rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.syslog-search-wrapper {
+  position: relative;
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.syslog-search-input {
+  width: 100%;
+  padding: 0.42rem 0.75rem 0.42rem 2.1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  font-size: var(--fs-input, 0.8125rem);
+  font-weight: 500;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.15s ease;
+  box-sizing: border-box;
+}
+
+.syslog-search-input:focus { border-color: #0047ff; }
+.syslog-search-input::placeholder { color: #94a3b8; }
+
+.syslog-search-icon {
+  position: absolute;
+  left: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+.syslog-filter-select {
+  padding: 0.42rem 2rem 0.42rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  font-size: var(--fs-input, 0.8125rem);
+  font-weight: 600;
+  color: #1e293b;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.6rem center;
+  transition: border-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.syslog-filter-select:focus { border-color: #0047ff; }
+
+.syslog-date-range {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.42rem 0.85rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  font-size: var(--fs-input, 0.8125rem);
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.syslog-filter-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.btn-syslog-reset {
+  padding: 0.42rem 0.95rem;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  border-radius: 7px;
+  font-size: var(--fs-button, 0.825rem);
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s ease;
+}
+
+.btn-syslog-reset:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.btn-syslog-export {
+  padding: 0.42rem 1rem;
+  border: none;
+  background: #0047ff;
+  color: #ffffff;
+  border-radius: 7px;
+  font-size: var(--fs-button, 0.825rem);
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 2px 6px rgba(0, 71, 255, 0.22);
+  transition: all 0.15s ease;
+}
+
+.btn-syslog-export:hover { background: #0036cc; }
+
+/* ── System Logs Table Card ──────────────────────────────────── */
+.syslog-table-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.15rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+  margin-bottom: 1.15rem;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.syslog-table-title {
+  font-size: var(--fs-title-card, 0.95rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.85rem 0;
+}
+
+.syslog-table-wrapper {
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+  width: 100%;
+}
+
+.syslog-table-wrapper::-webkit-scrollbar { height: 5px; }
+.syslog-table-wrapper::-webkit-scrollbar-track { background: transparent; }
+.syslog-table-wrapper::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+.syslog-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: var(--fs-table-body, 0.8rem);
+}
+
+.syslog-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  padding: 0.7rem 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+  font-size: 0.785rem;
+  white-space: nowrap;
+}
+
+.syslog-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.syslog-table th .sort-icon {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.3rem;
+  color: #94a3b8;
+  vertical-align: middle;
+}
+
+.syslog-table td {
+  padding: 0.8rem 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.syslog-table tbody tr:hover { background: #f8fafc; }
+.syslog-table tbody tr:last-child td { border-bottom: none; }
+
+/* ── Table Footer: showing text + pagination ─────────────────── */
+.syslog-table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid #f1f5f9;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.syslog-showing-text {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.syslog-pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.sl-pg-btn {
+  min-width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.785rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0 0.35rem;
+  transition: all 0.15s ease;
+}
+
+.sl-pg-btn:hover:not(:disabled) {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.sl-pg-btn.active {
+  background: #0047ff;
+  color: #ffffff;
+  border-color: #0047ff;
+  box-shadow: 0 2px 6px rgba(0, 71, 255, 0.28);
+}
+
+.sl-pg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.sl-pg-ellipsis {
+  font-size: 0.785rem;
+  color: #94a3b8;
+  padding: 0 0.2rem;
+}
+
+/* ── Bottom 3-Column Analytics Section ───────────────────────── */
+.syslog-analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.15rem;
+  align-items: start;
+}
+
+.syslog-analytics-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.15rem 1.2rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+  overflow: hidden;
+}
+
+.syslog-analytics-card-title {
+  font-size: var(--fs-title-card, 0.925rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.85rem 0;
+}
+
+/* ── User Distribution Legend ────────────────────────────────── */
+.syslog-dist-total {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #334155;
+  margin-top: 0.85rem;
+}
+
+.syslog-dist-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+.syslog-dist-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.775rem;
+}
+
+.syslog-dist-legend-left {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.syslog-dist-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.syslog-dist-legend-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.syslog-dist-count {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 0.775rem;
+}
+
+.syslog-dist-pct {
+  font-weight: 600;
+  color: #94a3b8;
+  font-size: 0.72rem;
+}
+
+/* ── Recent Activities ───────────────────────────────────────── */
+.syslog-recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.syslog-recent-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  gap: 0.75rem;
+}
+
+.syslog-recent-item:last-child { border-bottom: none; }
+
+.syslog-recent-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.syslog-recent-activity {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.syslog-recent-user {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.syslog-recent-time {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-view-all-activities {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  color: #0047ff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-top: 1px solid #f1f5f9;
+  padding-top: 0.85rem;
+  transition: color 0.15s ease;
+  cursor: pointer;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  width: 100%;
+}
+
+.btn-view-all-activities:hover { color: #0036cc; }
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1280px) {
+  .syslog-container { padding: 1.15rem 1.25rem 2rem 1.25rem; }
+  .syslog-analytics-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 1024px) {
+  .syslog-container { padding: 1rem; }
+  .syslog-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .syslog-analytics-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .syslog-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .syslog-filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .syslog-filter-btn-group { justify-content: flex-end; }
+  .syslog-table-footer { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .syslog-stats-grid { grid-template-columns: 1fr; }
+  .syslog-stat-value { font-size: 1.5rem; }
+}

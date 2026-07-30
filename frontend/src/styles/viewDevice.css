@@ -1,0 +1,236 @@
+/* ============================================================
+   View Device Page Styles
+   ============================================================ */
+
+.view-device-container {
+  padding: 1.5rem 2rem 2.5rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-family: var(--font-main, 'Inter', sans-serif);
+}
+
+/* Page Header */
+.view-device-header-section {
+  margin-bottom: 1.25rem;
+}
+
+.view-device-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--fs-breadcrumb, 0.825rem);
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.view-device-breadcrumb a {
+  color: #64748b;
+  text-decoration: none;
+}
+
+.view-device-breadcrumb a:hover {
+  color: #0047ff;
+}
+
+.view-device-breadcrumb .bc-sep {
+  color: #cbd5e1;
+  font-size: 0.75rem;
+}
+
+.view-device-breadcrumb .bc-current {
+  color: #334155;
+  font-weight: 700;
+}
+
+/* Action Buttons Row */
+.view-device-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.35rem;
+  flex-wrap: wrap;
+}
+
+.btn-view-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #334155;
+  border-radius: 8px;
+  font-size: var(--fs-button, 0.825rem);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+}
+
+.btn-view-back:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.btn-view-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  background: #0047ff;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: var(--fs-button, 0.825rem);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 71, 255, 0.28);
+  transition: all 0.15s ease;
+}
+
+.btn-view-edit:hover {
+  background: #0036cc;
+}
+
+/* Top Summary Card */
+.device-top-summary-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.15rem 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+}
+
+.device-top-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.device-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.device-summary-item-label {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.device-summary-item-value {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+/* Device Information Card */
+.device-info-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+}
+
+.device-info-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.25rem;
+}
+
+.device-info-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #0047ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.device-info-card-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* Info rows two-column grid */
+.device-info-rows-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid #f1f5f9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.device-info-row {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.device-info-row:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+
+.device-info-row-label {
+  padding: 0.85rem 1rem;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 600;
+  background: #fafbfc;
+  border-right: 1px solid #f1f5f9;
+}
+
+.device-info-row-value {
+  padding: 0.85rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .device-top-summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .device-info-rows-grid {
+    grid-template-columns: 1fr;
+  }
+  .device-info-row:nth-last-child(-n+2) {
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .device-info-row:last-child {
+    border-bottom: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .view-device-container {
+    padding: 1rem;
+  }
+  .device-top-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .device-info-row {
+    grid-template-columns: 130px 1fr;
+  }
+  .view-device-actions-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

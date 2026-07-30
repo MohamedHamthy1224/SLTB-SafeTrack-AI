@@ -1,0 +1,271 @@
+/* ============================================================
+   Police Edit User Module Styles
+   Fully responsive layout matching project design system.
+   ============================================================ */
+
+/* ── Container ──────────────────────────────────────────────── */
+.edit-user-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1.5rem 1.75rem 2.5rem 1.75rem;
+  font-family: var(--font-main, 'Inter', sans-serif);
+  overflow-x: hidden;
+}
+
+/* ── Page Header ─────────────────────────────────────────────── */
+.edit-user-page-title {
+  font-size: var(--fs-title-section, 1.4rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.3rem 0;
+  letter-spacing: -0.01em;
+}
+
+.edit-user-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--fs-breadcrumb, 0.825rem);
+  color: #64748b;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+}
+
+.edit-user-breadcrumb a {
+  color: #0047ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.edit-user-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.edit-user-breadcrumb .bc-sep {
+  color: #cbd5e1;
+  font-size: 0.75rem;
+}
+
+.edit-user-breadcrumb .bc-current {
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ── Form Card Container ─────────────────────────────────────── */
+.edit-user-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.edit-user-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.5rem;
+}
+
+.edit-user-section-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #0047ff;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.edit-user-section-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* ── Grid Layout ─────────────────────────────────────────────── */
+.edit-user-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem 1.75rem;
+}
+
+.edit-user-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.edit-user-label {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.edit-user-label .req {
+  color: #ef4444;
+  margin-left: 0.2rem;
+}
+
+/* ── Inputs & Selects ───────────────────────────────────────── */
+.edit-user-input,
+.edit-user-select {
+  width: 100%;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.825rem;
+  font-weight: 500;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.edit-user-input:focus,
+.edit-user-select:focus {
+  border-color: #0047ff;
+  box-shadow: 0 0 0 3px rgba(0, 71, 255, 0.08);
+}
+
+.edit-user-input::placeholder {
+  color: #94a3b8;
+}
+
+.edit-user-input.readonly {
+  background: #f8fafc;
+  color: #94a3b8;
+  border-color: #e2e8f0;
+  cursor: not-allowed;
+}
+
+.edit-user-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  padding-right: 2.25rem;
+  cursor: pointer;
+}
+
+.edit-user-helper-text {
+  font-size: 0.725rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.edit-user-error-text {
+  font-size: 0.725rem;
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Date wrap */
+.edit-user-date-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.edit-user-date-wrap .edit-user-input {
+  padding-right: 2.5rem;
+}
+
+.edit-user-date-icon {
+  position: absolute;
+  right: 0.75rem;
+  color: #64748b;
+  pointer-events: none;
+}
+
+/* ── Footer Buttons ─────────────────────────────────────────── */
+.edit-user-footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btn-edit-cancel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.25rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #334155;
+  border-radius: 8px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.btn-edit-cancel:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+}
+
+.btn-edit-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.4rem;
+  border: none;
+  background: #0047ff;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 71, 255, 0.28);
+  transition: all 0.15s ease;
+}
+
+.btn-edit-save:hover {
+  background: #0036cc;
+  box-shadow: 0 4px 14px rgba(0, 71, 255, 0.38);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .edit-user-container {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .edit-user-card {
+    padding: 1.25rem;
+  }
+  .edit-user-form-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-user-footer-actions {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+  .btn-edit-cancel,
+  .btn-edit-save {
+    width: 100%;
+    justify-content: center;
+  }
+}

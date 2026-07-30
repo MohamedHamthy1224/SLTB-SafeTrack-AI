@@ -1,0 +1,552 @@
+/* Police Bus Alerts Enterprise UI/UX Design System */
+
+.bus-alerts-container {
+  padding: 1.75rem 2rem 2.5rem 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Page Header & Breadcrumb */
+.bus-alerts-header-section {
+  margin-bottom: 1.25rem;
+}
+
+.bus-alerts-page-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 0.35rem 0;
+  letter-spacing: -0.02em;
+}
+
+.bus-alerts-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.825rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.bus-alerts-breadcrumb a {
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.bus-alerts-breadcrumb a:hover {
+  color: #0047ff;
+}
+
+.breadcrumb-separator {
+  color: #cbd5e1;
+  font-size: 0.75rem;
+}
+
+.breadcrumb-current {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+/* Top Summary KPI Cards Grid (4 Cards Equal Dimensions & Spacing) */
+.bus-alerts-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.bus-alert-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 4px 12px rgba(15, 23, 42, 0.01);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.bus-alert-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+  border-color: #cbd5e1;
+}
+
+.stat-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  font-size: 0.775rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.01em;
+}
+
+.stat-number {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* Filter Toolbar Bar */
+.bus-alerts-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+}
+
+.filter-left-group {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.filter-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.filter-select {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.835rem;
+  font-weight: 600;
+  color: #1e293b;
+  outline: none;
+  min-width: 170px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.filter-select:focus {
+  border-color: #0047ff;
+  box-shadow: 0 0 0 3px rgba(0, 71, 255, 0.1);
+}
+
+.filter-right-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.btn-reset {
+  padding: 0.5rem 1.1rem;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  border-radius: 8px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-reset:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #94a3b8;
+}
+
+.btn-export {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  background: #0047ff;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 2px 8px rgba(0, 71, 255, 0.25);
+  transition: all 0.15s ease;
+}
+
+.btn-export:hover {
+  background: #0038cb;
+  box-shadow: 0 4px 12px rgba(0, 71, 255, 0.35);
+}
+
+/* Responsive Grid Split: Left 70% Table, Right 30% Analytics */
+.bus-alerts-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* Table Card Component */
+.bus-alerts-table-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.02);
+}
+
+.table-card-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+  max-height: 520px;
+}
+
+.bus-alerts-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.815rem;
+}
+
+.bus-alerts-table th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  color: #475569;
+  font-weight: 700;
+  padding: 0.75rem 0.65rem;
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.bus-alerts-table td {
+  padding: 0.85rem 0.65rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #1e293b;
+  font-weight: 500;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.bus-alerts-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.bus-alerts-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* Priority Badges */
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.725rem;
+  font-weight: 800;
+  line-height: 1;
+  text-transform: capitalize;
+}
+
+.priority-badge.high {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.priority-badge.medium {
+  background: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #fed7aa;
+}
+
+.priority-badge.low {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+/* Action Eye Icon Button */
+.btn-action-eye {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #475569;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-action-eye:hover {
+  background: #0047ff;
+  color: #ffffff;
+  border-color: #0047ff;
+  transform: scale(1.05);
+}
+
+/* Pagination Control Footer */
+.table-pagination-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.pagination-info {
+  font-size: 0.785rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.pagination-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #334155;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination-btn.active {
+  background: #0047ff;
+  color: #ffffff;
+  border-color: #0047ff;
+  box-shadow: 0 2px 6px rgba(0, 71, 255, 0.3);
+}
+
+/* Right Analytics Panel Column */
+.bus-alerts-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.right-widget-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.15rem 1.25rem;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.02);
+}
+
+.widget-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.widget-card-title {
+  font-size: 0.925rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+.widget-card-subtitle {
+  font-size: 0.75rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Priority Donut Chart Custom Legend */
+.priority-legend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  justify-content: center;
+}
+
+.priority-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.8rem;
+}
+
+.priority-legend-left {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.priority-legend-val {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* Recent Notifications Scrollable List */
+.recent-notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 0.2rem;
+  scrollbar-width: thin;
+}
+
+.recent-notifications-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.recent-notifications-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.notification-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  transition: all 0.15s ease;
+}
+
+.notification-item:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+}
+
+.notification-icon-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+
+.notification-item-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.notification-item-desc {
+  font-size: 0.725rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.notification-time {
+  font-size: 0.685rem;
+  color: #94a3b8;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Responsive Rules */
+@media (max-width: 1366px) {
+  .bus-alerts-main-grid {
+    grid-template-columns: 1fr 310px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .bus-alerts-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bus-alerts-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .bus-alerts-container {
+    padding: 1rem;
+  }
+  .bus-alerts-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .bus-alerts-filter-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+  .filter-right-group {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

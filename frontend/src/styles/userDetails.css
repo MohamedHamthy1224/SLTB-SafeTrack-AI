@@ -1,0 +1,429 @@
+/* ============================================================
+   Police User Details (View User) Module Styles
+   Fully responsive, zero horizontal page scroll.
+   ============================================================ */
+
+/* ── Container ──────────────────────────────────────────────── */
+.user-details-container {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1.5rem 1.75rem 2.5rem 1.75rem;
+  font-family: var(--font-main, 'Inter', sans-serif);
+  overflow-x: hidden;
+}
+
+/* ── Page Header Row ─────────────────────────────────────────── */
+.user-details-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.user-details-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.user-details-page-title {
+  font-size: var(--fs-title-section, 1.4rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.user-details-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--fs-breadcrumb, 0.825rem);
+  color: #64748b;
+  font-weight: 500;
+}
+
+.user-details-breadcrumb a {
+  color: #0047ff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.user-details-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.user-details-breadcrumb .bc-sep {
+  color: #cbd5e1;
+  font-size: 0.75rem;
+}
+
+.user-details-breadcrumb .bc-current {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.user-details-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.btn-details-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.15rem;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #0047ff;
+  border-radius: 8px;
+  font-size: var(--fs-button, 0.825rem);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-details-back:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.btn-details-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.25rem;
+  border: none;
+  background: #0047ff;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: var(--fs-button, 0.825rem);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 71, 255, 0.28);
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn-details-edit:hover {
+  background: #0036cc;
+  box-shadow: 0 4px 14px rgba(0, 71, 255, 0.38);
+}
+
+/* ── Top Header Profile Card (Police Admin & Traffic Police) ─── */
+.user-profile-header-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.user-profile-avatar-large {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #e2e8f0;
+  flex-shrink: 0;
+  background: #f1f5f9;
+}
+
+.user-profile-avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.user-profile-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.user-profile-header-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.user-profile-header-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+/* ── Status Dot & Badge Component ───────────────────────────── */
+.status-badge-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.status-badge-dot.active {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.status-badge-dot.inactive {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.status-badge-dot.online {
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.status-badge-dot.offline {
+  background: #fef2f2;
+  color: #ef4444;
+}
+
+.dot-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-indicator.green {
+  background: #16a34a;
+}
+
+.dot-indicator.red {
+  background: #ef4444;
+}
+
+.dot-indicator.gray {
+  background: #64748b;
+}
+
+/* Role Badges in Header */
+.header-role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.header-role-badge.police-admin {
+  background: #eff6ff;
+  color: #0047ff;
+  border: 1px solid #bfdbfe;
+}
+
+.header-role-badge.sltb-admin {
+  background: #fff7ed;
+  color: #ea580c;
+  border: 1px solid #fed7aa;
+}
+
+.header-role-badge.traffic-police {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+/* ── SLTB Admin Top Summary Cards Grid ───────────────────────── */
+.sltb-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.sltb-summary-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+}
+
+.sltb-summary-icon-wrap {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sltb-summary-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.sltb-summary-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.sltb-summary-value {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+/* ── User Information Cards ──────────────────────────────────── */
+.user-info-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.user-info-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+}
+
+.user-info-card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #0047ff;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-info-card-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* SLTB User Information Card Layout (Avatar on left, table on right) */
+.sltb-user-info-body {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.sltb-user-avatar-wrap {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #e2e8f0;
+  margin: 0 auto;
+}
+
+.sltb-user-avatar-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── 2-Column Detail Table ───────────────────────────────────── */
+.details-table-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 2rem;
+}
+
+.details-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.825rem;
+}
+
+.details-row:last-child {
+  border-bottom: none;
+}
+
+.details-label {
+  color: #475569;
+  font-weight: 600;
+}
+
+.details-value {
+  color: #0f172a;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .user-details-container {
+    padding: 1rem;
+  }
+  .sltb-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .user-details-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .user-details-header-right {
+    width: 100%;
+  }
+  .btn-details-back,
+  .btn-details-edit {
+    flex: 1;
+    justify-content: center;
+  }
+  .details-table-grid {
+    grid-template-columns: 1fr;
+  }
+  .sltb-user-info-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .sltb-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

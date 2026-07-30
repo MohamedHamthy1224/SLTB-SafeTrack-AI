@@ -1,0 +1,42 @@
+/* Police Dashboard Main Layout Styles */
+@import './police-sidebar.css';
+@import './police-header.css';
+@import './police-cards.css';
+
+.police-dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: var(--font-main, 'Inter', sans-serif);
+  color: #0f172a;
+  overflow-x: hidden;        /* prevent any inner content breaking page width */
+}
+
+.police-dashboard-main {
+  flex: 1;
+  margin-left: 240px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0;              /* allow flex child to shrink below content size */
+  width: 0;                  /* combined with flex:1, forces correct calc */
+  overflow-x: hidden;        /* clip any child that tries to bleed out */
+  transition: margin-left 0.25s ease;
+}
+
+.police-dashboard-content {
+  padding: 1.25rem 1.5rem 2rem 1.5rem;
+  flex: 1;
+}
+
+@media (max-width: 1024px) {
+  .police-dashboard-main {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .police-dashboard-content {
+    padding: 1rem;
+  }
+}

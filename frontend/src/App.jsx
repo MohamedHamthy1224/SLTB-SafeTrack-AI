@@ -3,11 +3,28 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, AuthContext } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
+import { USER_ROLES } from './constants/roles';
 import { SplashPage } from './pages/SplashPage';
 import { LoginPage } from './pages/LoginPage';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { SLTBDashboardPage } from './pages/SLTBDashboardPage';
+import { PoliceDashboard } from './pages/PoliceDashboard';
+import { PoliceBusAlertsPage } from './pages/PoliceBusAlertsPage';
+import { ViewBusAlertPage } from './pages/ViewBusAlertPage';
+import { PoliceUTurnAlertsPage } from './pages/PoliceUTurnAlertsPage';
+import { ViewUTurnAlertPage } from './pages/ViewUTurnAlertPage';
+import { PoliceDeviceManagementPage } from './pages/PoliceDeviceManagementPage';
+import { AddDevicePage } from './pages/AddDevicePage';
+import { ViewDevicePage } from './pages/ViewDevicePage';
+import { EditDevicePage } from './pages/EditDevicePage';
+import { PoliceUserManagementPage } from './pages/PoliceUserManagementPage';
+import { AddUserPage } from './pages/AddUserPage';
+import { UserDetailsPage } from './pages/UserDetailsPage';
+import { PoliceSystemLogsPage } from './pages/PoliceSystemLogsPage';
+import { PoliceSettingsPage } from './pages/PoliceSettingsPage';
+import { PoliceThemeSettingsPage } from './pages/PoliceThemeSettingsPage';
+import { PoliceProfileSettingsPage } from './pages/PoliceProfileSettingsPage';
 import { BusManagementPage } from './pages/BusManagementPage';
 import { AddBusPage } from './pages/AddBusPage';
 import { BusDetailsPage } from './pages/BusDetailsPage';
@@ -36,7 +53,11 @@ import './styles/routeForm.css';
 import './styles/routeDetails.css';
 import './styles/routeModal.css';
 
-const ProtectedRoute = ({ children }) => {
+/**
+ * Scalable Role-Based ProtectedRoute Component.
+ * Validates authentication state and allowed user roles before rendering children.
+ */
+const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, isAuthenticated, loading } = React.useContext(AuthContext);
 
   if (loading) {
@@ -51,8 +72,11 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (user?.role_name !== 'SLTB Admin') {
-    return <Navigate to="/unauthorized" replace />;
+  if (allowedRoles && allowedRoles.length > 0) {
+    const rolesArray = Array.isArray(allowedRoles) ? allowedRoles : [allowedRoles];
+    if (!rolesArray.includes(user?.role_name)) {
+      return <Navigate to="/unauthorized" replace />;
+    }
   }
 
   return children;
@@ -70,11 +94,191 @@ export const App = () => {
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />
 
+              {/* Legacy redirect: /police/devices → /police/device-management */}
+              <Route
+                path="/police/devices"
+                element={<Navigate to="/police/device-management" replace />}
+              />
+
+              {/* Protected Police Admin Routes */}
+              <Route
+                path="/police/dashboard"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceDashboard />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/bus-alerts"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceBusAlertsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/bus-alerts/:id"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <ViewBusAlertPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/u-turn-alerts"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceUTurnAlertsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/u-turn-alerts/:id"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <ViewUTurnAlertPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/device-management"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceDeviceManagementPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/device-management/add"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <AddDevicePage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/device-management/:id"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <ViewDevicePage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/device-management/:id/edit"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <EditDevicePage />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Legacy redirect: /police/users → /police/user-management */}
+              <Route
+                path="/police/users"
+                element={<Navigate to="/police/user-management" replace />}
+              />
+
+              <Route
+                path="/police/user-management"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceUserManagementPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/users/add"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <AddUserPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/user-management/add"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <AddUserPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/users/view/:userId"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <UserDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/user-management/view/:userId"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <UserDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Legacy redirect: /police/logs → /police/system-logs */}
+              <Route
+                path="/police/logs"
+                element={<Navigate to="/police/system-logs" replace />}
+              />
+
+              <Route
+                path="/police/system-logs"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceSystemLogsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Police Settings Routes */}
+              <Route
+                path="/police/settings"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceSettingsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/police/settings/theme"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceThemeSettingsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/police/settings/profile"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceProfileSettingsPage />
+                  </ProtectedRoute>
+                }
+              />
+
               {/* Protected SLTB Admin Routes */}
               <Route
                 path="/sltb/dashboard"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <SLTBDashboardPage />
                   </ProtectedRoute>
                 }
@@ -83,7 +287,7 @@ export const App = () => {
               <Route
                 path="/sltb/buses"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <BusManagementPage />
                   </ProtectedRoute>
                 }
@@ -92,7 +296,7 @@ export const App = () => {
               <Route
                 path="/sltb/buses/new"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <AddBusPage />
                   </ProtectedRoute>
                 }
@@ -101,7 +305,7 @@ export const App = () => {
               <Route
                 path="/sltb/buses/:busId"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <BusDetailsPage />
                   </ProtectedRoute>
                 }
@@ -110,7 +314,7 @@ export const App = () => {
               <Route
                 path="/sltb/buses/:busId/edit"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <EditBusPage />
                   </ProtectedRoute>
                 }
@@ -119,7 +323,7 @@ export const App = () => {
               <Route
                 path="/sltb/routes"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <RouteManagementPage />
                   </ProtectedRoute>
                 }
@@ -128,7 +332,7 @@ export const App = () => {
               <Route
                 path="/sltb/routes/new"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <AddRoutePage />
                   </ProtectedRoute>
                 }
@@ -137,7 +341,7 @@ export const App = () => {
               <Route
                 path="/sltb/routes/:routeId"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <RouteDetailsPage />
                   </ProtectedRoute>
                 }
@@ -146,7 +350,7 @@ export const App = () => {
               <Route
                 path="/sltb/routes/:routeId/edit"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <EditRoutePage />
                   </ProtectedRoute>
                 }
@@ -155,7 +359,7 @@ export const App = () => {
               <Route
                 path="/sltb/drivers"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <DriverManagementPage />
                   </ProtectedRoute>
                 }
@@ -164,7 +368,7 @@ export const App = () => {
               <Route
                 path="/sltb/drivers/new"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <AddDriverPage />
                   </ProtectedRoute>
                 }
@@ -173,7 +377,7 @@ export const App = () => {
               <Route
                 path="/sltb/drivers/:driverId"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <DriverDetailsPage />
                   </ProtectedRoute>
                 }
@@ -182,7 +386,7 @@ export const App = () => {
               <Route
                 path="/sltb/drivers/:driverId/edit"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <EditDriverPage />
                   </ProtectedRoute>
                 }
@@ -191,7 +395,7 @@ export const App = () => {
               <Route
                 path="/sltb/reports"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <ModulePlaceholderPage 
                       moduleTitle="Analytics & Reports Module" 
                       moduleDescription="Comprehensive reports engine including Bus, Driver, Route, Alert, and Approach Speed analysis." 
@@ -203,7 +407,7 @@ export const App = () => {
               <Route
                 path="/sltb/profile"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <ProfilePage />
                   </ProtectedRoute>
                 }
@@ -212,7 +416,7 @@ export const App = () => {
               <Route
                 path="/sltb/profile/edit"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <EditProfilePage />
                   </ProtectedRoute>
                 }
@@ -221,7 +425,7 @@ export const App = () => {
               <Route
                 path="/sltb/settings"
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
                     <SettingsPage />
                   </ProtectedRoute>
                 }

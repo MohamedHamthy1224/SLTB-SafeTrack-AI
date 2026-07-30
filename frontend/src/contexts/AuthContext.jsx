@@ -1,11 +1,16 @@
 import React, { createContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { authService } from '../services/authService';
+import { getActiveModule } from '../utils/roleRouter';
 
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const activeModule = useMemo(() => {
+    return user ? getActiveModule(user.role_name) : null;
+  }, [user]);
 
   useEffect(() => {
     let isMounted = true;
@@ -86,11 +91,12 @@ export const AuthProvider = ({ children }) => {
   const contextValue = useMemo(() => ({
     user,
     isAuthenticated: !!user,
+    activeModule,
     loading,
     login,
     logout,
     updateCurrentUserProfile
-  }), [user, loading, login, logout, updateCurrentUserProfile]);
+  }), [user, activeModule, loading, login, logout, updateCurrentUserProfile]);
 
   return (
     <AuthContext.Provider value={contextValue}>

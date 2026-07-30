@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3307
--- Generation Time: Jul 16, 2026 at 10:15 PM
+-- Generation Time: Jul 28, 2026 at 02:37 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -55,20 +55,37 @@ CREATE TABLE `buses` (
   `bus_id` int(11) NOT NULL,
   `registration_number` varchar(20) NOT NULL,
   `bus_number` varchar(30) NOT NULL,
+  `service_type` enum('Public Service','Semi Luxury','Luxury','Express','Intercity','Highway','School Service','Staff Service','Tourist') NOT NULL DEFAULT 'Public Service',
   `depot` varchar(100) DEFAULT NULL,
   `model` varchar(100) DEFAULT NULL,
+  `chassis_number` varchar(50) DEFAULT NULL,
+  `engine_number` varchar(50) DEFAULT NULL,
   `capacity` int(11) DEFAULT NULL,
+  `standing_capacity` int(11) NOT NULL DEFAULT 0,
+  `fuel_type` enum('Diesel','Petrol','Electric','Hybrid','CNG') DEFAULT NULL,
   `manufacture_year` year(4) DEFAULT NULL,
   `status` enum('Active','Maintenance','Inactive') DEFAULT 'Active',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `registration_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `buses`
 --
 
-INSERT INTO `buses` (`bus_id`, `registration_number`, `bus_number`, `depot`, `model`, `capacity`, `manufacture_year`, `status`, `created_at`) VALUES
-(1, 'NB-4587', 'SLTB-001', 'Batticaloa Depot', 'Ashok Leyland', 54, '2022', 'Active', '2026-07-16 19:34:06');
+INSERT INTO `buses` (`bus_id`, `registration_number`, `bus_number`, `service_type`, `depot`, `model`, `chassis_number`, `engine_number`, `capacity`, `standing_capacity`, `fuel_type`, `manufacture_year`, `status`, `created_at`, `registration_date`) VALUES
+(1, 'NB-4587', 'SLTB-001', 'Public Service', 'SLTB Main Depot - Batticaloa', 'Ashok Leyland', 'CH8976576', 'ENG854796253', 54, 0, 'Diesel', '2022', 'Active', '2026-07-16 19:34:06', NULL),
+(2, 'NP NS-78', 'SLTB-45', 'Public Service', 'SLTB Main Depot - Jaffna', 'Ashok Leyland', 'CHS4578962541', 'ENG458967162', 52, 20, 'Diesel', '2026', 'Active', '2026-07-21 16:22:46', NULL),
+(13, 'ND-1234', 'SLTB-011', 'Public Service', 'Colombo Central Depot', 'Ashok Leyland Viking', 'CHS-SLTB-011', 'ENG-SLTB-011', 54, 20, 'Diesel', '2015', 'Active', '2026-07-25 20:32:40', NULL),
+(14, 'NA-5678', 'SLTB-012', 'Semi Luxury', 'Kandy Depot', 'Tata Marcopolo', 'CHS-SLTB-012', 'ENG-SLTB-012', 49, 15, 'Diesel', '2017', 'Active', '2026-07-25 20:32:40', NULL),
+(15, 'NC-9012', 'SLTB-013', 'Express', 'Galle Depot', 'Ashok Leyland Lynx', 'CHS-SLTB-013', 'ENG-SLTB-013', 52, 18, 'Diesel', '2019', 'Maintenance', '2026-07-25 20:32:40', NULL),
+(16, 'ND-3456', 'SLTB-014', 'Intercity', 'Jaffna Depot', 'Tata LPO', 'CHS-SLTB-014', 'ENG-SLTB-014', 48, 12, 'Diesel', '2020', 'Active', '2026-07-25 20:32:40', NULL),
+(17, 'NB-7890', 'SLTB-015', 'Luxury', 'Trincomalee Depot', 'Yutong ZK', 'CHS-SLTB-015', 'ENG-SLTB-015', 45, 5, 'Diesel', '2021', 'Inactive', '2026-07-25 20:32:40', NULL),
+(18, 'NE-2468', 'SLTB-016', 'Highway', 'Maharagama Depot', 'Volvo B9R', 'CHS-SLTB-016', 'ENG-SLTB-016', 44, 0, 'Diesel', '2022', 'Active', '2026-07-25 20:32:40', NULL),
+(19, 'NC-1357', 'SLTB-017', 'School Service', 'Kurunegala Depot', 'Tata Starbus', 'CHS-SLTB-017', 'ENG-SLTB-017', 55, 20, 'CNG', '2018', 'Active', '2026-07-25 20:32:40', NULL),
+(20, 'ND-8642', 'SLTB-018', 'Staff Service', 'Anuradhapura Depot', 'Ashok Leyland Falcon', 'CHS-SLTB-018', 'ENG-SLTB-018', 50, 15, 'Hybrid', '2023', 'Maintenance', '2026-07-25 20:32:40', NULL),
+(21, 'NB-9753', 'SLTB-019', 'Tourist', 'Negombo Depot', 'King Long XMQ', 'CHS-SLTB-019', 'ENG-SLTB-019', 42, 0, 'Petrol', '2016', 'Inactive', '2026-07-25 20:32:40', NULL),
+(22, 'NE-4321', 'SLTB-020', 'Public Service', 'Batticaloa Depot', 'BYD Electric Bus', 'CHS-SLTB-020', 'ENG-SLTB-020', 46, 18, 'Electric', '2024', 'Active', '2026-07-25 20:32:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -111,7 +128,9 @@ CREATE TABLE `bus_assignments` (
 --
 
 INSERT INTO `bus_assignments` (`assignment_id`, `bus_id`, `driver_id`, `route_id`, `assigned_date`, `status`, `created_at`) VALUES
-(1, 1, 1, 1, '2026-07-17', 'Active', '2026-07-16 19:34:06');
+(1, 1, 1, 1, '2026-07-23', 'Active', '2026-07-16 19:34:06'),
+(2, 2, 2, 2, '2026-07-22', 'Cancelled', '2026-07-21 16:22:46'),
+(3, 2, 2, 2, '2026-07-23', 'Active', '2026-07-22 15:16:40');
 
 -- --------------------------------------------------------
 
@@ -174,10 +193,19 @@ INSERT INTO `device_registry` (`device_id`, `device_code`, `device_name`, `devic
 CREATE TABLE `drivers` (
   `driver_id` int(11) NOT NULL,
   `full_name` varchar(100) NOT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `gender` enum('Male','Female') DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
   `license_number` varchar(50) NOT NULL,
+  `issue_date` date DEFAULT NULL,
+  `expiry_date` date DEFAULT NULL,
   `nic` varchar(20) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
+  `alternative_phone_number` varchar(20) DEFAULT NULL,
+  `email_address` varchar(100) DEFAULT NULL,
   `experience_years` int(11) DEFAULT 0,
+  `join_date` date DEFAULT NULL,
   `status` enum('Active','Inactive') DEFAULT 'Active',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -186,8 +214,24 @@ CREATE TABLE `drivers` (
 -- Dumping data for table `drivers`
 --
 
-INSERT INTO `drivers` (`driver_id`, `full_name`, `license_number`, `nic`, `phone`, `experience_years`, `status`, `created_at`) VALUES
-(1, 'Mohamed Ismail', 'B1234567', '902345678V', '0771234567', 8, 'Active', '2026-07-16 19:34:06');
+INSERT INTO `drivers` (`driver_id`, `full_name`, `date_of_birth`, `gender`, `address`, `profile_picture`, `license_number`, `issue_date`, `expiry_date`, `nic`, `phone`, `alternative_phone_number`, `email_address`, `experience_years`, `join_date`, `status`, `created_at`) VALUES
+(1, 'Mohamed Ismail', '1990-05-12', 'Male', 'No. 25, Main Street, Batticaloa', 'uploads/drivers/driver_2217211c00bb411db0ab5ee09ef1086f_1784808342.png', 'B1234567', '2018-06-15', '2028-06-14', '902345678V', '0777896555', '0771234568', 'wsrd@gmail.com', 8, '2018-07-01', 'Active', '2026-07-16 19:34:06'),
+(2, 'Kamal Perera', '1988-09-25', 'Male', 'No. 102, Central Road, Kandy', NULL, 'B7654321', '2016-08-20', '2026-08-19', '199512345678', '0771122334', '0771122335', 'kamal.perera@sltb.lk', 5, '2019-01-15', 'Active', '2026-07-21 21:51:15'),
+(3, 'Ruwan Silva', '1987-04-18', 'Male', 'Kurunegala', NULL, 'B9876543', '2015-05-10', '2025-05-09', '870108765V', '0773456789', '0713456789', 'ruwan.silva@sltb.lk', 10, '2017-02-01', 'Active', '2026-07-22 20:51:56'),
+(4, 'Saman Kumara', '1992-11-07', 'Male', 'Matale', NULL, 'B4567891', '2019-03-20', '2029-03-19', '921110987V', '0774567891', '0714567891', 'saman.kumara@sltb.lk', 6, '2020-05-10', 'Active', '2026-07-22 20:51:56'),
+(5, 'Nimal Fernando', '1985-01-30', 'Male', 'Galle', NULL, 'B8529637', '2014-09-12', '2024-09-11', '850304567V', '0775678912', '0715678912', 'nimal.fernando@sltb.lk', 12, '2015-06-01', 'Active', '2026-07-22 20:51:56'),
+(6, 'Arun Madhushan', '1994-08-16', 'Male', 'Jaffna', NULL, 'B9513578', '2020-01-15', '2030-01-14', '942298765V', '0776789123', '0716789123', 'arun.madhushan@sltb.lk', 4, '2021-01-20', 'Active', '2026-07-22 20:51:56'),
+(7, 'Dinesh Wijesinghe', '1989-12-11', 'Male', 'Colombo', NULL, 'B7412589', '2017-11-05', '2027-11-04', '892345678V', '0777891234', '0717891234', 'dinesh.wijesinghe@sltb.lk', 8, '2018-08-15', 'Active', '2026-07-22 20:51:56'),
+(8, 'Kasun Jayawardena', '1988-03-15', 'Male', 'No.45, Galle Road, Colombo', NULL, 'B10000001', '2020-01-10', '2027-01-10', '881234001V', '0779000001', '0719000001', 'kasun.jayawardena1@sltb.lk', 12, '2014-01-15', 'Active', '2026-07-25 20:35:11'),
+(9, 'Nimal Perera', '1985-07-22', 'Male', 'No.18, Peradeniya Road, Kandy', NULL, 'B10000002', '2019-02-15', '2027-02-15', '851234002V', '0779000002', '0719000002', 'nimal.perera1@sltb.lk', 15, '2012-02-10', 'Active', '2026-07-25 20:35:11'),
+(10, 'Saman Kumara', '1990-11-05', 'Male', 'No.72, Matara Road, Galle', NULL, 'B10000003', '2021-03-20', '2028-03-20', '901234003V', '0779000003', '0719000003', 'saman.kumara1@sltb.lk', 9, '2017-03-05', 'Active', '2026-07-25 20:35:11'),
+(11, 'Dinesh Fernando', '1987-04-18', 'Male', 'Main Street, Negombo', NULL, 'B10000004', '2018-04-12', '2026-04-12', '871234004V', '0779000004', '0719000004', 'dinesh.fernando1@sltb.lk', 13, '2013-04-12', 'Inactive', '2026-07-25 20:35:11'),
+(12, 'Pradeep Silva', '1992-09-30', 'Male', 'Temple Road, Kurunegala', NULL, 'B10000005', '2022-05-18', '2029-05-18', '921234005V', '0779000005', '0719000005', 'pradeep.silva1@sltb.lk', 7, '2019-05-18', 'Active', '2026-07-25 20:35:11'),
+(13, 'Chamara Wijesinghe', '1989-12-12', 'Male', 'Lake Road, Anuradhapura', NULL, 'B10000006', '2020-06-01', '2027-06-01', '891234006V', '0779000006', '0719000006', 'chamara.wijesinghe1@sltb.lk', 11, '2015-06-01', 'Active', '2026-07-25 20:35:11'),
+(14, 'Aruni Fernando', '1994-06-25', 'Female', 'Hospital Road, Jaffna', NULL, 'B10000007', '2023-06-20', '2030-06-20', '941234007V', '0779000007', '0719000007', 'aruni.fernando1@sltb.lk', 5, '2021-06-20', 'Active', '2026-07-25 20:35:11'),
+(15, 'Gayan Perera', '1986-01-08', 'Male', 'Beach Road, Trincomalee', NULL, 'B10000008', '2017-07-02', '2025-07-02', '861234008V', '0779000008', '0719000008', 'gayan.perera1@sltb.lk', 14, '2011-07-02', 'Inactive', '2026-07-25 20:35:11'),
+(16, 'Nuwani Silva', '1996-08-17', 'Female', 'Station Road, Batticaloa', NULL, 'B10000009', '2023-07-15', '2030-07-15', '961234009V', '0779000009', '0719000009', 'nuwani.silva1@sltb.lk', 4, '2022-07-15', 'Active', '2026-07-25 20:35:11'),
+(17, 'Supun Bandara', '1991-02-14', 'Male', 'New Town, Polonnaruwa', NULL, 'B10000010', '2021-08-05', '2028-08-05', '911234010V', '0779000010', '0719000010', 'supun.bandara1@sltb.lk', 8, '2018-08-05', 'Inactive', '2026-07-25 20:35:11');
 
 -- --------------------------------------------------------
 
@@ -219,6 +263,34 @@ CREATE TABLE `notification_recipients` (
   `is_read` tinyint(1) DEFAULT 0,
   `read_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `password_resets`
+--
+
+CREATE TABLE `password_resets` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `expires_at` datetime NOT NULL,
+  `used` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `password_resets`
+--
+
+INSERT INTO `password_resets` (`id`, `user_id`, `token`, `expires_at`, `used`, `created_at`) VALUES
+(1, 4, 'E_k3yXhdZbnjBu5FZHGdmv1S-R3vYxP8r9SKTGk9XkA', '2026-07-16 22:04:29', 1, '2026-07-16 16:04:29'),
+(2, 4, 'aI5MbQ9ekIiEg_89C-Vfe2cc8QNdHh8pFLXW0JrvUiE', '2026-07-16 22:06:10', 1, '2026-07-16 16:06:10'),
+(3, 4, '7n3jscgisRWrbt4hvG6fvpGYNpoVwfFTYjXSFYPc3aw', '2026-07-16 22:07:10', 1, '2026-07-16 16:07:10'),
+(4, 4, 'zXtmkESjaMX2gnJ0a1iHzDQKXNLSDg9gcnxm8RP46Jo', '2026-07-16 22:11:08', 1, '2026-07-16 16:11:08'),
+(5, 4, 'e3GNlvlYeyDGN59oglyBmoTXqsFRVuwpk4h9LL_jHRE', '2026-07-16 22:13:35', 1, '2026-07-16 16:13:35'),
+(6, 4, 'TDn6fF88377sasEU2UYcy_fqKzZuJIpHMqpFPeHpUVI', '2026-07-16 22:50:42', 1, '2026-07-16 16:50:42'),
+(7, 4, 'pK3uIS7DR-iCZ5vwj1GOIYBw4uX4MuKcCMfpEvAMnfA', '2026-07-25 19:34:13', 1, '2026-07-25 13:34:13');
 
 -- --------------------------------------------------------
 
@@ -338,8 +410,18 @@ CREATE TABLE `routes` (
 
 INSERT INTO `routes` (`route_id`, `route_number`, `route_name`, `start_location`, `end_location`, `distance_km`, `estimated_duration`, `status`, `created_at`) VALUES
 (1, '101', 'Batticaloa - Colombo', 'Batticaloa', 'Colombo', 330.50, 420, 'Active', '2026-07-16 19:34:06'),
-(2, '102', 'Batticaloa - Kandy', 'Batticaloa', 'Kandy', 210.30, 300, 'Active', '2026-07-16 19:34:06'),
-(3, '103', 'Batticaloa - Trincomalee', 'Batticaloa', 'Trincomalee', 115.00, 150, 'Active', '2026-07-16 19:34:06');
+(2, '102', 'Jaffna- Akkaraipathu', 'Jaffna', 'Akkaraipathu', 210.29, 300, 'Active', '2026-07-16 19:34:06'),
+(3, '103', 'Batticaloa - Trincomalee', 'Batticaloa', 'Trincomalee', 115.00, 150, 'Active', '2026-07-16 19:34:06'),
+(4, '105', 'Colombo to Kandy', 'Colombo', 'Kandy', 116.50, 210, 'Active', '2026-07-25 19:55:09'),
+(5, '106', 'Colombo to Galle', 'Colombo', 'Galle', 126.00, 150, 'Active', '2026-07-25 19:55:09'),
+(6, '112', 'Kandy to Matale', 'Kandy', 'Matale', 42.80, 75, 'Active', '2026-07-25 19:55:09'),
+(7, '120', 'Negombo to Kurunegala', 'Negombo', 'Kurunegala', 102.40, 160, 'Active', '2026-07-25 19:55:09'),
+(8, '138', 'Jaffna to Point Pedro', 'Jaffna', 'Point Pedro', 31.20, 55, 'Active', '2026-07-25 19:55:09'),
+(9, '154', 'Colombo to Trincomalee', 'Colombo', 'Trincomalee', 244.30, 360, 'Active', '2026-07-25 19:55:09'),
+(10, '176', 'Galle to Matara', 'Galle', 'Matara', 45.60, 70, 'Inactive', '2026-07-25 19:55:09'),
+(11, '201', 'Batticaloa to Kalmunai', 'Batticaloa', 'Kalmunai', 41.50, 65, 'Active', '2026-07-25 19:55:09'),
+(12, '225', 'Anuradhapura to Polonnaruwa', 'Anuradhapura', 'Polonnaruwa', 104.20, 145, 'Inactive', '2026-07-25 19:55:09'),
+(13, '245', 'Kurunegala to Colombo', 'Kurunegala', 'Colombo', 98.70, 170, 'Active', '2026-07-25 19:55:09');
 
 -- --------------------------------------------------------
 
@@ -396,7 +478,7 @@ CREATE TABLE `sltb_users` (
 --
 
 INSERT INTO `sltb_users` (`sltb_user_id`, `user_id`, `full_name`, `employee_id`, `department`, `designation`, `phone`, `joined_date`) VALUES
-(1, 4, 'Mohamed Rauf', 'SLTB001', 'Operations', 'Fleet Manager', '0754567890', '2021-08-10');
+(1, 4, 'Fathima Rifka', 'SLTB001', 'Operations', 'Fleet Manager', '0754567890', '2021-08-10');
 
 -- --------------------------------------------------------
 
@@ -440,18 +522,19 @@ CREATE TABLE `users` (
   `profile_image` varchar(255) DEFAULT NULL,
   `status` enum('Active','Inactive') DEFAULT 'Active',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `theme_preference` enum('light','dark','system') DEFAULT 'light'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `role_id`, `username`, `email`, `password`, `profile_image`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, 'policeadmin', 'policeadmin@safetrackai.com', '6481f8e1a060d56eeb7c10ac7809d316800dce013713c412e1d22076505b11a8', NULL, 'Active', '2026-07-16 19:34:06', '2026-07-16 19:34:06'),
-(2, 2, 'officer001', 'officer001@safetrackai.com', '6481f8e1a060d56eeb7c10ac7809d316800dce013713c412e1d22076505b11a8', NULL, 'Active', '2026-07-16 19:34:06', '2026-07-16 19:34:06'),
-(3, 2, 'officer002', 'officer002@safetrackai.com', '6481f8e1a060d56eeb7c10ac7809d316800dce013713c412e1d22076505b11a8', NULL, 'Active', '2026-07-16 19:34:06', '2026-07-16 19:34:06'),
-(4, 3, 'sltbadmin', 'sltbadmin@safetrackai.com', '6481f8e1a060d56eeb7c10ac7809d316800dce013713c412e1d22076505b11a8', NULL, 'Active', '2026-07-16 19:34:06', '2026-07-16 19:34:06');
+INSERT INTO `users` (`user_id`, `role_id`, `username`, `email`, `password`, `profile_image`, `status`, `created_at`, `updated_at`, `theme_preference`) VALUES
+(1, 1, 'policeadmin', 'policeadmin@safetrackai.com', '$2b$12$FP58qQIe3vrB.DtMKgEZFejlU1ilKl1mvC1iZO28jTuEIcUvEx5Iq', NULL, 'Active', '2026-07-16 19:34:06', '2026-07-23 18:31:01', 'dark'),
+(2, 2, 'officer001', 'officer001@safetrackai.com', '$2b$12$Nasrorq.iXDuCRYAzINWuOM0BGUwuxBqgdUHAH4dBbzk1F9fdIRge', NULL, 'Active', '2026-07-16 19:34:06', '2026-07-23 18:31:01', 'dark'),
+(3, 2, 'officer002', 'officer002@safetrackai.com', '$2b$12$OPDMAjvBGc1hg1v/.rpbU.qunpjIV/6KG2yKdAG8dyhH.nxbXQnei', NULL, 'Active', '2026-07-16 19:34:06', '2026-07-23 18:31:01', 'dark'),
+(4, 3, 'sltbadmin', 'sltbsafetrack.ai@gmail.com', '$2b$12$xJ/Q./HzGzrS5N1k4GPG9unRg0oYhz0NFqmHAs8CncGWjIAo3IznK', NULL, 'Active', '2026-07-16 19:34:06', '2026-07-25 13:36:02', 'light');
 
 -- --------------------------------------------------------
 
@@ -465,6 +548,53 @@ CREATE TABLE `user_activity_logs` (
   `activity` varchar(255) NOT NULL,
   `activity_time` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_activity_logs`
+--
+
+INSERT INTO `user_activity_logs` (`activity_id`, `user_id`, `activity`, `activity_time`) VALUES
+(1, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-16 20:51:06'),
+(2, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-16 21:01:47'),
+(3, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-16 21:03:54'),
+(4, 4, 'Requested password reset token', '2026-07-16 21:07:31'),
+(5, 4, 'Requested password reset link', '2026-07-16 21:34:29'),
+(6, 4, 'Successfully updated account password', '2026-07-16 21:35:06'),
+(7, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-16 21:36:00'),
+(8, 4, 'Requested password reset link', '2026-07-16 21:36:10'),
+(9, 4, 'Successfully updated account password', '2026-07-16 21:36:13'),
+(10, 4, 'Requested password reset link', '2026-07-16 21:37:10'),
+(11, 4, 'Requested password reset link', '2026-07-16 21:41:08'),
+(12, 4, 'Successfully updated account password', '2026-07-16 21:43:11'),
+(13, 4, 'Requested password reset link', '2026-07-16 21:43:35'),
+(14, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-16 21:44:18'),
+(15, 4, 'Requested password reset link', '2026-07-16 22:20:42'),
+(16, 4, 'Successfully updated account password', '2026-07-16 22:21:16'),
+(17, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-16 22:21:31'),
+(18, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-16 22:30:26'),
+(19, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-16 22:32:05'),
+(20, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-16 22:34:08'),
+(21, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-20 09:17:27'),
+(22, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-21 20:16:19'),
+(23, 4, 'New bus SLTB-45 was registered and assigned to route 2.', '2026-07-21 21:52:46'),
+(24, 4, 'Bus SLTB-001 details and route/driver assignment were updated.', '2026-07-21 22:06:13'),
+(25, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-22 18:23:12'),
+(26, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-22 20:31:39'),
+(27, 4, 'Route 102 was deactivated. Status changed from Active to Inactive.', '2026-07-22 20:44:56'),
+(28, 4, 'Updated route 102 (Jaffna- Akkaraipathu).', '2026-07-22 20:45:52'),
+(29, 4, 'Bus SLTB-45 details and route/driver assignment were updated.', '2026-07-22 20:46:40'),
+(30, 4, 'Bus SLTB-001 details and route/driver assignment were updated.', '2026-07-22 20:47:04'),
+(31, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-23 13:45:59'),
+(32, 4, 'Updated driver details for \'Mohamed Ismail\' (ID: 1).', '2026-07-23 17:34:06'),
+(33, 4, 'Updated driver details for \'Mohamed Ismail\' (ID: 1).', '2026-07-23 17:35:42'),
+(34, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-23 20:44:16'),
+(35, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-24 20:21:12'),
+(36, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-25 18:44:43'),
+(37, 4, 'Requested password reset link', '2026-07-25 19:04:13'),
+(38, 4, 'Successfully updated account password', '2026-07-25 19:06:02'),
+(39, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-25 21:43:52'),
+(40, 4, 'SLTB Admin profile updated for \'Fathima Rifka\'.', '2026-07-25 21:45:18'),
+(41, 4, 'User logged in to SLTB Admin Dashboard', '2026-07-28 12:26:44');
 
 -- --------------------------------------------------------
 
@@ -480,6 +610,31 @@ CREATE TABLE `user_sessions` (
   `ip_address` varchar(45) DEFAULT NULL,
   `device_info` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `user_sessions`
+--
+
+INSERT INTO `user_sessions` (`session_id`, `user_id`, `login_time`, `logout_time`, `ip_address`, `device_info`) VALUES
+(1, 4, '2026-07-16 20:51:06', NULL, NULL, NULL),
+(2, 4, '2026-07-16 21:01:47', '2026-07-16 21:03:46', NULL, NULL),
+(3, 4, '2026-07-16 21:03:54', '2026-07-16 21:36:38', NULL, NULL),
+(4, 4, '2026-07-16 21:36:00', NULL, NULL, NULL),
+(5, 4, '2026-07-16 21:44:18', '2026-07-16 22:18:05', NULL, NULL),
+(6, 4, '2026-07-16 22:21:31', '2026-07-16 22:30:13', NULL, NULL),
+(7, 4, '2026-07-16 22:30:26', NULL, NULL, NULL),
+(8, 4, '2026-07-16 22:32:05', NULL, NULL, NULL),
+(9, 4, '2026-07-16 22:34:08', NULL, NULL, NULL),
+(10, 4, '2026-07-20 09:17:27', NULL, NULL, NULL),
+(11, 4, '2026-07-21 20:16:19', NULL, NULL, NULL),
+(12, 4, '2026-07-22 18:23:12', NULL, NULL, NULL),
+(13, 4, '2026-07-22 20:31:39', NULL, NULL, NULL),
+(14, 4, '2026-07-23 13:45:59', NULL, NULL, NULL),
+(15, 4, '2026-07-23 20:44:16', NULL, NULL, NULL),
+(16, 4, '2026-07-24 20:21:12', NULL, NULL, NULL),
+(17, 4, '2026-07-25 18:44:43', NULL, NULL, NULL),
+(18, 4, '2026-07-25 21:43:52', NULL, NULL, NULL),
+(19, 4, '2026-07-28 12:26:44', NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -501,7 +656,9 @@ ALTER TABLE `accident_reports`
 ALTER TABLE `buses`
   ADD PRIMARY KEY (`bus_id`),
   ADD UNIQUE KEY `registration_number` (`registration_number`),
-  ADD UNIQUE KEY `bus_number` (`bus_number`);
+  ADD UNIQUE KEY `bus_number` (`bus_number`),
+  ADD UNIQUE KEY `chassis_number` (`chassis_number`),
+  ADD UNIQUE KEY `engine_number` (`engine_number`);
 
 --
 -- Indexes for table `bus_alerts`
@@ -544,7 +701,8 @@ ALTER TABLE `device_registry`
 ALTER TABLE `drivers`
   ADD PRIMARY KEY (`driver_id`),
   ADD UNIQUE KEY `license_number` (`license_number`),
-  ADD UNIQUE KEY `nic` (`nic`);
+  ADD UNIQUE KEY `nic` (`nic`),
+  ADD UNIQUE KEY `email_address` (`email_address`);
 
 --
 -- Indexes for table `notifications`
@@ -559,6 +717,13 @@ ALTER TABLE `notification_recipients`
   ADD PRIMARY KEY (`recipient_id`),
   ADD KEY `notification_id` (`notification_id`),
   ADD KEY `officer_id` (`officer_id`);
+
+--
+-- Indexes for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `police_officers`
@@ -661,7 +826,7 @@ ALTER TABLE `accident_reports`
 -- AUTO_INCREMENT for table `buses`
 --
 ALTER TABLE `buses`
-  MODIFY `bus_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `bus_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `bus_alerts`
@@ -673,7 +838,7 @@ ALTER TABLE `bus_alerts`
 -- AUTO_INCREMENT for table `bus_assignments`
 --
 ALTER TABLE `bus_assignments`
-  MODIFY `assignment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `assignment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `bus_devices`
@@ -691,7 +856,7 @@ ALTER TABLE `device_registry`
 -- AUTO_INCREMENT for table `drivers`
 --
 ALTER TABLE `drivers`
-  MODIFY `driver_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `driver_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `notifications`
@@ -704,6 +869,12 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `notification_recipients`
   MODIFY `recipient_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `police_officers`
@@ -733,7 +904,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `routes`
 --
 ALTER TABLE `routes`
-  MODIFY `route_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `route_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `sensor_data`
@@ -763,13 +934,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `user_activity_logs`
 --
 ALTER TABLE `user_activity_logs`
-  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `user_sessions`
 --
 ALTER TABLE `user_sessions`
-  MODIFY `session_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `session_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Constraints for dumped tables
@@ -814,6 +985,12 @@ ALTER TABLE `bus_devices`
 ALTER TABLE `notification_recipients`
   ADD CONSTRAINT `notification_recipients_ibfk_1` FOREIGN KEY (`notification_id`) REFERENCES `notifications` (`notification_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `notification_recipients_ibfk_2` FOREIGN KEY (`officer_id`) REFERENCES `police_officers` (`officer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `password_resets`
+--
+ALTER TABLE `password_resets`
+  ADD CONSTRAINT `password_resets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `police_officers`

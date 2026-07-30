@@ -1,0 +1,326 @@
+/* Police Dashboard Cards & Monitors Compact Enterprise Styles */
+
+/* 1. Stat Cards Grid (10 cards in 2 rows of 5 on desktop) */
+.police-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.15rem;
+}
+
+.police-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.95rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.police-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.04);
+  border-color: #cbd5e1;
+}
+
+.stat-icon-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-info-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-info-title {
+  font-size: var(--fs-small, 0.75rem);
+  font-weight: 700;
+  color: #64748b;
+  margin: 0 0 0.15rem 0;
+}
+
+.stat-info-value {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* 2. Middle Monitoring Section Grid (2 Columns: Bus Safety Monitor & U-Turn Safety Monitor) */
+.police-monitors-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.15rem;
+  margin-bottom: 1.15rem;
+}
+
+.police-monitor-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.15rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.monitor-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.monitor-card-header-icon {
+  color: #0f172a;
+}
+
+.monitor-card-title {
+  font-size: var(--fs-title-card, 0.95rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+/* Bus Safety Monitor (3 sub-columns) */
+.bus-safety-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.safety-sub-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 0.5rem;
+  position: relative;
+}
+
+.safety-sub-column:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 10%;
+  height: 80%;
+  width: 1px;
+  background-color: #f1f5f9;
+}
+
+.sub-column-header {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 0.75rem;
+  height: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sensor-circle-badge {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.sensor-circle-badge.safe {
+  border: 2px solid #10b981;
+  color: #10b981;
+  background: #f0fdf4;
+}
+
+.sensor-circle-badge.detected {
+  border: 2px solid #ef4444;
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.sensor-status-tag {
+  font-size: var(--fs-badge, 0.8125rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.65rem;
+}
+
+.sensor-status-tag.safe {
+  color: #10b981;
+}
+
+.sensor-status-tag.detected {
+  color: #ef4444;
+}
+
+.sensor-detail-text {
+  font-size: 0.75rem;
+  color: #475569;
+  font-weight: 600;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.sensor-detail-text span.risk-low {
+  color: #10b981;
+  font-weight: 800;
+}
+
+.sensor-detail-text span.risk-high {
+  color: #ef4444;
+  font-weight: 800;
+}
+
+/* U-Turn Safety Monitor (2 sub-columns with dashed separator) */
+.uturn-safety-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.uturn-sub-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 0.75rem;
+  position: relative;
+}
+
+.uturn-sub-column:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 5%;
+  height: 90%;
+  width: 1px;
+  border-right: 1.5px dashed #e2e8f0;
+}
+
+/* 3. Alerts Overview Chart Card */
+.police-chart-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.15rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.chart-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.15rem;
+}
+
+.chart-card-title {
+  font-size: var(--fs-title-card, 0.95rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.chart-card-subtitle {
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.chart-week-select {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #ffffff;
+  font-size: var(--fs-input, 0.8125rem);
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.chart-week-select:hover {
+  border-color: #cbd5e1;
+}
+
+.chart-legend-custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 0.85rem;
+}
+
+.legend-item-custom {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.785rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.legend-dot-custom {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Responsive Rules for Cards Grid & Monitors */
+@media (max-width: 1600px) {
+  .police-stats-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 1366px) {
+  .police-stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .police-monitors-row {
+    grid-template-columns: 1fr;
+  }
+  .police-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .police-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .bus-safety-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+  .safety-sub-column:not(:last-child)::after {
+    display: none;
+  }
+  .uturn-safety-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+  .uturn-sub-column:not(:last-child)::after {
+    display: none;
+  }
+}

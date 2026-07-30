@@ -1,0 +1,234 @@
+/* Police Sidebar Compact Enterprise Styles */
+.police-sidebar {
+  width: 240px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #0b1736;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 100;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  transition: transform 0.25s ease;
+}
+
+.police-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.police-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.police-sidebar-top {
+  padding: 1.15rem 1rem;
+}
+
+.police-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.35rem;
+}
+
+.police-sidebar-logo-img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.police-sidebar-brand-text h2 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.police-sidebar-brand-text p {
+  font-size: 0.725rem;
+  color: #94a3b8;
+  margin: 0.1rem 0 0 0;
+  font-weight: 500;
+}
+
+/* Sidebar Nav Links */
+.police-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.police-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: var(--fs-sidebar-menu, 0.9375rem);
+  font-weight: 600;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+
+.police-nav-item:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.police-nav-item.active {
+  background: #0047ff;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 71, 255, 0.3);
+}
+
+.police-nav-item.active svg {
+  color: #ffffff;
+}
+
+/* System Status Card */
+.system-status-card {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 0.75rem 0.85rem;
+  margin: 1rem 0 0.75rem 0;
+}
+
+.system-status-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  background-color: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #10b981;
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 5px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+
+.system-status-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.system-status-text {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: #10b981;
+  margin-bottom: 0.45rem;
+}
+
+.system-status-meta {
+  font-size: 0.65rem;
+  color: #64748b;
+}
+
+.system-status-time {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-weight: 600;
+  margin-top: 0.1rem;
+}
+
+/* Sidebar Footer */
+.police-sidebar-bottom {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.police-crest-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.police-crest-img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.police-crest-text {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  line-height: 1.2;
+}
+
+.police-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #94a3b8;
+  background: transparent;
+  border: none;
+  font-size: 0.825rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.4rem 0;
+  width: 100%;
+  transition: color 0.15s ease;
+}
+
+.police-logout-btn:hover {
+  color: #f87171;
+}
+
+/* Mobile Sidebar Toggle Backdrop */
+.police-sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 99;
+}
+
+@media (max-width: 1024px) {
+  .police-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .police-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .police-sidebar-overlay.open {
+    display: block;
+  }
+}
