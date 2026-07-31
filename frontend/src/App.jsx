@@ -21,6 +21,11 @@ import { EditDevicePage } from './pages/EditDevicePage';
 import { PoliceUserManagementPage } from './pages/PoliceUserManagementPage';
 import { AddUserPage } from './pages/AddUserPage';
 import { UserDetailsPage } from './pages/UserDetailsPage';
+import { EditUserPage } from './pages/EditUserPage';
+import { PoliceUTurnManagementPage } from './pages/PoliceUTurnManagementPage';
+import { AddUTurnUnitPage } from './pages/AddUTurnUnitPage';
+import { UTurnDetailsPage } from './pages/UTurnDetailsPage';
+import { EditUTurnUnitPage } from './pages/EditUTurnUnitPage';
 import { PoliceSystemLogsPage } from './pages/PoliceSystemLogsPage';
 import { PoliceSettingsPage } from './pages/PoliceSettingsPage';
 import { PoliceThemeSettingsPage } from './pages/PoliceThemeSettingsPage';
@@ -229,6 +234,133 @@ export const App = () => {
                 element={
                   <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
                     <UserDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/users/edit/:userId"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <EditUserPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/user-management/edit/:userId"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <EditUserPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* U-Turn Management Module */}
+              <Route
+                path="/police/uturn-management"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceUTurnManagementPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/u-turn-management"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceUTurnManagementPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/uturn-management/add"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <AddUTurnUnitPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/u-turn-management/add"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <AddUTurnUnitPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/uturn-management/view/:id"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <UTurnDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/uturn-management/view/:unitId"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <UTurnDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/u-turn-management/view/:id"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <UTurnDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/u-turn-management/view/:unitId"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <UTurnDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/uturn-management/edit/:id"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <EditUTurnUnitPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/uturn-management/edit/:unitId"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <EditUTurnUnitPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/u-turn-management/edit/:id"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <EditUTurnUnitPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/u-turn-management/edit/:unitId"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <EditUTurnUnitPage />
                   </ProtectedRoute>
                 }
               />

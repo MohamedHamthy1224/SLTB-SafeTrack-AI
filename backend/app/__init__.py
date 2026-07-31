@@ -22,6 +22,7 @@ from app.presentation.controllers.driver_controller import driver_bp
 from app.presentation.controllers.route_controller import route_bp
 from app.presentation.controllers.profile_controller import profile_bp
 from app.presentation.controllers.settings_controller import settings_bp
+from app.presentation.controllers.user_controller import user_bp
 from app.commands.password_commands import hash_existing_passwords_command
 
 def create_app(config_name="development"):
@@ -49,6 +50,7 @@ def create_app(config_name="development"):
     app.register_blueprint(driver_bp)
     app.register_blueprint(profile_bp)
     app.register_blueprint(settings_bp)
+    app.register_blueprint(user_bp)
 
     # Register CLI commands
     app.cli.add_command(hash_existing_passwords_command)

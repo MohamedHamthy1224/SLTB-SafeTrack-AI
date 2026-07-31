@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Edit2 } from 'lucide-react';
 import { PoliceSidebar } from '../components/police/PoliceSidebar';
@@ -6,7 +6,7 @@ import { PoliceDashboardHeader } from '../components/police/PoliceDashboardHeade
 import PoliceAdminDetails from '../components/police/users/PoliceAdminDetails';
 import SLTBAdminDetails from '../components/police/users/SLTBAdminDetails';
 import TrafficPoliceDetails from '../components/police/users/TrafficPoliceDetails';
-import { mockUsersList } from '../data/userManagementMockData';
+import userService from '../services/userService';
 import '../styles/police-dashboard.css';
 import '../styles/userDetails.css';
 
@@ -15,12 +15,34 @@ export const UserDetailsPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
 
-  // Find user by ID or default to first user
-  const user =
-    mockUsersList.find((u) => String(u.id) === String(userId)) ||
-    mockUsersList[0];
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      setError('');
+      try {
+        const res = await userService.getUserById(userId);
+        if (res.success && res.data) {
+          setUser(res.data);
+        } else {
+          setError(res.message || 'User not found.');
+        }
+      } catch (err) {
+        setError(err.message || 'Failed to load user details.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (userId) {
+      fetchUser();
+    }
+  }, [userId]);
 
   const renderRoleDetails = () => {
+    if (!user) return null;
     if (user.role === 'SLTB Admin') {
       return <SLTBAdminDetails user={user} />;
     }
@@ -61,19 +83,30 @@ export const UserDetailsPage = () => {
                 <ArrowLeft size={14} />
                 Back to User Management
               </Link>
-              <button
-                type="button"
-                className="btn-details-edit"
-                onClick={() => navigate(`/police/users/edit/${user.id}`)}
-              >
-                <Edit2 size={14} />
-                Edit User
-              </button>
+              {user && (
+                <button
+                  type="button"
+                  className="btn-details-edit"
+                  onClick={() => navigate(`/police/users/edit/${user.id}`)}
+                >
+                  <Edit2 size={14} />
+                  Edit User
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Role-based Content */}
-          {renderRoleDetails()}
+          {loading ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+              Loading user details from database...
+            </div>
+          ) : error ? (
+            <div className="alert alert-error" style={{ color: '#ef4444', background: '#fef2f2', padding: '1rem', borderRadius: '8px' }}>
+              {error}
+            </div>
+          ) : (
+            renderRoleDetails()
+          )}
         </main>
       </div>
     </div>

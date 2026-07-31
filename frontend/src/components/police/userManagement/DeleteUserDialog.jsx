@@ -2,7 +2,7 @@ import React from 'react';
 import { AlertTriangle } from 'lucide-react';
 import '../../../styles/userManagement.css';
 
-const DeleteUserDialog = ({ isOpen, user, onClose, onConfirm }) => {
+const DeleteUserDialog = ({ isOpen, user, onClose, onConfirm, isSubmitting = false }) => {
   if (!isOpen || !user) return null;
 
   return (
@@ -15,15 +15,15 @@ const DeleteUserDialog = ({ isOpen, user, onClose, onConfirm }) => {
         <h3 className="user-modal-title">Delete User</h3>
         <p className="user-modal-desc">
           Are you sure you want to delete user{' '}
-          <strong>"{user.fullName}"</strong>? This action cannot be undone.
+          <strong>"{user.fullName || user.username}"</strong>? This action cannot be undone.
         </p>
 
         <div className="user-modal-btn-group">
-          <button className="btn-user-modal-cancel" onClick={onClose}>
+          <button className="btn-user-modal-cancel" onClick={onClose} disabled={isSubmitting}>
             Cancel
           </button>
-          <button className="btn-user-modal-delete" onClick={() => onConfirm(user)}>
-            Delete
+          <button className="btn-user-modal-delete" onClick={() => onConfirm(user)} disabled={isSubmitting}>
+            {isSubmitting ? 'Deleting...' : 'Delete'}
           </button>
         </div>
       </div>

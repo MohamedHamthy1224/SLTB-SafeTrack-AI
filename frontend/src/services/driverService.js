@@ -43,6 +43,10 @@ export const driverService = {
 
   deactivateDriver: async (driverId) => {
     return await apiClient.patch(`/sltb/drivers/${driverId}/deactivate`);
+  },
+
+  getDriverOptions: async (params = {}) => {
+    return await apiClient.get('/sltb/drivers/options', { params });
   }
 };
 

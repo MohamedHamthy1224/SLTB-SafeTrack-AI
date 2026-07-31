@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { PoliceSidebar } from '../components/police/PoliceSidebar';
 import { PoliceDashboardHeader } from '../components/police/PoliceDashboardHeader';
 import UserWizard from '../components/police/users/UserWizard';
+import userService from '../services/userService';
 import '../styles/police-dashboard.css';
 import '../styles/addUser.css';
 
@@ -11,6 +12,8 @@ export const AddUserPage = () => {
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [apiError, setApiError] = useState('');
 
   const [formData, setFormData] = useState({
     role: '',
@@ -39,6 +42,7 @@ export const AddUserPage = () => {
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    setApiError('');
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: null }));
     }
@@ -108,10 +112,32 @@ export const AddUserPage = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleSave = () => {
-    if (validateStepTwo()) {
-      // Frontend-only wizard: navigate back to list
-      navigate('/police/user-management');
+  const handleSave = async () => {
+    if (!validateStepTwo()) return;
+
+    setIsSubmitting(true);
+    setApiError('');
+
+    try {
+      const res = await userService.createUser(formData);
+      if (res.success) {
+        navigate('/police/user-management');
+      } else {
+        if (res.errors) {
+          setErrors(res.errors);
+        }
+        setApiError(res.message || 'Failed to create user.');
+      }
+    } catch (err) {
+      if (err.errors) {
+        setErrors(err.errors);
+        if (err.errors.username || err.errors.email || err.errors.password || err.errors.role) {
+          setStep(1);
+        }
+      }
+      setApiError(err.message || 'An error occurred while creating the user.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -140,6 +166,12 @@ export const AddUserPage = () => {
             </nav>
           </div>
 
+          {apiError && (
+            <div className="alert alert-error" style={{ marginBottom: '1.25rem', color: '#ef4444', background: '#fef2f2', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #fee2e2' }}>
+              {apiError}
+            </div>
+          )}
+
           {/* Wizard Step Component */}
           <UserWizard
             step={step}
@@ -151,6 +183,7 @@ export const AddUserPage = () => {
             onNext={handleNext}
             onBack={handleBack}
             onSave={handleSave}
+            isSubmitting={isSubmitting}
           />
         </main>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PoliceSidebar } from '../components/police/PoliceSidebar';
 import { PoliceDashboardHeader } from '../components/police/PoliceDashboardHeader';
@@ -7,9 +7,8 @@ import UserFilterBar from '../components/police/userManagement/UserFilterBar';
 import UserTable from '../components/police/userManagement/UserTable';
 import UserPagination from '../components/police/userManagement/UserPagination';
 import DeleteUserDialog from '../components/police/userManagement/DeleteUserDialog';
+import userService from '../services/userService';
 import {
-  userManagementSummaryStats,
-  mockUsersList,
   userRoleOptions,
   userStatusOptions,
 } from '../data/userManagementMockData';
@@ -18,9 +17,17 @@ import '../styles/userManagement.css';
 
 export const PoliceUserManagementPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
 
-  // Users data state
-  const [users, setUsers] = useState(mockUsersList);
+  // Data states
+  const [users, setUsers] = useState([]);
+  const [summaryStats, setSummaryStats] = useState({
+    policeAdminUsers: 0,
+    trafficPoliceOfficers: 0,
+    sltbAdminUsers: 0,
+    totalUsers: 0,
+  });
+  const [loading, setLoading] = useState(true);
 
   // Filter state
   const [searchValue, setSearchValue] = useState('');
@@ -29,47 +36,95 @@ export const PoliceUserManagementPage = () => {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
 
   // Modal state
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedUserForDelete, setSelectedUserForDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
-  // Filtered users calculation
-  const filteredUsers = useMemo(() => {
-    return users.filter((user) => {
-      const query = searchValue.toLowerCase();
-      const matchSearch =
-        !query ||
-        user.fullName.toLowerCase().includes(query) ||
-        user.username.toLowerCase().includes(query) ||
-        user.email.toLowerCase().includes(query);
+  // Fetch summary stats
+  const fetchSummary = async () => {
+    try {
+      const res = await userService.getUserSummary();
+      if (res && res.success && res.data) {
+        setSummaryStats(res.data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch user summary stats:', err);
+    }
+  };
 
-      const matchRole =
-        selectedRole === 'All Roles' || user.role === selectedRole;
+  // Fetch users list from backend
+  const fetchUsers = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = {
+        search: searchValue,
+        role: selectedRole === 'All Roles' ? '' : selectedRole,
+        status: selectedStatus === 'All Status' ? '' : selectedStatus,
+        page: currentPage,
+        per_page: 50,
+      };
+      const res = await userService.getUsers(params);
+      if (res && res.success && res.data) {
+        setUsers(res.data.users || []);
+        setTotalItems(res.data.total || 0);
+      } else {
+        setUsers([]);
+        setTotalItems(0);
+      }
+    } catch (err) {
+      console.error('Failed to fetch users from MySQL API:', err);
+      setUsers([]);
+      setTotalItems(0);
+    } finally {
+      setLoading(false);
+    }
+  }, [searchValue, selectedRole, selectedStatus, currentPage]);
 
-      const matchStatus =
-        selectedStatus === 'All Status' ||
-        user.status.toLowerCase() === selectedStatus.toLowerCase();
+  useEffect(() => {
+    fetchSummary();
+  }, []);
 
-      return matchSearch && matchRole && matchStatus;
-    });
-  }, [users, searchValue, selectedRole, selectedStatus]);
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const handleDeleteClick = (user) => {
     setSelectedUserForDelete(user);
     setDeleteModalOpen(true);
   };
 
-  const handleConfirmDelete = (userToDelete) => {
-    setUsers((prev) => prev.filter((u) => u.id !== userToDelete.id));
-    setDeleteModalOpen(false);
-    setSelectedUserForDelete(null);
+  const handleConfirmDelete = async (userToDelete) => {
+    if (!userToDelete) return;
+    setDeleting(true);
+    try {
+      const res = await userService.deleteUser(userToDelete.id);
+      if (res.success) {
+        setDeleteModalOpen(false);
+        setSelectedUserForDelete(null);
+        fetchUsers();
+        fetchSummary();
+      }
+    } catch (err) {
+      console.error('Failed to delete user:', err);
+    } finally {
+      setDeleting(false);
+    }
   };
 
-  const navigate = useNavigate();
-
-  const handleExport = () => {
-    // Frontend-only placeholder
+  const handleExport = async () => {
+    try {
+      const params = {
+        search: searchValue,
+        role: selectedRole === 'All Roles' ? '' : selectedRole,
+        status: selectedStatus === 'All Status' ? '' : selectedStatus,
+      };
+      await userService.exportUsers(params);
+    } catch (err) {
+      console.error('Failed to export users:', err);
+    }
   };
 
   const handleAddUser = () => {
@@ -97,7 +152,7 @@ export const PoliceUserManagementPage = () => {
           </div>
 
           {/* Summary Cards */}
-          <UserSummaryCards stats={userManagementSummaryStats} />
+          <UserSummaryCards stats={summaryStats} />
 
           {/* Filter Bar */}
           <UserFilterBar
@@ -114,16 +169,22 @@ export const PoliceUserManagementPage = () => {
           />
 
           {/* User Table */}
-          <UserTable
-            users={filteredUsers}
-            onDeleteClick={handleDeleteClick}
-          />
+          {loading ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+              Loading user records from database...
+            </div>
+          ) : (
+            <UserTable
+              users={users}
+              onDeleteClick={handleDeleteClick}
+            />
+          )}
 
           {/* Pagination */}
           <UserPagination
             currentPage={currentPage}
-            totalPages={1}
-            totalItems={filteredUsers.length}
+            totalPages={Math.ceil(totalItems / 50) || 1}
+            totalItems={totalItems}
             onPageChange={setCurrentPage}
           />
         </main>
@@ -135,6 +196,7 @@ export const PoliceUserManagementPage = () => {
         user={selectedUserForDelete}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
+        isSubmitting={deleting}
       />
     </div>
   );

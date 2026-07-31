@@ -45,10 +45,10 @@ const UserTableRow = ({ user, index, onDeleteClick }) => {
       <td>
         <span
           className={`badge-user-status ${
-            user.status.toLowerCase() === 'active' ? 'active' : 'inactive'
+            (user.status || 'Active').toLowerCase() === 'active' ? 'active' : 'inactive'
           }`}
         >
-          {user.status}
+          {user.status || 'Active'}
         </span>
       </td>
 

@@ -34,7 +34,7 @@ export const BusForm = ({
     register,
     handleSubmit,
     watch,
-    control,
+    control,     
     setValue,
     setError,
     formState: { errors }

@@ -6,7 +6,7 @@ import { PoliceDashboardHeader } from '../components/police/PoliceDashboardHeade
 import PoliceAdminEditForm from '../components/police/users/PoliceAdminEditForm';
 import SLTBAdminEditForm from '../components/police/users/SLTBAdminEditForm';
 import TrafficPoliceEditForm from '../components/police/users/TrafficPoliceEditForm';
-import { mockUsersList } from '../data/userManagementMockData';
+import userService from '../services/userService';
 import '../styles/police-dashboard.css';
 import '../styles/editUser.css';
 
@@ -15,10 +15,10 @@ export const EditUserPage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
 
-  // Find user by ID or default to first user
-  const user =
-    mockUsersList.find((u) => String(u.id) === String(userId)) ||
-    mockUsersList[0];
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [apiError, setApiError] = useState('');
 
   const [formData, setFormData] = useState({
     username: '',
@@ -43,31 +43,50 @@ export const EditUserPage = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (user) {
-      setFormData({
-        username: user.username || '',
-        email: user.email || '',
-        password: '',
-        imagePreview: user.avatar ? { url: user.avatar, name: 'current_profile.png' } : null,
-        themePreference: user.themePreference || 'Light',
-        status: user.status || 'Active',
-        fullName: user.fullName || '',
-        badgeNumber: user.badgeNumber || 'TP-4501',
-        rank: user.rank || 'Inspector',
-        policeStation: user.policeStation || user.department || '',
-        phone: user.phone || '',
-        joinedDate: user.joinedDate || '',
-        deviceToken: user.deviceToken || '••••••••A9F4',
-        isOnline: user.isOnline || 'Online',
-        designation: user.designation || 'Administrator',
-        employeeId: user.employeeId || 'SLTB-EMP-021',
-        department: user.department || 'Operations Department',
-      });
+    const fetchUser = async () => {
+      setLoading(true);
+      setApiError('');
+      try {
+        const res = await userService.getUserById(userId);
+        if (res.success && res.data) {
+          const u = res.data;
+          setUser(u);
+          setFormData({
+            username: u.username || '',
+            email: u.email || '',
+            password: '',
+            imagePreview: u.avatar ? { url: u.avatar, name: 'current_profile.png' } : null,
+            themePreference: u.themePreference || 'Light',
+            status: u.status || 'Active',
+            fullName: u.fullName || u.full_name || '',
+            badgeNumber: u.badgeNumber || 'TP-4501',
+            rank: u.rank || 'Inspector',
+            policeStation: u.policeStation || u.police_station || u.department || '',
+            phone: u.phone || '',
+            joinedDate: u.joinedDate || u.joined_date || '',
+            deviceToken: u.deviceToken || u.device_token || '••••••••A9F4',
+            isOnline: u.isOnline || (u.is_online ? 'Online' : 'Offline'),
+            designation: u.designation || 'Administrator',
+            employeeId: u.employeeId || u.employee_id || 'SLTB-EMP-021',
+            department: u.department || 'Operations Department',
+          });
+        } else {
+          setApiError(res.message || 'User not found.');
+        }
+      } catch (err) {
+        setApiError(err.message || 'Failed to load user details.');
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (userId) {
+      fetchUser();
     }
-  }, [user]);
+  }, [userId]);
 
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    setApiError('');
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: null }));
     }
@@ -98,7 +117,7 @@ export const EditUserPage = () => {
     if (!formData.fullName.trim()) {
       newErrors.fullName = 'Enter full name';
     }
-    if (user.role === 'SLTB Admin') {
+    if (user && user.role === 'SLTB Admin') {
       if (!formData.employeeId?.trim()) {
         newErrors.employeeId = 'Enter employee ID';
       }
@@ -112,18 +131,34 @@ export const EditUserPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSave = () => {
-    if (validate()) {
-      // Frontend-only: navigate back to user view details page
-      navigate(`/police/users/view/${user.id}`);
+  const handleSave = async () => {
+    if (!validate()) return;
+
+    setIsSubmitting(true);
+    setApiError('');
+
+    try {
+      const res = await userService.updateUser(userId, formData);
+      if (res.success) {
+        navigate(`/police/users/view/${userId}`);
+      } else {
+        if (res.errors) setErrors(res.errors);
+        setApiError(res.message || 'Failed to update user.');
+      }
+    } catch (err) {
+      if (err.errors) setErrors(err.errors);
+      setApiError(err.message || 'An error occurred while updating user.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleCancel = () => {
-    navigate(`/police/users/view/${user.id}`);
+    navigate(`/police/users/view/${userId}`);
   };
 
   const renderEditFormByRole = () => {
+    if (!user) return null;
     if (user.role === 'SLTB Admin') {
       return (
         <SLTBAdminEditForm
@@ -172,38 +207,56 @@ export const EditUserPage = () => {
         <main className="edit-user-container">
           {/* Header Title & Breadcrumbs */}
           <div className="edit-user-header-section">
-            <h1 className="edit-user-page-title">Edit User - {user.fullName}</h1>
+            <h1 className="edit-user-page-title">
+              Edit User {user ? `- ${user.fullName || user.username}` : ''}
+            </h1>
             <nav className="edit-user-breadcrumb">
               <Link to="/police/user-management">User Management</Link>
               <span className="bc-sep">&gt;</span>
-              <Link to={`/police/users/view/${user.id}`}>User Details</Link>
+              <Link to={`/police/users/view/${userId}`}>User Details</Link>
               <span className="bc-sep">&gt;</span>
               <span className="bc-current">Edit User</span>
             </nav>
           </div>
 
-          {/* Dynamic Role Edit Form */}
-          {renderEditFormByRole()}
+          {apiError && (
+            <div className="alert alert-error" style={{ marginBottom: '1.25rem', color: '#ef4444', background: '#fef2f2', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #fee2e2' }}>
+              {apiError}
+            </div>
+          )}
 
-          {/* Footer Action Buttons */}
-          <div className="edit-user-footer-actions">
-            <button
-              type="button"
-              className="btn-edit-cancel"
-              onClick={handleCancel}
-            >
-              <ArrowLeft size={14} />
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="btn-edit-save"
-              onClick={handleSave}
-            >
-              <Save size={15} />
-              Save Changes
-            </button>
-          </div>
+          {loading ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#64748b' }}>
+              Loading user record from database...
+            </div>
+          ) : (
+            <>
+              {/* Dynamic Role Edit Form */}
+              {renderEditFormByRole()}
+
+              {/* Footer Action Buttons */}
+              <div className="edit-user-footer-actions">
+                <button
+                  type="button"
+                  className="btn-edit-cancel"
+                  onClick={handleCancel}
+                  disabled={isSubmitting}
+                >
+                  <ArrowLeft size={14} />
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  className="btn-edit-save"
+                  onClick={handleSave}
+                  disabled={isSubmitting}
+                >
+                  <Save size={15} />
+                  {isSubmitting ? 'Saving Changes...' : 'Save Changes'}
+                </button>
+              </div>
+            </>
+          )}
         </main>
       </div>
     </div>

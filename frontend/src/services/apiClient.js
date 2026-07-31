@@ -29,7 +29,7 @@ apiClient.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       localStorage.removeItem('sltb_auth_token');
       localStorage.removeItem('sltb_user_data');
-      if (window.location.pathname.startsWith('/sltb')) {
+      if (window.location.pathname.startsWith('/sltb') || window.location.pathname.startsWith('/police')) {
         window.location.href = '/login?expired=1';
       }
     }

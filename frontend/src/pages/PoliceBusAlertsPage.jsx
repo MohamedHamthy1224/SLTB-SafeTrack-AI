@@ -42,16 +42,16 @@ export const PoliceBusAlertsPage = () => {
   return (
     <div className="police-dashboard-layout">
       {/* Sidebar */}
-      <PoliceSidebar 
-        isOpen={sidebarOpen} 
-        onClose={() => setSidebarOpen(false)} 
+      <PoliceSidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
       />
 
       {/* Main Content Area */}
       <div className="police-dashboard-main">
         {/* Sticky Header */}
-        <PoliceDashboardHeader 
-          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} 
+        <PoliceDashboardHeader
+          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         />
 
         {/* Dashboard Content Container */}
@@ -80,7 +80,7 @@ export const PoliceBusAlertsPage = () => {
           <div className="bus-alerts-main-grid">
             {/* All Bus Alerts Table */}
             <div style={{ minWidth: 0 }}>
-              <BusAlertsTable 
+              <BusAlertsTable
                 alerts={filteredAlerts}
                 currentPage={currentPage}
                 onPageChange={setCurrentPage}
@@ -99,5 +99,4 @@ export const PoliceBusAlertsPage = () => {
     </div>
   );
 };
-
 export default PoliceBusAlertsPage;
