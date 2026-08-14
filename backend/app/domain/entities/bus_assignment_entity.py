@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 
 class BusAssignment:
     def __init__(self, assignment_id=None, bus_id=None, driver_id=None, route_id=None, assigned_date=None, status="Active", created_at=None):
@@ -8,7 +8,7 @@ class BusAssignment:
         self._route_id = route_id
         self._assigned_date = assigned_date or date.today()
         self._status = status
-        self._created_at = created_at or datetime.utcnow()
+        self._created_at = created_at or datetime.now(timezone.utc)
 
     @property
     def assignment_id(self):

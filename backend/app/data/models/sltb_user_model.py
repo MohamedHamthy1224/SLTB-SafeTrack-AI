@@ -13,16 +13,14 @@ class SLTBUserModel(db.Model):
     joined_date = db.Column(db.Date, nullable=True)
 
     def __init__(self, user_id=None, full_name=None, employee_id=None, department=None, designation=None, phone=None, joined_date=None, **kwargs):
-        super().__init__(
-            user_id=user_id,
-            full_name=full_name,
-            employee_id=employee_id,
-            department=department,
-            designation=designation,
-            phone=phone,
-            joined_date=joined_date,
-            **kwargs
-        )
+        super().__init__(**kwargs)
+        if user_id is not None: self.user_id = user_id
+        if full_name is not None: self.full_name = full_name
+        if employee_id is not None: self.employee_id = employee_id
+        if department is not None: self.department = department
+        if designation is not None: self.designation = designation
+        if phone is not None: self.phone = phone
+        if joined_date is not None: self.joined_date = joined_date
 
     def to_dict(self):
         return {

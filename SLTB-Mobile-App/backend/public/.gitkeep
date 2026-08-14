@@ -1,0 +1,8 @@
+# Backend Public Directory Placeholder
+# Laravel public web root.
+# This directory serves as the document root for the web server.
+# Contents:
+#   index.php        — Laravel application entry point
+#   .htaccess        — Apache URL rewriting rules
+#   favicon.ico      — Favicon
+#   storage/         — Symlink to storage/app/public

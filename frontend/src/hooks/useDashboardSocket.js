@@ -19,7 +19,7 @@ export const useDashboardSocket = (onRefreshCallback) => {
     if (!userId) return;
 
     if (!globalDashboardSocket) {
-      const backendUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
+      const backendUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001';
       globalDashboardSocket = io(backendUrl, {
         transports: ['websocket', 'polling'],
         reconnection: true,

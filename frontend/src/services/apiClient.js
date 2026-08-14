@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5001/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -33,7 +33,18 @@ apiClient.interceptors.response.use(
         window.location.href = '/login?expired=1';
       }
     }
-    return Promise.reject(error.response ? error.response.data : { message: 'Network connection error.' });
+    if (error.response) {
+      const data = error.response.data || {};
+      return Promise.reject({
+        status: error.response.status,
+        message: data.message || `API Request Failed (Status ${error.response.status})`,
+        errors: data.errors || null
+      });
+    }
+    return Promise.reject({
+      status: 0,
+      message: 'Network connection error. Server is unreachable.'
+    });
   }
 );
 

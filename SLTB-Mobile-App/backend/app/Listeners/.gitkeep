@@ -1,0 +1,6 @@
+# Backend Listeners Placeholder
+# Event listener handler classes will be created here.
+# Planned listeners:
+#   - SendAlertPushNotification    — Sends FCM push on AlertCreated
+#   - LogOfficerLogin              — Audit log on OfficerLoggedIn
+#   - UpdateAlertMetrics           — Update stats on Alert status change

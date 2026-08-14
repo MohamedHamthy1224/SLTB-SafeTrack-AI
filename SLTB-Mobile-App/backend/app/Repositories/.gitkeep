@@ -1,0 +1,7 @@
+# Backend Repositories Placeholder
+# Data access repository classes will be created here.
+# Planned repository classes:
+#   - PoliceOfficerRepository   — Officer CRUD operations
+#   - AlertRepository           — Alert query operations
+#   - AlertActionRepository     — Alert action log operations
+#   - NotificationRepository    — Notification record operations

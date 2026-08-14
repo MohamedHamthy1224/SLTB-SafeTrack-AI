@@ -1,0 +1,7 @@
+# Backend Jobs Placeholder
+# Queueable background job classes will be created here.
+# Planned jobs:
+#   - ProcessAIAlert             — Process incoming AI alert payloads
+#   - SendBulkPushNotifications  — Batch push notification dispatching
+#   - GenerateDailyReport        — Daily alert statistics report
+#   - CleanupExpiredTokens       — Purge expired refresh tokens

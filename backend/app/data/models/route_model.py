@@ -1,5 +1,5 @@
 from app.data.database import db
-from datetime import datetime
+from datetime import datetime, timezone
 
 class RouteModel(db.Model):
     __tablename__ = 'routes'
@@ -13,7 +13,7 @@ class RouteModel(db.Model):
     distance_km = db.Column(db.Numeric(6, 2), nullable=True)
     estimated_duration = db.Column(db.Integer, nullable=True)
     status = db.Column(db.Enum('Active', 'Inactive'), default='Active')
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
     assignments = db.relationship('BusAssignmentModel', backref='route', lazy=True)
 

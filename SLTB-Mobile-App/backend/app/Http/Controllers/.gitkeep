@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * Backend — Laravel API
+ * ─────────────────────────────────────────────────────────────────
+ * SLTB SafeTrack AI — Mobile Application Backend
+ *
+ * This directory contains the Laravel backend that powers the
+ * SLTB Traffic Police Mobile Application REST API.
+ *
+ * Architecture:
+ *   Controllers  → Handle HTTP requests, delegate to Services
+ *   Services     → Business logic layer
+ *   Repositories → Data access layer (Eloquent abstraction)
+ *   Models       → Eloquent ORM data models
+ *   Resources    → API response transformers
+ *   Requests     → Form validation classes
+ *   Policies     → Authorization rules
+ *   Events       → Domain event definitions
+ *   Listeners    → Event handler classes
+ *   Jobs         → Queueable background tasks
+ *   Notifications → Multi-channel notification classes
+ *
+ * Folder: app/Http/Controllers/
+ */
+
+// This file is a structural placeholder.
+// Laravel Controllers will be created here in Phase 2 and beyond.

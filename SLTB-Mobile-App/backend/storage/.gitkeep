@@ -1,0 +1,14 @@
+# Backend Storage Placeholder
+# Laravel storage directory for file uploads.
+# Structure:
+#   storage/
+#     app/
+#       public/
+#         avatars/          — Officer profile photos
+#         reports/          — Generated PDF reports
+#     framework/
+#       cache/
+#       sessions/
+#       views/
+#     logs/
+#       laravel.log

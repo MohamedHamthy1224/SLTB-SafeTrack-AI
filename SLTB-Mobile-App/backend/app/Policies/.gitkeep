@@ -1,0 +1,6 @@
+# Backend Policies Placeholder
+# Laravel authorization policy classes will be created here.
+# Planned policy classes:
+#   - AlertPolicy               — Controls which officers can view/act on alerts
+#   - OfficerPolicy             — Officer resource access control
+#   - ProfilePolicy             — Profile update authorization

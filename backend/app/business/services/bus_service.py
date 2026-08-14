@@ -375,7 +375,7 @@ class BusService:
 
             try:
                 if updated_bus:
-                    self.websocket_service.emit_bus_registered(updated_bus.to_dict())
+                    self.websocket_service.emit_bus_updated(updated_bus.to_dict())
                 if active_assignment:
                     self.websocket_service.emit_bus_assignment_updated(active_assignment.to_dict())
                 self.websocket_service.emit_bus_summary_updated(summary)
@@ -393,3 +393,64 @@ class BusService:
         except SQLAlchemyError as error:
             db.session.rollback()
             raise BusServiceError("Failed to update bus details and assignment.", status_code=500) from error
+
+    def deactivate_bus(self, bus_id, user_id=None):
+        bus_model = self.bus_repo.get_by_id(bus_id)
+        if not bus_model:
+            raise BusServiceError("Bus not found", status_code=404)
+
+        if bus_model.status == "Inactive":
+            raise BusServiceError("This bus is already inactive.", status_code=409)
+
+        previous_status = bus_model.status
+
+        try:
+            # 1. Update bus status to Inactive
+            self.bus_repo.update(bus_id, {'status': 'Inactive'}, commit=False)
+
+            # 2. Cancel active assignment if present
+            active_assignment = self.assignment_repo.get_active_by_bus(bus_id)
+            cancelled_assignment = False
+            if active_assignment:
+                self.assignment_repo.update(active_assignment.assignment_id, {
+                    'status': 'Cancelled'
+                }, commit=False)
+                cancelled_assignment = True
+
+            # 3. Log activity
+            if user_id:
+                self.activity_repo.create({
+                    'user_id': user_id,
+                    'activity': f"Bus {bus_model.bus_number} was deactivated. Status changed from {previous_status} to Inactive."
+                }, commit=False)
+
+            # 4. Commit transaction
+            db.session.commit()
+
+            deactivate_payload = {
+                'busId': bus_id,
+                'busNumber': bus_model.bus_number,
+                'previousStatus': previous_status,
+                'currentStatus': 'Inactive',
+                'cancelledAssignment': cancelled_assignment
+            }
+
+            # 5. Emit WebSocket events AFTER successful commit
+            summary = self.get_summary()
+            try:
+                self.websocket_service.emit_bus_deactivated(deactivate_payload)
+                self.websocket_service.emit_bus_summary_updated(summary)
+                if cancelled_assignment:
+                    self.websocket_service.emit_bus_assignment_updated({'busId': bus_id, 'cancelled': True})
+                self.websocket_service.emit_recent_activity_created({
+                    'user_id': user_id,
+                    'activity': f"Bus {bus_model.bus_number} was deactivated."
+                })
+            except Exception:
+                pass
+
+            return deactivate_payload
+
+        except SQLAlchemyError as error:
+            db.session.rollback()
+            raise BusServiceError("Unable to deactivate the bus at the moment.", status_code=500) from error

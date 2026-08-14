@@ -1,6 +1,6 @@
 import os
 import uuid
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from werkzeug.utils import secure_filename
 from sqlalchemy.exc import SQLAlchemyError
 
@@ -77,7 +77,7 @@ class DriverService:
             raise DriverServiceError("Image file size exceeds maximum limit of 2MB.", status_code=400)
 
         ext = filename.rsplit('.', 1)[1].lower()
-        unique_name = f"driver_{uuid.uuid4().hex}_{int(datetime.utcnow().timestamp())}.{ext}"
+        unique_name = f"driver_{uuid.uuid4().hex}_{int(datetime.now(timezone.utc).timestamp())}.{ext}"
         
         # Absolute path inside backend/app/static/uploads/drivers
         base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -434,6 +434,12 @@ class DriverService:
             summary = self.get_summary()
             self.websocket_service.emit_driver_updated(res_dict)
             self.websocket_service.emit_driver_summary_updated(summary)
+            if selected_bus_id is not None and selected_route_id is not None:
+                self.websocket_service.emit_bus_assignment_updated({
+                    "driver_id": driver_id,
+                    "bus_id": selected_bus_id,
+                    "route_id": selected_route_id
+                })
 
             return res_dict
 
@@ -491,6 +497,11 @@ class DriverService:
             summary = self.get_summary()
             self.websocket_service.emit_driver_deactivated(deactivate_payload)
             self.websocket_service.emit_driver_summary_updated(summary)
+            if assignment_status_result == "Cancelled":
+                self.websocket_service.emit_bus_assignment_updated({
+                    "driver_id": driver_id,
+                    "cancelled": True
+                })
 
             return deactivate_payload
 

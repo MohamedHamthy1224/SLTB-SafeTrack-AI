@@ -1,0 +1,8 @@
+# Backend Form Requests Placeholder
+# Laravel Form Request validation classes will be created here.
+# Planned request classes:
+#   - LoginRequest              — Officer login validation
+#   - UpdateProfileRequest      — Profile update validation
+#   - ChangePasswordRequest     — Password change validation
+#   - AcknowledgeAlertRequest   — Alert acknowledgement validation
+#   - ResolveAlertRequest       — Alert resolution with notes validation

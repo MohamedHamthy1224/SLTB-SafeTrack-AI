@@ -1,0 +1,7 @@
+# Backend Traits Placeholder
+# Reusable PHP traits will be created here.
+# Planned traits:
+#   - ApiResponseTrait          — Standardized JSON API response methods
+#   - HasUuid                   — UUID primary key support
+#   - Auditable                 — Automatic audit logging
+#   - HasMedia                  — File/image attachment handling

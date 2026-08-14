@@ -1,0 +1,12 @@
+# Backend Config Placeholder
+# Laravel configuration files will be placed here.
+# Standard Laravel config files:
+#   app.php           — Application configuration
+#   auth.php          — Authentication guards and providers
+#   database.php      — Database connections
+#   cache.php         — Cache driver configuration
+#   queue.php         — Queue driver configuration
+#   mail.php          — Mail driver configuration
+#   filesystems.php   — Storage disk configuration
+#   sanctum.php       — Laravel Sanctum configuration
+#   cors.php          — CORS configuration for mobile app

@@ -1,0 +1,8 @@
+# Backend Middleware Placeholder
+# Laravel Middleware will be created here.
+# Planned middleware:
+#   - AuthenticateWithToken     — Verify JWT/Sanctum tokens
+#   - EnsureOfficerIsActive     — Block suspended officer accounts
+#   - ApiVersionMiddleware      — Handle API versioning headers
+#   - LogApiRequests            — Structured API request logging
+#   - RateLimitMiddleware       — Per-officer rate limiting

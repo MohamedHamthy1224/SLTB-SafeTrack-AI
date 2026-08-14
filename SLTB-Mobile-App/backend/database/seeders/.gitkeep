@@ -1,0 +1,6 @@
+# Backend Database Seeders Placeholder
+# Laravel database seeder classes will be created here.
+# Planned seeders:
+#   - DatabaseSeeder           — Master seeder (orchestrates all seeders)
+#   - PoliceOfficerSeeder      — Seed test officer accounts
+#   - AlertSeeder              — Seed sample alerts for testing

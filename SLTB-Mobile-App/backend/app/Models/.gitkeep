@@ -1,0 +1,9 @@
+# Backend Models Placeholder
+# Laravel Eloquent ORM models will be created here.
+# Planned models:
+#   - PoliceOfficer             — Traffic police officer accounts
+#   - Alert                     — AI-generated traffic alerts
+#   - AlertAction               — Officer actions on alerts (audit trail)
+#   - Notification              — Push notification records
+#   - RefreshToken              — JWT refresh token management
+#   - AuditLog                  — System audit log entries

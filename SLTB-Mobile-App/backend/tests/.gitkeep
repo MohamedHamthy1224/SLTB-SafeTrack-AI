@@ -1,0 +1,11 @@
+# Backend Tests Placeholder
+# Laravel PHPUnit test classes will be created here.
+# Test structure:
+#   tests/
+#     Unit/
+#       Services/           — Unit tests for service classes
+#       Repositories/       — Unit tests for repository classes
+#     Feature/
+#       Auth/               — Feature tests for auth endpoints
+#       Alerts/             — Feature tests for alerts endpoints
+#       Profile/            — Feature tests for profile endpoints

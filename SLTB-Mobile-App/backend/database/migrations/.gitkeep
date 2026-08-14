@@ -1,0 +1,9 @@
+# Backend Database Migrations Placeholder
+# Laravel database migration files will be created here.
+# Planned migrations:
+#   - 2024_08_01_000001_create_police_officers_table
+#   - 2024_08_01_000002_create_alerts_table
+#   - 2024_08_01_000003_create_alert_actions_table
+#   - 2024_08_01_000004_create_notifications_table
+#   - 2024_08_01_000005_create_audit_logs_table
+#   - 2024_08_01_000006_create_personal_access_tokens_table

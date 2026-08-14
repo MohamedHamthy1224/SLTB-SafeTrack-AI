@@ -1,0 +1,5 @@
+# Backend Database Factories Placeholder
+# Laravel Eloquent model factory classes will be created here.
+# Planned factories:
+#   - PoliceOfficerFactory     — Generates fake officer data for testing
+#   - AlertFactory             — Generates fake alert data for testing

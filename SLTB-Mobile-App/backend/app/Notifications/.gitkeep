@@ -1,0 +1,6 @@
+# Backend Notifications Placeholder
+# Laravel notification classes will be created here.
+# Planned notifications:
+#   - NewAlertNotification       — Push notification for new AI alerts
+#   - AlertEscalatedNotification — Notification on alert escalation
+#   - PasswordChangedNotification — Confirmation after password change

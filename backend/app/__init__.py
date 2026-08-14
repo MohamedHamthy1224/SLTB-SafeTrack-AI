@@ -9,7 +9,8 @@ if backend_dir not in sys.path:
 from flask import Flask
 from flask_cors import CORS
 from app.config import config_by_name
-from app.data.database import db, bcrypt, jwt, mail
+from app.data.database import db, bcrypt, jwt, mail, socketio
+from flask_socketio import join_room
 from app.presentation.error_handlers import register_error_handlers
 from app.presentation.controllers.public_controller import public_bp
 from app.presentation.controllers.auth_controller import auth_bp
@@ -23,6 +24,7 @@ from app.presentation.controllers.route_controller import route_bp
 from app.presentation.controllers.profile_controller import profile_bp
 from app.presentation.controllers.settings_controller import settings_bp
 from app.presentation.controllers.user_controller import user_bp
+from app.presentation.controllers.report_controller import report_bp
 from app.commands.password_commands import hash_existing_passwords_command
 
 def create_app(config_name="development"):
@@ -30,13 +32,18 @@ def create_app(config_name="development"):
     app.config.from_object(config_by_name[config_name])
 
     # Enable CORS for React Vite frontend (port 3000 / 5173 / 5174)
-    CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5173", "http://127.0.0.1:5173", "http://10.207.162.17:3000"]}}, supports_credentials=True)
 
     # Initialize extensions
     db.init_app(app)
     bcrypt.init_app(app)
     jwt.init_app(app)
     mail.init_app(app)
+    socketio.init_app(app, cors_allowed_origins="*", async_mode='threading')
+
+    @socketio.on('join_sltb_admin')
+    def handle_join_sltb_admin():
+        join_room('sltb_admin')
 
     # Register blueprints
     app.register_blueprint(public_bp)
@@ -51,6 +58,7 @@ def create_app(config_name="development"):
     app.register_blueprint(profile_bp)
     app.register_blueprint(settings_bp)
     app.register_blueprint(user_bp)
+    app.register_blueprint(report_bp)
 
     # Register CLI commands
     app.cli.add_command(hash_existing_passwords_command)

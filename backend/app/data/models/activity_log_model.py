@@ -1,5 +1,5 @@
 from app.data.database import db
-from datetime import datetime
+from datetime import datetime, timezone
 
 class UserActivityLogModel(db.Model):
     __tablename__ = 'user_activity_logs'
@@ -7,7 +7,7 @@ class UserActivityLogModel(db.Model):
     activity_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     activity = db.Column(db.String(255), nullable=False)
-    activity_time = db.Column(db.DateTime, default=datetime.utcnow)
+    activity_time = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     def __init__(self, user_id=None, activity=None, activity_time=None, **kwargs):
         super().__init__(**kwargs)

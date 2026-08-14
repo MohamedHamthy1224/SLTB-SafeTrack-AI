@@ -1,0 +1,9 @@
+# Backend Services Placeholder
+# Business logic service classes will be created here.
+# Planned service classes:
+#   - AuthService               — Login, logout, token management
+#   - AlertService              — Alert retrieval, status management
+#   - NotificationService       — Push notification dispatching
+#   - ProfileService            — Officer profile operations
+#   - DashboardService          — Dashboard statistics aggregation
+#   - AuditService              — Audit log recording

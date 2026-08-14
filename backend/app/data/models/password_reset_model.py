@@ -1,5 +1,5 @@
 from app.data.database import db
-from datetime import datetime
+from datetime import datetime, timezone
 
 class PasswordResetModel(db.Model):
     __tablename__ = 'password_resets'
@@ -9,7 +9,7 @@ class PasswordResetModel(db.Model):
     token = db.Column(db.String(255), nullable=False)
     expires_at = db.Column(db.DateTime, nullable=False)
     used = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
     user = db.relationship('UserModel', backref=db.backref('password_resets', cascade='all, delete-orphan'), lazy=True)
 
@@ -25,7 +25,7 @@ class PasswordResetModel(db.Model):
             self.used = used
 
     def is_valid(self):
-        return not self.used and datetime.utcnow() < self.expires_at
+        return not self.used and datetime.now(timezone.utc) < self.expires_at
 
     def to_dict(self):
         return {

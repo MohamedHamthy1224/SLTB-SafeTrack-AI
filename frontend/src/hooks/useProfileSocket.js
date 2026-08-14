@@ -23,7 +23,7 @@ export const useProfileSocket = (onProfileUpdatedCallback) => {
     if (!userId) return;
 
     if (!globalSocket) {
-      const backendUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001';
+      const backendUrl = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001';
       globalSocket = io(backendUrl, {
         transports: ['websocket', 'polling'],
         reconnection: true,

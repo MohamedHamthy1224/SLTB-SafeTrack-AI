@@ -1,6 +1,6 @@
 import secrets
 import traceback
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from app.data.repositories.user_repository import UserRepository
 from app.data.repositories.activity_log_repository import ActivityLogRepository
 from app.data.repositories.password_reset_repository import PasswordResetRepository
@@ -31,7 +31,7 @@ class PasswordResetService:
 
         # Generate cryptographically secure random reset token
         token = secrets.token_urlsafe(32)
-        expires_at = datetime.utcnow() + timedelta(minutes=30)
+        expires_at = datetime.now(timezone.utc) + timedelta(minutes=30)
 
         # Persist token in password_resets table
         self.password_reset_repo.create_token(user.user_id, token, expires_at)
@@ -99,7 +99,7 @@ class PasswordResetService:
         if reset_record.used:
             raise ResetTokenInvalidError("This password reset link has already been used.")
 
-        if datetime.utcnow() > reset_record.expires_at:
+        if datetime.now(timezone.utc) > reset_record.expires_at:
             raise ResetTokenInvalidError("Password reset token has expired. Please request a new one.")
 
         user = self.user_repo.get_by_id(reset_record.user_id)

@@ -105,3 +105,17 @@ def update_bus(bus_id):
         return ResponseFactory.error(message=e.message, errors=e.errors, status_code=e.status_code)
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
+
+@bus_bp.route('/buses/<int:bus_id>/deactivate', methods=['PATCH'])
+@jwt_required()
+def deactivate_bus(bus_id):
+    _check_sltb_admin_role()
+    current_user_id = get_jwt_identity()
+    try:
+        result = bus_service.deactivate_bus(bus_id, user_id=current_user_id)
+        return ResponseFactory.success(data=result, message="Bus deactivated successfully.")
+    except BusServiceError as e:
+        return ResponseFactory.error(message=e.message, errors=e.errors, status_code=e.status_code)
+    except Exception as e:
+        return ResponseFactory.error(message=str(e), status_code=500)
+

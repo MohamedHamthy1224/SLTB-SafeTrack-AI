@@ -1,0 +1,8 @@
+# Backend Events Placeholder
+# Domain event classes will be created here.
+# Planned events:
+#   - OfficerLoggedIn           — Fired on successful officer login
+#   - AlertCreated              — Fired when a new AI alert is generated
+#   - AlertAcknowledged         — Fired when officer acknowledges alert
+#   - AlertResolved             — Fired when alert is marked resolved
+#   - AlertEscalated            — Fired when alert is escalated

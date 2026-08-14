@@ -46,6 +46,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { EditProfilePage } from './pages/EditProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ModulePlaceholderPage } from './pages/ModulePlaceholderPage';
+import { ReportsPage } from './pages/ReportsPage';
 import { UnauthorizedPage } from './pages/UnauthorizedPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import './styles/global.css';
@@ -528,10 +529,7 @@ export const App = () => {
                 path="/sltb/reports"
                 element={
                   <ProtectedRoute allowedRoles={[USER_ROLES.SLTB_ADMIN]}>
-                    <ModulePlaceholderPage 
-                      moduleTitle="Analytics & Reports Module" 
-                      moduleDescription="Comprehensive reports engine including Bus, Driver, Route, Alert, and Approach Speed analysis." 
-                    />
+                    <ReportsPage />
                   </ProtectedRoute>
                 }
               />

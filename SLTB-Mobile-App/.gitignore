@@ -1,0 +1,174 @@
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SLTB-Mobile-App — Professional .gitignore
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# ─────────────────────────────────────────────
+# Environment & Secrets
+# ─────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.cert
+*.p12
+google-services.json
+GoogleService-Info.plist
+
+# ─────────────────────────────────────────────
+# Node / JavaScript / React Native
+# ─────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.pnp.*
+*.tsbuildinfo
+.eslintcache
+.parcelcache/
+dist/
+build/
+out/
+
+# ─────────────────────────────────────────────
+# Expo / React Native
+# ─────────────────────────────────────────────
+.expo/
+.expo-shared/
+expo-env.d.ts
+web-build/
+*.jks
+*.keystore
+!debug.keystore
+
+# Android
+android/
+android/app/build/
+android/.gradle/
+android/local.properties
+*.apk
+*.aab
+
+# iOS
+ios/
+ios/Pods/
+ios/DerivedData/
+*.xcworkspace/xcuserdata
+*.xcodeproj/xcuserdata
+*.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+*.ipa
+
+# ─────────────────────────────────────────────
+# PHP / Laravel
+# ─────────────────────────────────────────────
+vendor/
+composer.phar
+/backend/.env
+/backend/.env.backup
+/backend/.env.testing
+/backend/storage/logs/*.log
+/backend/storage/framework/cache/data/*
+/backend/storage/framework/sessions/*
+/backend/storage/framework/testing/*
+/backend/storage/framework/views/*
+/backend/bootstrap/cache/*.php
+/backend/public/hot
+/backend/public/storage
+/backend/_ide_helper.php
+/backend/_ide_helper_models.php
+.phpactor.json
+
+# ─────────────────────────────────────────────
+# MySQL / Database
+# ─────────────────────────────────────────────
+*.sql.gz
+*.sql.bak
+database/backup/*.sql
+database/backup/*.dump
+*.mwb.bak
+
+# ─────────────────────────────────────────────
+# Testing / Coverage
+# ─────────────────────────────────────────────
+coverage/
+.nyc_output/
+junit.xml
+test-results/
+.phpunit.result.cache
+
+# ─────────────────────────────────────────────
+# IDEs — VS Code
+# ─────────────────────────────────────────────
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# ─────────────────────────────────────────────
+# IDEs — JetBrains / IntelliJ / IDEA
+# ─────────────────────────────────────────────
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# ─────────────────────────────────────────────
+# macOS
+# ─────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+
+# ─────────────────────────────────────────────
+# Windows
+# ─────────────────────────────────────────────
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ─────────────────────────────────────────────
+# Linux
+# ─────────────────────────────────────────────
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ─────────────────────────────────────────────
+# Logs
+# ─────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log
+yarn-debug.log
+
+# ─────────────────────────────────────────────
+# Compiled / Build Artifacts
+# ─────────────────────────────────────────────
+*.class
+*.o
+*.so
+*.pyc
+*.pyo
+
+# ─────────────────────────────────────────────
+# Temporary Files
+# ─────────────────────────────────────────────
+tmp/
+temp/
+*.tmp
+*.swp
+*.swo

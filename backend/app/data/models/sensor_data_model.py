@@ -1,5 +1,5 @@
 from app.data.database import db
-from datetime import datetime
+from datetime import datetime, timezone
 
 class SensorDataModel(db.Model):
     __tablename__ = 'sensor_data'
@@ -17,7 +17,7 @@ class SensorDataModel(db.Model):
     green_led_status = db.Column(db.Boolean, default=False)
     buzzer_status = db.Column(db.Boolean, default=False)
     device_timestamp = db.Column(db.DateTime, nullable=True)
-    recorded_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    recorded_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     front_approach_speed_kmh = db.Column(db.Numeric(6, 2), nullable=True)
     right_approach_speed_kmh = db.Column(db.Numeric(6, 2), nullable=True)
     left_approach_speed_kmh = db.Column(db.Numeric(6, 2), nullable=True)

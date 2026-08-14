@@ -1,5 +1,5 @@
 from app.data.database import db
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 class BusAssignmentModel(db.Model):
@@ -12,7 +12,7 @@ class BusAssignmentModel(db.Model):
     route_id = db.Column(db.Integer, db.ForeignKey('routes.route_id'), nullable=False)
     assigned_date = db.Column(db.Date, nullable=False)
     status = db.Column(db.Enum('Active', 'Completed', 'Cancelled'), default='Active')
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
     bus: Any
     driver: Any

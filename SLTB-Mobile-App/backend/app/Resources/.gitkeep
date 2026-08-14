@@ -1,0 +1,8 @@
+# Backend API Resources Placeholder
+# Laravel API Resource transformer classes will be created here.
+# Planned resource classes:
+#   - OfficerResource           — Police officer JSON response
+#   - OfficerCollection         — Paginated officers list
+#   - AlertResource             — Alert JSON response
+#   - AlertCollection           — Paginated alerts list
+#   - DashboardResource         — Dashboard stats JSON response

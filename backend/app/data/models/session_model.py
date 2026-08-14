@@ -1,12 +1,12 @@
 from app.data.database import db
-from datetime import datetime
+from datetime import datetime, timezone
 
 class UserSessionModel(db.Model):
     __tablename__ = 'user_sessions'
 
     session_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-    login_time = db.Column(db.DateTime, default=datetime.utcnow)
+    login_time = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     logout_time = db.Column(db.DateTime, nullable=True)
     ip_address = db.Column(db.String(45), nullable=True)
     device_info = db.Column(db.String(255), nullable=True)
