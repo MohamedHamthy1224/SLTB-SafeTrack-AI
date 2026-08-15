@@ -20,7 +20,10 @@ export const SensorsAlertsReport = ({
   sortBy,
   order,
   onSort,
-  onExportCSV
+  onExportCSV,
+  onExportPDF,
+  csvExporting,
+  pdfGenerating
 }) => {
   const totalAlerts = summary?.totalAlerts ?? 0;
 
@@ -61,7 +64,13 @@ export const SensorsAlertsReport = ({
         <div className="report-filter-actions">
           <button className="report-filter-btn secondary" onClick={onResetFilters}>Reset</button>
           <button className="report-filter-btn primary" onClick={() => onPageChange(1)}>Filter</button>
-          <ReportExportButton onExport={onExportCSV} disabled={items.length === 0} />
+          <ReportExportButton
+            onExportCSV={onExportCSV}
+            onExportPDF={onExportPDF}
+            disabled={items.length === 0}
+            csvLoading={csvExporting}
+            pdfLoading={pdfGenerating}
+          />
         </div>
       </div>
 

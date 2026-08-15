@@ -19,13 +19,14 @@ import policeBadge from '../../assets/images/police_badge.png';
 import '../../styles/police-sidebar.css';
 
 export const PoliceSidebar = ({ isOpen, onClose }) => {
-  const { logout } = useAuth();
+  const { requestLogout } = useAuth();
   const location = useLocation();
 
-  const handleLogout = async (e) => {
+  const handleLogout = (e) => {
     e.preventDefault();
-    if (logout) {
-      await logout();
+    if (onClose) onClose();
+    if (requestLogout) {
+      requestLogout();
     }
   };
 

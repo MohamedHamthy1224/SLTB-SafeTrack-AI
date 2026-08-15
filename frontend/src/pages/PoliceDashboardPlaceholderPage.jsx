@@ -5,7 +5,7 @@ import logoImg from '../assets/images/sltb_logo.png';
 import '../styles/dashboard.css';
 
 export const PoliceDashboardPlaceholderPage = () => {
-  const { user, logout } = useAuth();
+  const { user, requestLogout } = useAuth();
 
   return (
     <div className="dashboard-layout" style={{ background: '#090d16', color: '#f8fafc', minHeight: '100vh' }}>
@@ -50,7 +50,7 @@ export const PoliceDashboardPlaceholderPage = () => {
           </div>
 
           <button
-            onClick={logout}
+            onClick={requestLogout}
             style={{
               background: 'rgba(239, 68, 68, 0.15)',
               color: '#f87171',

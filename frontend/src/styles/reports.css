@@ -267,30 +267,66 @@
   background: #e2e8f0;
 }
 
-/* ---- Export Button ---- */
+/* ---- Export Button Group & Buttons ---- */
+.report-export-button-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
 .report-export-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.5rem 1.15rem;
-  background: #fff;
-  color: #0047ff;
-  border: 1.5px solid #0047ff;
+  padding: 0.5rem 1.1rem;
   border-radius: 8px;
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.report-export-btn:hover {
+.report-export-btn.csv-btn {
+  background: #fff;
+  color: #0047ff;
+  border: 1.5px solid #0047ff;
+}
+
+.report-export-btn.csv-btn:hover:not(:disabled) {
   background: #0047ff;
   color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 71, 255, 0.2);
+}
+
+.report-export-btn.pdf-btn {
+  background: #fff;
+  color: #dc2626;
+  border: 1.5px solid #dc2626;
+}
+
+.report-export-btn.pdf-btn:hover:not(:disabled) {
+  background: #dc2626;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(220, 38, 38, 0.2);
 }
 
 .report-export-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.spin-icon {
+  animation: spin-kf 1s linear infinite;
+}
+
+@keyframes spin-kf {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* ---- Data Table ---- */

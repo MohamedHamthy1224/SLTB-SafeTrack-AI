@@ -1,12 +1,18 @@
 import React, { createContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { authService } from '../services/authService';
 import { getActiveModule } from '../utils/roleRouter';
+import { LogoutConfirmModal } from '../components/common/LogoutConfirmModal';
 
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Logout confirmation modal states
+  const [isLogoutConfirmOpen, setIsLogoutConfirmOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [logoutError, setLogoutError] = useState(null);
 
   const activeModule = useMemo(() => {
     return user ? getActiveModule(user.role_name) : null;
@@ -55,10 +61,51 @@ export const AuthProvider = ({ children }) => {
     return res;
   }, []);
 
+  // Direct programmatic logout (used e.g. after password reset)
   const logout = useCallback(async () => {
-    await authService.logout();
-    setUser(null);
+    try {
+      await authService.logout();
+    } finally {
+      setUser(null);
+      setIsLogoutConfirmOpen(false);
+      setIsLoggingOut(false);
+      setLogoutError(null);
+    }
   }, []);
+
+  // Open confirmation modal
+  const requestLogout = useCallback(() => {
+    setLogoutError(null);
+    setIsLogoutConfirmOpen(true);
+  }, []);
+
+  // Cancel logout (close modal, keep everything unchanged)
+  const cancelLogout = useCallback(() => {
+    if (!isLoggingOut) {
+      setIsLogoutConfirmOpen(false);
+      setLogoutError(null);
+    }
+  }, [isLoggingOut]);
+
+  // Confirm logout (execute teardown with loading state)
+  const confirmLogout = useCallback(async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
+    setLogoutError(null);
+
+    try {
+      await authService.logout();
+      setUser(null);
+      setIsLogoutConfirmOpen(false);
+    } catch (err) {
+      console.error('Logout error:', err);
+      // Even if server request fails, authService clears local storage; ensure client state is cleared
+      setUser(null);
+      setIsLogoutConfirmOpen(false);
+    } finally {
+      setIsLoggingOut(false);
+    }
+  }, [isLoggingOut]);
 
   const updateCurrentUserProfile = useCallback((updatedProfile) => {
     if (!updatedProfile) return;
@@ -95,12 +142,37 @@ export const AuthProvider = ({ children }) => {
     loading,
     login,
     logout,
+    requestLogout,
+    cancelLogout,
+    confirmLogout,
+    isLogoutConfirmOpen,
+    isLoggingOut,
     updateCurrentUserProfile
-  }), [user, activeModule, loading, login, logout, updateCurrentUserProfile]);
+  }), [
+    user, 
+    activeModule, 
+    loading, 
+    login, 
+    logout, 
+    requestLogout, 
+    cancelLogout, 
+    confirmLogout, 
+    isLogoutConfirmOpen, 
+    isLoggingOut, 
+    updateCurrentUserProfile
+  ]);
 
   return (
     <AuthContext.Provider value={contextValue}>
       {children}
+      <LogoutConfirmModal
+        isOpen={isLogoutConfirmOpen}
+        isLoggingOut={isLoggingOut}
+        errorMessage={logoutError}
+        onCancel={cancelLogout}
+        onConfirm={confirmLogout}
+      />
     </AuthContext.Provider>
   );
 };
+

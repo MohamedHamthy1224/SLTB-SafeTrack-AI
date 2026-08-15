@@ -5,12 +5,13 @@ import policeBadge from '../../assets/images/police_badge.png';
 import '../../styles/police-header.css';
 
 export const PoliceDashboardHeader = ({ onToggleSidebar }) => {
-  const { user, logout } = useAuth();
+  const { user, requestLogout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const handleLogout = async () => {
-    if (logout) {
-      await logout();
+  const handleLogout = () => {
+    setDropdownOpen(false);
+    if (requestLogout) {
+      requestLogout();
     }
   };
 

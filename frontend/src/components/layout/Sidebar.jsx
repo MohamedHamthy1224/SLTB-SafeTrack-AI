@@ -15,12 +15,13 @@ import logoImg from '../../assets/images/sltb_logo.png';
 import busBgImg from '../../assets/images/sltb_bus_bg.jpg';
 
 export const Sidebar = ({ isOpen, onClose }) => {
-  const { logout } = useAuth();
+  const { requestLogout } = useAuth();
   const location = useLocation();
 
-  const handleLogout = async (e) => {
+  const handleLogout = (e) => {
     e.preventDefault();
-    await logout();
+    if (onClose) onClose();
+    requestLogout();
   };
 
   const isBusManagementActive = location.pathname.startsWith('/sltb/buses');

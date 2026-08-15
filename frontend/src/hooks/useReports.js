@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import reportService from '../services/reportService';
+import { generateReportPDF } from '../utils/pdfExportService';
+import { useAuth } from './useAuth';
 
 export const useReports = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { user } = useAuth();
 
   const activeTab = searchParams.get('tab') || 'buses';
 
@@ -25,6 +28,10 @@ export const useReports = () => {
 
   // Filter states
   const [filters, setFilters] = useState({});
+
+  // Export loading states
+  const [csvExporting, setCsvExporting] = useState(false);
+  const [pdfGenerating, setPdfGenerating] = useState(false);
 
   // Race condition protection
   const requestIdRef = useRef(0);
@@ -182,8 +189,9 @@ export const useReports = () => {
     setPage(1);
   };
 
-  // CSV Export handler
+  // CSV Export handler (keeps existing functionality intact)
   const handleExportCSV = async () => {
+    setCsvExporting(true);
     const queryParams = {
       sort_by: sortBy,
       order,
@@ -212,6 +220,45 @@ export const useReports = () => {
     } catch (err) {
       console.error('Failed to export CSV:', err);
       alert('Failed to download report CSV. Please try again.');
+    } finally {
+      setCsvExporting(false);
+    }
+  };
+
+  // PDF Export handler (fetches all filtered rows and generates professional multi-page PDF)
+  const handleExportPDF = async () => {
+    setPdfGenerating(true);
+    const queryParams = {
+      page: 1,
+      per_page: 10000, // Retrieve full filtered dataset for export
+      sort_by: sortBy,
+      order,
+      ...filters
+    };
+
+    try {
+      let res = null;
+      if (activeTab === 'buses') res = await reportService.getBusesReport(queryParams);
+      else if (activeTab === 'routes') res = await reportService.getRoutesReport(queryParams);
+      else if (activeTab === 'drivers') res = await reportService.getDriversReport(queryParams);
+      else if (activeTab === 'assignment-history') res = await reportService.getAssignmentHistoryReport(queryParams);
+      else if (activeTab === 'sensors-alerts') res = await reportService.getSensorsAlertsReport(queryParams);
+
+      const allItems = res?.data?.items || items || [];
+      const reportSummary = res?.data?.summary || summary || {};
+
+      generateReportPDF({
+        tab: activeTab,
+        items: allItems,
+        summary: reportSummary,
+        filters: filters,
+        currentUser: user
+      });
+    } catch (err) {
+      console.error('Failed to generate PDF:', err);
+      alert('Failed to generate PDF report. Please try again.');
+    } finally {
+      setPdfGenerating(false);
     }
   };
 
@@ -237,6 +284,9 @@ export const useReports = () => {
     handleFilterChange,
     handleResetFilters,
     handleExportCSV,
+    handleExportPDF,
+    csvExporting,
+    pdfGenerating,
     refetchActiveReport: () => fetchReport(true)
   };
 };

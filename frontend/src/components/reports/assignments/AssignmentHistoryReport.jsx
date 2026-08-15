@@ -16,7 +16,10 @@ export const AssignmentHistoryReport = ({
   sortBy,
   order,
   onSort,
-  onExportCSV
+  onExportCSV,
+  onExportPDF,
+  csvExporting,
+  pdfGenerating
 }) => {
   const total = summary?.totalAssignments ?? 0;
   const active = summary?.activeAssignments ?? 0;
@@ -52,7 +55,13 @@ export const AssignmentHistoryReport = ({
         </div>
 
         <div style={{ display: 'flex', flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
-          <ReportExportButton onExport={onExportCSV} disabled={items.length === 0} />
+          <ReportExportButton
+            onExportCSV={onExportCSV}
+            onExportPDF={onExportPDF}
+            disabled={items.length === 0}
+            csvLoading={csvExporting}
+            pdfLoading={pdfGenerating}
+          />
         </div>
       </div>
 

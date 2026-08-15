@@ -40,6 +40,9 @@ export const ReportsPage = () => {
     handleFilterChange,
     handleResetFilters,
     handleExportCSV,
+    handleExportPDF,
+    csvExporting,
+    pdfGenerating,
     refetchActiveReport
   } = useReports();
 
@@ -71,7 +74,10 @@ export const ReportsPage = () => {
     sortBy,
     order,
     onSort: handleSort,
-    onExportCSV: handleExportCSV
+    onExportCSV: handleExportCSV,
+    onExportPDF: handleExportPDF,
+    csvExporting,
+    pdfGenerating
   };
 
   const renderReport = () => {

@@ -20,7 +20,10 @@ export const BusesReport = ({
   sortBy,
   order,
   onSort,
-  onExportCSV
+  onExportCSV,
+  onExportPDF,
+  csvExporting,
+  pdfGenerating
 }) => {
   const total = summary?.totalBuses ?? 0;
   const active = summary?.activeBuses ?? 0;
@@ -122,7 +125,13 @@ export const BusesReport = ({
         <div className="report-filter-actions">
           <button className="report-filter-btn secondary" onClick={onResetFilters}>Reset</button>
           <button className="report-filter-btn primary" onClick={() => onPageChange(1)}>Filter</button>
-          <ReportExportButton onExport={onExportCSV} disabled={items.length === 0} />
+          <ReportExportButton
+            onExportCSV={onExportCSV}
+            onExportPDF={onExportPDF}
+            disabled={items.length === 0}
+            csvLoading={csvExporting}
+            pdfLoading={pdfGenerating}
+          />
         </div>
       </div>
 
