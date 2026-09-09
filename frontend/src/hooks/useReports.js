@@ -189,9 +189,9 @@ export const useReports = () => {
     setPage(1);
   };
 
-  // CSV Export handler (keeps existing functionality intact)
-  const handleExportCSV = async () => {
-    setCsvExporting(true);
+  // Common backend PDF export runner
+  const executePDFExport = async (setLoadingState) => {
+    setLoadingState(true);
     const queryParams = {
       sort_by: sortBy,
       order,
@@ -200,16 +200,19 @@ export const useReports = () => {
 
     try {
       let res = null;
-      if (activeTab === 'buses') res = await reportService.exportBusesCSV(queryParams);
-      else if (activeTab === 'routes') res = await reportService.exportRoutesCSV(queryParams);
-      else if (activeTab === 'drivers') res = await reportService.exportDriversCSV(queryParams);
-      else if (activeTab === 'assignment-history') res = await reportService.exportAssignmentHistoryCSV(queryParams);
-      else if (activeTab === 'sensors-alerts') res = await reportService.exportSensorsAlertsCSV(queryParams);
+      if (activeTab === 'buses') res = await reportService.exportBusesPDF(queryParams);
+      else if (activeTab === 'routes') res = await reportService.exportRoutesPDF(queryParams);
+      else if (activeTab === 'drivers') res = await reportService.exportDriversPDF(queryParams);
+      else if (activeTab === 'assignment-history') res = await reportService.exportAssignmentHistoryPDF(queryParams);
+      else if (activeTab === 'sensors-alerts') res = await reportService.exportSensorsAlertsPDF(queryParams);
 
-      const blob = new Blob([res], { type: 'text/csv;charset=utf-8;' });
+      const blobData = res?.data || res;
+      const blob = new Blob([blobData], { type: 'application/pdf' });
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
-      const filename = `sltb_${activeTab}_report_${new Date().toISOString().slice(0,19).replace(/[-:T]/g, '')}.csv`;
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const tabName = activeTab.replace(/-/g, '_').toUpperCase();
+      const filename = `SLTB_SafeTrack_${tabName}_Report_${dateStr}.pdf`;
 
       link.href = url;
       link.setAttribute('download', filename);
@@ -218,48 +221,21 @@ export const useReports = () => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      console.error('Failed to export CSV:', err);
-      alert('Failed to download report CSV. Please try again.');
+      console.error('Failed to export PDF report:', err);
+      alert('Failed to download PDF report. Please check your network connection and try again.');
     } finally {
-      setCsvExporting(false);
+      setLoadingState(false);
     }
   };
 
-  // PDF Export handler (fetches all filtered rows and generates professional multi-page PDF)
+  // CSV Export handler -> Calls backend PDF generator
+  const handleExportCSV = async () => {
+    await executePDFExport(setCsvExporting);
+  };
+
+  // PDF Export handler -> Calls backend PDF generator
   const handleExportPDF = async () => {
-    setPdfGenerating(true);
-    const queryParams = {
-      page: 1,
-      per_page: 10000, // Retrieve full filtered dataset for export
-      sort_by: sortBy,
-      order,
-      ...filters
-    };
-
-    try {
-      let res = null;
-      if (activeTab === 'buses') res = await reportService.getBusesReport(queryParams);
-      else if (activeTab === 'routes') res = await reportService.getRoutesReport(queryParams);
-      else if (activeTab === 'drivers') res = await reportService.getDriversReport(queryParams);
-      else if (activeTab === 'assignment-history') res = await reportService.getAssignmentHistoryReport(queryParams);
-      else if (activeTab === 'sensors-alerts') res = await reportService.getSensorsAlertsReport(queryParams);
-
-      const allItems = res?.data?.items || items || [];
-      const reportSummary = res?.data?.summary || summary || {};
-
-      generateReportPDF({
-        tab: activeTab,
-        items: allItems,
-        summary: reportSummary,
-        filters: filters,
-        currentUser: user
-      });
-    } catch (err) {
-      console.error('Failed to generate PDF:', err);
-      alert('Failed to generate PDF report. Please try again.');
-    } finally {
-      setPdfGenerating(false);
-    }
+    await executePDFExport(setPdfGenerating);
   };
 
   return {

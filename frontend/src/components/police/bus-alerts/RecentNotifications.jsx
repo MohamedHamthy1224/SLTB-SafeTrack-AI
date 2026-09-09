@@ -1,10 +1,9 @@
 import React from 'react';
 import { AlertTriangle, Lightbulb, Radio, MoveHorizontal } from 'lucide-react';
-import { mockRecentNotifications } from '../../../data/busAlertsMockData';
 import '../../../styles/bus-alerts.css';
 
 export const RecentNotifications = ({ notifications }) => {
-  const items = notifications || mockRecentNotifications;
+  const items = notifications && Array.isArray(notifications) ? notifications : [];
 
   const getNotificationIcon = (type) => {
     switch (type) {
@@ -40,7 +39,12 @@ export const RecentNotifications = ({ notifications }) => {
       </div>
 
       <div className="recent-notifications-list">
-        {items.map((item) => {
+        {items.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '1.5rem 0', color: '#94A3B8', fontSize: '0.85rem' }}>
+            No recent notifications.
+          </div>
+        ) : (
+          items.map((item) => {
           const config = getNotificationIcon(item.type);
           const Icon = config.icon;
           return (
@@ -65,7 +69,7 @@ export const RecentNotifications = ({ notifications }) => {
               <span className="notification-time">{item.time}</span>
             </div>
           );
-        })}
+        }))}
       </div>
     </div>
   );

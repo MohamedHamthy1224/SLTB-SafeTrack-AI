@@ -14,6 +14,7 @@ import {
   uturnStatusOptions,
   uturnRouteOptions,
 } from '../data/uturnManagementMockData';
+import policeUTurnUnitService from '../services/policeUTurnUnitService';
 import '../styles/police-dashboard.css';
 import '../styles/uturnManagement.css';
 
@@ -69,26 +70,20 @@ export const PoliceUTurnManagementPage = () => {
     setCurrentPage(1);
   };
 
-  const handleExportClick = () => {
-    const csvContent =
-      'data:text/csv;charset=utf-8,' +
-      ['Roadside Unit ID,Device ID,Route ID,Location Name,Latitude,Longitude,Installation Date,Status,Created At']
-        .concat(
-          filteredUnits.map(
-            (u) =>
-              `${u.roadsideUnitId},${u.deviceId},${u.routeId},"${u.locationName}",${u.latitude},${u.longitude},${u.installationDate},${u.status},${u.createdAt}`
-          )
-        )
-        .join('\n');
+  const handleExportClick = async () => {
+    try {
+      const params = {};
+      if (searchValue) params.search = searchValue;
+      if (selectedStatus && selectedStatus.toLowerCase() !== 'all status') params.status = selectedStatus;
+      if (selectedRoute && selectedRoute.toLowerCase() !== 'all routes') params.route_id = selectedRoute;
 
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `uturn_units_export_${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      await policeUTurnUnitService.exportPdf(params);
+    } catch (err) {
+      console.error('Failed to export U-Turn units PDF:', err);
+      alert('Unable to generate U-Turn units PDF report.');
+    }
   };
+
 
   const handleDeleteClick = (unit) => {
     setSelectedUnitForDelete(unit);

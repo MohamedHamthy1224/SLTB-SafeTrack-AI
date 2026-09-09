@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   LineChart,
   Line,
@@ -11,18 +11,16 @@ import {
 } from 'recharts';
 import '../../styles/police-cards.css';
 
-const defaultChartData = [
-  { day: '01 Jun', busAlerts: 28, uturnAlerts: 8 },
-  { day: '02 Jun', busAlerts: 32, uturnAlerts: 10 },
-  { day: '03 Jun', busAlerts: 45, uturnAlerts: 15 },
-  { day: '04 Jun', busAlerts: 52, uturnAlerts: 22 },
-  { day: '05 Jun', busAlerts: 41, uturnAlerts: 17 },
-  { day: '06 Jun', busAlerts: 29, uturnAlerts: 12 },
-  { day: '07 Jun', busAlerts: 36, uturnAlerts: 18 }
-];
+export const AlertsChart = ({ data, selectedWeek = 'This Week', onWeekChange }) => {
+  const chartData = data && Array.isArray(data) ? data : [];
 
-export const AlertsChart = () => {
-  const [selectedWeek, setSelectedWeek] = useState('This Week');
+  // Calculate dynamic maximum value for Y-Axis
+  const maxVal = chartData.reduce((max, item) => {
+    const b = Number(item.busAlerts) || 0;
+    const u = Number(item.uturnAlerts) || 0;
+    return Math.max(max, b, u);
+  }, 0);
+  const yMax = Math.max(10, Math.ceil((maxVal + 5) / 5) * 5);
 
   return (
     <div className="police-chart-card">
@@ -36,11 +34,13 @@ export const AlertsChart = () => {
         <select 
           className="chart-week-select" 
           value={selectedWeek}
-          onChange={(e) => setSelectedWeek(e.target.value)}
+          onChange={(e) => onWeekChange && onWeekChange(e.target.value)}
         >
           <option value="This Week">This Week</option>
           <option value="Last Week">Last Week</option>
           <option value="2 Weeks Ago">2 Weeks Ago</option>
+          <option value="This Month">This Month</option>
+          <option value="Today">Today</option>
         </select>
       </div>
 
@@ -59,7 +59,7 @@ export const AlertsChart = () => {
       <div style={{ width: '100%', height: 320 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
-            data={defaultChartData}
+            data={chartData}
             margin={{ top: 20, right: 30, left: 0, bottom: 10 }}
           >
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#F1F5F9" />
@@ -73,8 +73,8 @@ export const AlertsChart = () => {
             />
             
             <YAxis 
-              domain={[0, 60]} 
-              ticks={[0, 10, 20, 30, 40, 50, 60]}
+              domain={[0, yMax]} 
+              allowDecimals={false}
               tickLine={false} 
               axisLine={false}
               tick={{ fill: '#64748B', fontSize: 12, fontWeight: 600 }}

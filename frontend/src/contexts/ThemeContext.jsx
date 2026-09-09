@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { useProfileSocket } from '../hooks/useProfileSocket';
 
 export const ThemeContext = createContext(null);
 
@@ -22,7 +23,16 @@ export const ThemeProvider = ({ children }) => {
       setThemePreferenceState(user.themePreference);
     }
     setIsThemeLoading(false);
-  }, [user?.user_id, user?.theme_preference, user?.themePreference]);
+  }, [user?.user_id, user?.userId, user?.theme_preference, user?.themePreference]);
+
+  // Handle real-time WebSocket theme updates from other devices
+  const handleThemeUpdatedFromSocket = useCallback((newTheme) => {
+    if (newTheme && ['light', 'dark', 'system'].includes(String(newTheme).toLowerCase())) {
+      setThemePreferenceState(String(newTheme).toLowerCase());
+    }
+  }, []);
+
+  useProfileSocket(null, handleThemeUpdatedFromSocket);
 
   // System OS theme media query listener
   useEffect(() => {

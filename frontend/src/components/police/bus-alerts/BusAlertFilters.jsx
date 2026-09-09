@@ -2,7 +2,7 @@ import React from 'react';
 import { Download } from 'lucide-react';
 import '../../../styles/bus-alerts.css';
 
-export const BusAlertFilters = ({ priorityFilter, onPriorityChange, onReset }) => {
+export const BusAlertFilters = ({ priorityFilter, onPriorityChange, onReset, onExport, exporting = false }) => {
   return (
     <div className="bus-alerts-filter-bar">
       <div className="filter-left-group">
@@ -30,15 +30,17 @@ export const BusAlertFilters = ({ priorityFilter, onPriorityChange, onReset }) =
 
         <button 
           className="btn-export" 
-          onClick={() => alert('Exporting bus alerts dataset...')}
+          onClick={onExport}
+          disabled={exporting}
           type="button"
         >
           <Download size={16} />
-          <span>Export</span>
+          <span>{exporting ? 'Exporting PDF...' : 'Export PDF'}</span>
         </button>
       </div>
     </div>
   );
 };
+
 
 export default BusAlertFilters;

@@ -3,48 +3,48 @@ import { RotateCcw, AlertTriangle, ShieldCheck } from 'lucide-react';
 import '../../styles/uTurnAlerts.css';
 
 export const UTurnAlertSummaryCards = ({ stats }) => {
-  const defaultStats = stats || {
-    total: 126,
-    high: 54,
-    medium: 42,
-    low: 30
+  const currentStats = stats || {
+    total: 0,
+    high: 0,
+    medium: 0,
+    low: 0
   };
 
   const statCards = [
     {
       title: 'Total U-Turn Alerts',
-      value: defaultStats.total,
+      value: currentStats.total ?? currentStats.totalAlerts ?? 0,
       icon: RotateCcw,
       bg: '#F3E8FF',
       color: '#A855F7',
-      subtext: '↑ 8 vs yesterday',
+      subtext: 'All recorded incidents',
       trend: 'up'
     },
     {
       title: 'High Risk Alerts',
-      value: defaultStats.high,
+      value: currentStats.high ?? currentStats.highAlerts ?? 0,
       icon: AlertTriangle,
       bg: '#FEE2E2',
       color: '#EF4444',
-      subtext: '↑ 6 vs yesterday',
+      subtext: 'Critical safety violations',
       trend: 'up'
     },
     {
       title: 'Medium Risk Alerts',
-      value: defaultStats.medium,
+      value: currentStats.medium ?? currentStats.mediumAlerts ?? 0,
       icon: AlertTriangle,
       bg: '#FFF4E5',
       color: '#F97316',
-      subtext: '↑ 2 vs yesterday',
+      subtext: 'Moderate safety warnings',
       trend: 'up'
     },
     {
       title: 'Low Risk Alerts',
-      value: defaultStats.low,
+      value: currentStats.low ?? currentStats.lowAlerts ?? 0,
       icon: ShieldCheck,
       bg: '#E8F5E9',
       color: '#10B981',
-      subtext: '↓ 4 vs yesterday',
+      subtext: 'Minor route advisories',
       trend: 'down'
     }
   ];
@@ -61,7 +61,7 @@ export const UTurnAlertSummaryCards = ({ stats }) => {
             <div className="stat-content">
               <span className="stat-label">{card.title}</span>
               <span className="stat-number">{card.value}</span>
-              <span className={`stat-subtext ${card.trend === 'down' ? 'trend-down' : 'trend-up'}`}>
+              <span className="stat-subtext">
                 {card.subtext}
               </span>
             </div>

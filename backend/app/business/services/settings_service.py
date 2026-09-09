@@ -1,6 +1,7 @@
 from app.data.repositories.user_repository import UserRepository
 from app.data.repositories.activity_log_repository import ActivityLogRepository
 from app.business.validators.theme_preference_validator import ThemePreferenceValidator
+from app.business.services.websocket_service import WebSocketService
 from app.business.exceptions.application_exceptions import ApplicationError, ValidationError
 from app.data.database import db
 from sqlalchemy.exc import SQLAlchemyError
@@ -16,10 +17,11 @@ class SettingsService:
         {'value': 'system', 'label': 'System Default'}
     ]
 
-    def __init__(self, user_repo=None, activity_log_repo=None, theme_validator=None):
+    def __init__(self, user_repo=None, activity_log_repo=None, theme_validator=None, websocket_service=None):
         self.user_repo = user_repo or UserRepository()
         self.activity_log_repo = activity_log_repo or ActivityLogRepository()
         self.theme_validator = theme_validator or ThemePreferenceValidator()
+        self.websocket_service = websocket_service or WebSocketService()
 
     def get_user_theme(self, user_id):
         user = self.user_repo.get_by_id(user_id)
@@ -67,6 +69,24 @@ class SettingsService:
 
             # 5. Commit single transaction
             db.session.commit()
+
+            # 6. Emit real-time WebSocket events
+            try:
+                self.websocket_service.emit_theme_updated({
+                    'userId': user_id,
+                    'user_id': user_id,
+                    'themePreference': normalized_theme,
+                    'theme_preference': normalized_theme
+                })
+                self.websocket_service.emit_system_log_created({
+                    'activityId': getattr(user, 'user_id', user_id),
+                    'userId': user_id,
+                    'username': user.username,
+                    'activity': log_msg,
+                    'activityTime': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                })
+            except Exception:
+                pass
 
             return {
                 'themePreference': normalized_theme,

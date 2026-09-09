@@ -3,21 +3,20 @@ import { RotateCcw, Radio } from 'lucide-react';
 import '../../styles/police-cards.css';
 
 export const PoliceUTurnCard = ({ data }) => {
-  // Default values matching reference image
   const leftSensor = data?.leftSensor || {
     status: 'SAFE',
     ledStatus: 'OFF',
-    distance: '185.20 cm',
-    riskPercentage: '12%',
+    distance: '—',
+    riskPercentage: '0%',
     riskLevel: 'LOW'
   };
 
   const rightSensor = data?.rightSensor || {
-    status: 'DETECTED',
-    ledStatus: 'ON',
-    distance: '42.80 cm',
-    riskPercentage: '74%',
-    riskLevel: 'HIGH'
+    status: 'SAFE',
+    ledStatus: 'OFF',
+    distance: '—',
+    riskPercentage: '0%',
+    riskLevel: 'LOW'
   };
 
   return (

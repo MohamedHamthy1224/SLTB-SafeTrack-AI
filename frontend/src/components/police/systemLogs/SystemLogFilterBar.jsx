@@ -34,11 +34,22 @@ const SystemLogFilterBar = ({
         value={selectedUser}
         onChange={(e) => onUserChange(e.target.value)}
       >
-        {userOptions.map((u) => (
-          <option key={u} value={u}>
-            {u}
-          </option>
-        ))}
+        <option value="All Users">All Users</option>
+        {userOptions.map((u) => {
+          if (typeof u === 'object') {
+            return (
+              <option key={u.userId} value={u.userId}>
+                {u.username} (ID: {u.userId})
+              </option>
+            );
+          }
+          if (u === 'All Users') return null;
+          return (
+            <option key={u} value={u}>
+              {u}
+            </option>
+          );
+        })}
       </select>
 
       {/* Date Range Display */}

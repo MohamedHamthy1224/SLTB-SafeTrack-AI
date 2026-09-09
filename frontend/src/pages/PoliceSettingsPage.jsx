@@ -1,24 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Pencil } from 'lucide-react';
+import { Pencil, Loader2 } from 'lucide-react';
 import { PoliceSidebar } from '../components/police/PoliceSidebar';
 import { PoliceDashboardHeader } from '../components/police/PoliceDashboardHeader';
 import SettingsTabs from '../components/police/settings/SettingsTabs';
 import ProfileViewCard from '../components/police/settings/ProfileViewCard';
 import ProfileInformationCard from '../components/police/settings/ProfileInformationCard';
 import OfficerInformationCard from '../components/police/settings/OfficerInformationCard';
-import { mockOfficerProfile } from '../data/settingsMockData';
+import { profileService } from '../services/profileService';
 import '../styles/police-dashboard.css';
 import '../styles/settings.css';
 
 /**
  * PoliceSettingsPage — /police/settings
- * Redirects to /police/settings/profile.
  * Shows the View Profile tab content (read-only profile view).
  */
 export const PoliceSettingsPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchProfile = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await profileService.getProfile();
+        if (isMounted) {
+          if (res && res.success && res.data) {
+            setProfile(res.data);
+          } else {
+            setError(res?.message || 'Unable to load profile information.');
+          }
+        }
+      } catch (err) {
+        if (isMounted) {
+          console.error('[PoliceSettingsPage] error:', err);
+          setError(err?.message || 'Unable to connect to server. Please check your connection.');
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchProfile();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="police-dashboard-layout">
@@ -48,12 +81,23 @@ export const PoliceSettingsPage = () => {
             </Link>
           </div>
 
-          {/* Three-column layout */}
-          <div className="settings-profile-grid">
-            <ProfileViewCard profile={mockOfficerProfile} />
-            <ProfileInformationCard profile={mockOfficerProfile} />
-            <OfficerInformationCard />
-          </div>
+          {loading ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '280px', color: '#64748b' }}>
+              <Loader2 size={32} className="spinner" style={{ marginBottom: '0.75rem' }} />
+              <p>Loading profile information...</p>
+            </div>
+          ) : error ? (
+            <div className="settings-profile-grid" style={{ color: '#ef4444', textAlign: 'center', padding: '2rem', background: '#ffffff', borderRadius: '12px' }}>
+              <p>{error}</p>
+            </div>
+          ) : (
+            /* Three-column layout */
+            <div className="settings-profile-grid">
+              <ProfileViewCard profile={profile || {}} />
+              <ProfileInformationCard profile={profile || {}} />
+              <OfficerInformationCard />
+            </div>
+          )}
 
           {/* Footer */}
           <p className="settings-page-footer">

@@ -17,6 +17,7 @@ const SystemLogTable = ({ logs }) => {
                 </span>
               </th>
               <th>User ID</th>
+              <th>Username</th>
               <th>Activity</th>
               <th className="sortable">
                 Activity Time
@@ -30,17 +31,22 @@ const SystemLogTable = ({ logs }) => {
             {logs.length === 0 ? (
               <tr>
                 <td
-                  colSpan={4}
+                  colSpan={5}
                   style={{ textAlign: 'center', color: '#94a3b8', padding: '2rem' }}
                 >
                   No activity logs found.
                 </td>
               </tr>
             ) : (
-              logs.map((log) => (
-                <tr key={log.id}>
-                  <td>{log.activityId}</td>
+              logs.map((log, idx) => (
+                <tr key={log.activityId || log.id || idx}>
+                  <td>{log.activityId || log.id}</td>
                   <td>{log.userId}</td>
+                  <td>
+                    <span style={{ fontWeight: 600, color: 'var(--text-main, #0f172a)' }}>
+                      {log.username || `User ${log.userId}`}
+                    </span>
+                  </td>
                   <td>{log.activity}</td>
                   <td>{log.activityTime}</td>
                 </tr>

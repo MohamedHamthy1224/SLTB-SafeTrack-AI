@@ -1,11 +1,10 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { mockPriorityDistribution } from '../../../data/busAlertsMockData';
 import '../../../styles/bus-alerts.css';
 
 export const BusAlertPriorityChart = ({ data }) => {
-  const chartData = data || mockPriorityDistribution;
-  const totalAlerts = chartData.reduce((acc, cur) => acc + cur.value, 0);
+  const chartData = data && Array.isArray(data) ? data : [];
+  const totalAlerts = chartData.reduce((acc, cur) => acc + (Number(cur.value) || 0), 0);
 
   return (
     <div className="right-widget-card">

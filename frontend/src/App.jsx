@@ -14,10 +14,10 @@ import { PoliceBusAlertsPage } from './pages/PoliceBusAlertsPage';
 import { ViewBusAlertPage } from './pages/ViewBusAlertPage';
 import { PoliceUTurnAlertsPage } from './pages/PoliceUTurnAlertsPage';
 import { ViewUTurnAlertPage } from './pages/ViewUTurnAlertPage';
-import { PoliceDeviceManagementPage } from './pages/PoliceDeviceManagementPage';
-import { AddDevicePage } from './pages/AddDevicePage';
-import { ViewDevicePage } from './pages/ViewDevicePage';
-import { EditDevicePage } from './pages/EditDevicePage';
+import { DeviceManagementPage } from './pages/police/DeviceManagementPage';
+import { AddDevicePage } from './pages/police/AddDevicePage';
+import { DeviceDetailsPage } from './pages/police/DeviceDetailsPage';
+import { EditDevicePage } from './pages/police/EditDevicePage';
 import { PoliceUserManagementPage } from './pages/PoliceUserManagementPage';
 import { AddUserPage } from './pages/AddUserPage';
 import { UserDetailsPage } from './pages/UserDetailsPage';
@@ -156,7 +156,7 @@ export const App = () => {
                 path="/police/device-management"
                 element={
                   <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
-                    <PoliceDeviceManagementPage />
+                    <DeviceManagementPage />
                   </ProtectedRoute>
                 }
               />
@@ -174,7 +174,16 @@ export const App = () => {
                 path="/police/device-management/:id"
                 element={
                   <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
-                    <ViewDevicePage />
+                    <DeviceDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/device-management/edit/:id"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <EditDevicePage />
                   </ProtectedRoute>
                 }
               />
@@ -400,6 +409,14 @@ export const App = () => {
               />
               <Route
                 path="/police/settings/profile"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <PoliceProfileSettingsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/police/settings/profile/edit"
                 element={
                   <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
                     <PoliceProfileSettingsPage />

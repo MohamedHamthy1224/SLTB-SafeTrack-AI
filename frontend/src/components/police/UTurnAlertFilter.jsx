@@ -2,7 +2,7 @@ import React from 'react';
 import { Filter, Download } from 'lucide-react';
 import '../../styles/uTurnAlerts.css';
 
-const UTurnAlertFilter = ({ priority, onPriorityChange, onReset, onExport }) => {
+const UTurnAlertFilter = ({ priority, onPriorityChange, onReset, onExport, exporting = false, priorities = ['High', 'Medium', 'Low'] }) => {
   return (
     <div className="uturn-alerts-filter-bar">
       <div className="filter-left-group">
@@ -14,18 +14,25 @@ const UTurnAlertFilter = ({ priority, onPriorityChange, onReset, onExport }) => 
           onChange={(e) => onPriorityChange(e.target.value)}
         >
           <option value="all">All Priorities</option>
-          <option value="High">High</option>
-          <option value="Medium">Medium</option>
-          <option value="Low">Low</option>
+          {priorities.map((p) => (
+            <option key={p} value={p}>
+              {p}
+            </option>
+          ))}
         </select>
       </div>
       <div className="filter-right-group">
-        <button className="btn-reset" onClick={onReset}>
+        <button className="btn-reset" onClick={onReset} type="button">
           Reset
         </button>
-        <button className="btn-export" onClick={onExport}>
+        <button
+          className="btn-export"
+          onClick={onExport}
+          disabled={exporting}
+          type="button"
+        >
           <Download size={14} />
-          Export
+          {exporting ? 'Exporting...' : 'Export PDF'}
         </button>
       </div>
     </div>

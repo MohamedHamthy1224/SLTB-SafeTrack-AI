@@ -9,17 +9,19 @@ import {
   ResponsiveContainer,
   LabelList
 } from 'recharts';
-import { mockWeeklyAlertsOverview } from '../../../data/busAlertsMockData';
 import '../../../styles/bus-alerts.css';
 
-export const BusAlertWeeklyChart = ({ data }) => {
-  const chartData = data || mockWeeklyAlertsOverview;
+export const BusAlertWeeklyChart = ({ data, totalWeeklyAlerts }) => {
+  const chartData = data && Array.isArray(data) ? data : [];
+  const total = totalWeeklyAlerts !== undefined 
+    ? totalWeeklyAlerts 
+    : chartData.reduce((acc, cur) => acc + (Number(cur.count) || 0), 0);
 
   return (
     <div className="right-widget-card">
       <div className="widget-card-header">
         <h4 className="widget-card-title">Alerts Overview</h4>
-        <span className="widget-card-subtitle">(This Week) &nbsp; <strong style={{ color: '#0F172A' }}>Total: 36</strong></span>
+        <span className="widget-card-subtitle">(This Week) &nbsp; <strong style={{ color: '#0F172A' }}>Total: {total}</strong></span>
       </div>
 
       <div style={{ width: '100%', height: 180 }}>

@@ -1,4 +1,7 @@
 import apiClient from './apiClient';
+import axios from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
 
 export const userService = {
   getUsers: async (params = {}) => {
@@ -26,27 +29,27 @@ export const userService = {
   },
 
   exportUsers: async (params = {}) => {
-    const query = new URLSearchParams(params).toString();
     const token = localStorage.getItem('sltb_auth_token');
-    const response = await fetch(`http://localhost:5001/api/v1/users/export?${query}`, {
+    const query = new URLSearchParams(params).toString();
+    const url = `${API_BASE_URL}/police/users/export/pdf${query ? '?' + query : ''}`;
+
+    const response = await axios.get(url, {
+      responseType: 'blob',
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: token ? `Bearer ${token}` : ''
       }
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to export users.');
-    }
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    const downloadUrl = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
-    a.download = `user_management_export_${new Date().toISOString().slice(0, 10)}.csv`;
+    a.href = downloadUrl;
+    a.download = `SLTB_SafeTrack_User_Management_${new Date().toISOString().slice(0, 10)}.pdf`;
     document.body.appendChild(a);
     a.click();
     a.remove();
-    window.URL.revokeObjectURL(url);
+    window.URL.revokeObjectURL(downloadUrl);
+    return true;
   }
 };
 

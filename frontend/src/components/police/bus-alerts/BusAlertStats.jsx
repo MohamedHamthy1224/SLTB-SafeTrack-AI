@@ -4,10 +4,10 @@ import '../../../styles/bus-alerts.css';
 
 export const BusAlertStats = ({ stats }) => {
   const defaultStats = stats || {
-    total: 36,
-    high: 18,
-    medium: 12,
-    low: 6
+    total: 0,
+    high: 0,
+    medium: 0,
+    low: 0
   };
 
   const statCards = [

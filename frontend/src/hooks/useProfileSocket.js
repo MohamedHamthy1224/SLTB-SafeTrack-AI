@@ -4,18 +4,20 @@ import { useAuth } from './useAuth';
 
 let globalSocket = null;
 
-export const useProfileSocket = (onProfileUpdatedCallback) => {
+export const useProfileSocket = (onProfileUpdatedCallback, onThemeUpdatedCallback) => {
   const { user, updateCurrentUserProfile } = useAuth();
   
   const userRef = useRef(user);
   const updateProfileRef = useRef(updateCurrentUserProfile);
-  const callbackRef = useRef(onProfileUpdatedCallback);
+  const profileCallbackRef = useRef(onProfileUpdatedCallback);
+  const themeCallbackRef = useRef(onThemeUpdatedCallback);
 
   useEffect(() => {
     userRef.current = user;
     updateProfileRef.current = updateCurrentUserProfile;
-    callbackRef.current = onProfileUpdatedCallback;
-  }, [user, updateCurrentUserProfile, onProfileUpdatedCallback]);
+    profileCallbackRef.current = onProfileUpdatedCallback;
+    themeCallbackRef.current = onThemeUpdatedCallback;
+  }, [user, updateCurrentUserProfile, onProfileUpdatedCallback, onThemeUpdatedCallback]);
 
   const userId = user?.user_id || user?.userId;
 
@@ -41,8 +43,20 @@ export const useProfileSocket = (onProfileUpdatedCallback) => {
         if (updateProfileRef.current) {
           updateProfileRef.current(updatedProfile);
         }
-        if (callbackRef.current) {
-          callbackRef.current(updatedProfile);
+        if (profileCallbackRef.current) {
+          profileCallbackRef.current(updatedProfile);
+        }
+      }
+    };
+
+    const handleThemeUpdate = (themeData) => {
+      const currentUser = userRef.current;
+      const currentUserId = currentUser?.user_id || currentUser?.userId;
+
+      if (themeData && (themeData.userId === currentUserId || themeData.user_id === currentUserId)) {
+        const newTheme = themeData.themePreference || themeData.theme_preference;
+        if (themeCallbackRef.current && newTheme) {
+          themeCallbackRef.current(newTheme);
         }
       }
     };
@@ -50,9 +64,13 @@ export const useProfileSocket = (onProfileUpdatedCallback) => {
     globalSocket.off('profile_updated', handleProfileUpdate);
     globalSocket.on('profile_updated', handleProfileUpdate);
 
+    globalSocket.off('theme_updated', handleThemeUpdate);
+    globalSocket.on('theme_updated', handleThemeUpdate);
+
     return () => {
       if (globalSocket) {
         globalSocket.off('profile_updated', handleProfileUpdate);
+        globalSocket.off('theme_updated', handleThemeUpdate);
       }
     };
   }, [userId]);

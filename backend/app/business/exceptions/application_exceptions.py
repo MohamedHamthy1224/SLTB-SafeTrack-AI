@@ -24,3 +24,7 @@ class UnauthorizedRoleError(ApplicationError):
 class ResetTokenInvalidError(ApplicationError):
     def __init__(self, message="Invalid or expired reset token."):
         super().__init__(message, status_code=400)
+
+class NotFoundError(ApplicationError):
+    def __init__(self, message="Requested resource not found."):
+        super().__init__(message, status_code=404)

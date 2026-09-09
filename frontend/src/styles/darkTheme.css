@@ -102,3 +102,127 @@
   border-color: #1e293b;
   color: #e2e8f0;
 }
+
+/* Settings Module Dark Mode Overrides */
+[data-theme="dark"] .settings-container {
+  background-color: #070f1e;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-page-title,
+[data-theme="dark"] .settings-view-profile-title,
+[data-theme="dark"] .settings-info-section-title,
+[data-theme="dark"] .settings-profile-name,
+[data-theme="dark"] .settings-theme-heading,
+[data-theme="dark"] .settings-picture-card-title,
+[data-theme="dark"] .settings-edit-form-title,
+[data-theme="dark"] .settings-password-title,
+[data-theme="dark"] .settings-info-card-title {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-breadcrumb,
+[data-theme="dark"] .settings-breadcrumb a,
+[data-theme="dark"] .settings-profile-dept,
+[data-theme="dark"] .settings-theme-desc,
+[data-theme="dark"] .settings-info-card-text,
+[data-theme="dark"] .settings-theme-field-hint,
+[data-theme="dark"] .settings-picture-hint,
+[data-theme="dark"] .settings-page-footer {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .settings-breadcrumb .bc-current {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .settings-tabs-card,
+[data-theme="dark"] .settings-profile-left-card,
+[data-theme="dark"] .settings-profile-center-card,
+[data-theme="dark"] .settings-profile-right-card,
+[data-theme="dark"] .settings-theme-card,
+[data-theme="dark"] .settings-picture-card,
+[data-theme="dark"] .settings-edit-form-card,
+[data-theme="dark"] .settings-password-section {
+  background-color: #0e1a30;
+  border-color: #1e293b;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .settings-tab {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .settings-tab:hover,
+[data-theme="dark"] .settings-tab.active {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+}
+
+[data-theme="dark"] .settings-info-table tr {
+  border-bottom-color: #1a273d;
+}
+
+[data-theme="dark"] .settings-info-table td:first-child {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .settings-info-table td:last-child,
+[data-theme="dark"] .settings-left-info-value {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-left-info-icon {
+  background-color: #132238;
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .settings-form-label {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .settings-form-input,
+[data-theme="dark"] .settings-form-select,
+[data-theme="dark"] .settings-theme-dropdown-btn {
+  background-color: #132238;
+  border-color: #29384e;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .settings-form-input.readonly {
+  background-color: #0b1528;
+  border-color: #1e293b;
+  color: #64748b;
+}
+
+[data-theme="dark"] .settings-theme-menu {
+  background-color: #0e1a30;
+  border-color: #1e293b;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .settings-theme-menu-item {
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .settings-theme-menu-item:hover {
+  background-color: #172a48;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .settings-theme-menu-item.selected {
+  background-color: #1e3a8a;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .btn-settings-cancel {
+  background-color: #132238;
+  border-color: #29384e;
+  color: #cbd5e1;
+}
+
+[data-theme="dark"] .btn-settings-cancel:hover {
+  background-color: #1a2c47;
+  color: #ffffff;
+}
+

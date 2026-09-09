@@ -312,27 +312,57 @@ class UserManagementService:
             db.session.rollback()
             raise ApplicationError(f"Failed to delete user: {str(e)}", status_code=500)
 
-    def export_users_csv(self, params=None):
-        result = self.get_users(params)
+    def export_users_pdf(self, params=None, request_user_id=None):
+        params = params or {}
+        export_params = dict(params)
+        export_params['page'] = 1
+        export_params['per_page'] = 100000  # Full filtered dataset
+
+        result = self.get_users(export_params)
         users = result['users']
+        summary = self.get_summary_stats()
 
-        output = io.StringIO()
-        writer = csv.writer(output)
+        cols = [
+            {'header': 'User ID', 'key': 'userId', 'width': 8, 'align': 'left'},
+            {'header': 'Username', 'key': 'username', 'width': 14, 'align': 'left'},
+            {'header': 'Full Name', 'key': 'fullName', 'width': 18, 'align': 'left'},
+            {'header': 'Email Address', 'key': 'email', 'width': 22, 'align': 'left'},
+            {'header': 'Role', 'key': 'role', 'width': 16, 'align': 'left'},
+            {'header': 'Phone', 'key': 'phone', 'width': 12, 'align': 'left'},
+            {'header': 'Status', 'key': 'status', 'width': 8, 'align': 'left'},
+        ]
 
-        # Header
-        writer.writerow(['User ID', 'Username', 'Email', 'Full Name', 'Role', 'Department / Police Station', 'Phone', 'Status', 'Joined Date'])
+        summary_metrics = {
+            'Total Users': summary.get('totalUsers', 0),
+            'Police Admin': summary.get('policeAdminUsers', 0),
+            'Traffic Officers': summary.get('trafficPoliceOfficers', 0),
+            'SLTB Admin': summary.get('sltbAdminUsers', 0)
+        }
 
-        for u in users:
-            writer.writerow([
-                u.get('userId', ''),
-                u.get('username', ''),
-                u.get('email', ''),
-                u.get('fullName', ''),
-                u.get('role', ''),
-                u.get('department', ''),
-                u.get('phone', ''),
-                u.get('status', ''),
-                u.get('joinedDate', '')
-            ])
+        filter_info = {
+            'Search': params.get('search') or None,
+            'Role': params.get('role') if params.get('role') not in ('all', 'All Roles', None) else None,
+            'Status': params.get('status') if params.get('status') not in ('all', 'All Status', None) else None,
+        }
 
-        return output.getvalue()
+        # Activity log
+        if request_user_id:
+            try:
+                from app.data.repositories.activity_log_repository import ActivityLogRepository
+                ActivityLogRepository().log_activity(request_user_id, "Exported User Management PDF report.")
+            except Exception:
+                pass
+
+        from app.business.services.pdf_generator_service import PDFGeneratorService
+        return PDFGeneratorService.generate_report_pdf(
+            title="SLTB SAFETRACK AI - USER MANAGEMENT REPORT",
+            columns=cols,
+            rows=users,
+            summary_metrics=summary_metrics,
+            filter_info=filter_info,
+            user_info=f"User #{request_user_id}" if request_user_id else "System Admin"
+        )
+
+    def export_users_csv(self, params=None):
+        return self.export_users_pdf(params)
+

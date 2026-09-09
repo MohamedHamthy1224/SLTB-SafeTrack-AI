@@ -5,9 +5,19 @@ import '../../../styles/bus-alerts.css';
 
 export const BusAlertsTable = ({ alerts = [], currentPage = 1, onPageChange }) => {
   const navigate = useNavigate();
+  const itemsPerPage = 10;
+
+  const totalItems = alerts.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / itemsPerPage));
+  const validPage = Math.min(Math.max(1, currentPage), totalPages);
+
+  const startIndex = (validPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+  const currentAlerts = alerts.slice(startIndex, endIndex);
 
   const handleViewAlert = (alertItem) => {
-    navigate(`/police/bus-alerts/${alertItem.id || alertItem.busAlertId}`, {
+    const targetId = alertItem.id || alertItem.busAlertId || alertItem.bus_alert_id;
+    navigate(`/police/bus-alerts/${targetId}`, {
       state: { alert: alertItem }
     });
   };
@@ -46,22 +56,22 @@ export const BusAlertsTable = ({ alerts = [], currentPage = 1, onPageChange }) =
             </tr>
           </thead>
           <tbody>
-            {alerts.length > 0 ? (
-              alerts.map((item) => (
-                <tr key={item.id || item.busAlertId}>
-                  <td><strong>{item.busAlertId}</strong></td>
-                  <td>{item.busId}</td>
+            {currentAlerts.length > 0 ? (
+              currentAlerts.map((item) => (
+                <tr key={item.id || item.busAlertId || item.bus_alert_id}>
+                  <td><strong>{item.busAlertId || item.id}</strong></td>
+                  <td>{item.busNumber ? `${item.busNumber} (${item.busId})` : item.busId}</td>
                   <td>{item.deviceId}</td>
-                  <td>{item.assignmentId}</td>
-                  <td>{item.sensorDataId}</td>
+                  <td>{item.assignmentId || '—'}</td>
+                  <td>{item.sensorDataId || '—'}</td>
                   <td>{item.alertTime}</td>
-                  <td style={{ fontWeight: 600 }}>{item.notificationTitle}</td>
+                  <td style={{ fontWeight: 600 }}>{item.notificationTitle || item.notification_title || 'Bus Alert'}</td>
                   <td>
                     <span className={`priority-badge ${getPriorityBadgeClass(item.priority)}`}>
-                      {item.priority}
+                      {item.priority || 'Medium'}
                     </span>
                   </td>
-                  <td>{item.createdAt}</td>
+                  <td>{item.createdAt || item.alertTime}</td>
                   <td style={{ textAlign: 'center' }}>
                     <button 
                       className="btn-action-eye"
@@ -84,38 +94,39 @@ export const BusAlertsTable = ({ alerts = [], currentPage = 1, onPageChange }) =
         </table>
       </div>
 
-      {/* Pagination Footer */}
+      {/* Dynamic Pagination Footer */}
       <div className="table-pagination-bar">
         <div className="pagination-info">
-          Showing 1 to {alerts.length} of 36 alerts
+          {totalItems > 0 ? (
+            `Showing ${startIndex + 1} to ${endIndex} of ${totalItems} alerts`
+          ) : (
+            'Showing 0 to 0 of 0 alerts'
+          )}
         </div>
 
         <div className="pagination-controls">
           <button 
             className="pagination-btn" 
-            onClick={() => onPageChange && onPageChange(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
+            onClick={() => onPageChange && onPageChange(Math.max(1, validPage - 1))}
+            disabled={validPage <= 1}
           >
             <ChevronLeft size={16} />
           </button>
           
-          <button className={`pagination-btn ${currentPage === 1 ? 'active' : ''}`} onClick={() => onPageChange && onPageChange(1)}>
-            1
-          </button>
-          <button className={`pagination-btn ${currentPage === 2 ? 'active' : ''}`} onClick={() => onPageChange && onPageChange(2)}>
-            2
-          </button>
-          <button className={`pagination-btn ${currentPage === 3 ? 'active' : ''}`} onClick={() => onPageChange && onPageChange(3)}>
-            3
-          </button>
-          <button className={`pagination-btn ${currentPage === 4 ? 'active' : ''}`} onClick={() => onPageChange && onPageChange(4)}>
-            4
-          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <button
+              key={p}
+              className={`pagination-btn ${validPage === p ? 'active' : ''}`}
+              onClick={() => onPageChange && onPageChange(p)}
+            >
+              {p}
+            </button>
+          ))}
 
           <button 
             className="pagination-btn" 
-            onClick={() => onPageChange && onPageChange(Math.min(4, currentPage + 1))}
-            disabled={currentPage === 4}
+            onClick={() => onPageChange && onPageChange(Math.min(totalPages, validPage + 1))}
+            disabled={validPage >= totalPages}
           >
             <ChevronRight size={16} />
           </button>

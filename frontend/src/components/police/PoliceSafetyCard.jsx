@@ -3,12 +3,11 @@ import { Shield, UserCheck, Lightbulb, Radio } from 'lucide-react';
 import '../../styles/police-cards.css';
 
 export const PoliceSafetyCard = ({ data }) => {
-  // Default values matching reference image
   const pir = data?.pir || { status: 'SAFE', buzzer: 'MUTE' };
-  const ldr = data?.ldr || { status: 'DETECTED', ledStatus: 'ON' };
+  const ldr = data?.ldr || { status: 'SAFE', ledStatus: 'OFF' };
   const ultrasonic = data?.ultrasonic || {
     status: 'SAFE',
-    distance: '237.42 cm',
+    distance: '—',
     distanceRisk: '0%',
     riskLevel: 'LOW',
     ledStatus: 'OFF'

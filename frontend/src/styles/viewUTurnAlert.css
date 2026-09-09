@@ -7,6 +7,15 @@
   font-family: var(--font-main, 'Inter', sans-serif);
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
+}
+
 /* Page Header Section */
 .view-uturn-header-section {
   margin-bottom: 1.25rem;

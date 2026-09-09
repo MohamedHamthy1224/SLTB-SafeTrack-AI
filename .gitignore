@@ -29,3 +29,5 @@ dist/
 # OS Files
 .DS_Store
 Thumbs.db
+# Uploaded profile images
+backend/app/static/uploads/profiles/

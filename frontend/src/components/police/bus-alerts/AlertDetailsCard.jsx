@@ -3,20 +3,10 @@ import { Eye } from 'lucide-react';
 import '../../../styles/view-bus-alert.css';
 
 export const AlertDetailsCard = ({ alertData }) => {
-  const alert = alertData || {
-    busAlertId: '1001',
-    busId: '101',
-    deviceId: '5001',
-    assignmentId: '2001',
-    sensorDataId: '9001',
-    alertTime: '07 Jun 2025, 10:25:34',
-    notificationTitle: 'Forward Object Detected',
-    priority: 'High',
-    createdAt: '07 Jun 2025, 10:26:02'
-  };
+  const alert = alertData || {};
 
   const getPriorityBadgeClass = (priority) => {
-    switch (String(priority).toLowerCase()) {
+    switch (String(priority || '').toLowerCase()) {
       case 'high':
         return 'high';
       case 'medium':
@@ -35,51 +25,53 @@ export const AlertDetailsCard = ({ alertData }) => {
       <div className="details-table-list">
         <div className="details-row">
           <span className="details-label">Bus Alert ID</span>
-          <span className="details-value">{alert.busAlertId || alert.id}</span>
+          <span className="details-value">{alert.busAlertId || alert.id || '—'}</span>
         </div>
 
         <div className="details-row">
           <span className="details-label">Bus ID</span>
-          <span className="details-value">{alert.busId}</span>
+          <span className="details-value">{alert.busId || '—'}</span>
         </div>
 
         <div className="details-row">
           <span className="details-label">Device ID</span>
-          <span className="details-value">{alert.deviceId}</span>
+          <span className="details-value">{alert.deviceId || '—'}</span>
         </div>
 
         <div className="details-row">
           <span className="details-label">Assignment ID</span>
-          <span className="details-value">{alert.assignmentId}</span>
+          <span className="details-value">{alert.assignmentId || '—'}</span>
         </div>
 
         <div className="details-row">
           <span className="details-label">Sensor Data ID</span>
-          <span className="details-value">{alert.sensorDataId}</span>
+          <span className="details-value">{alert.sensorDataId || '—'}</span>
         </div>
 
         <div className="details-row">
           <span className="details-label">Alert Time</span>
-          <span className="details-value">{alert.alertTime}</span>
+          <span className="details-value">{alert.alertTime || '—'}</span>
         </div>
 
         <div className="details-row">
           <span className="details-label">Notification Title</span>
-          <span className="details-value" style={{ color: '#0F172A', fontWeight: 800 }}>{alert.notificationTitle}</span>
+          <span className="details-value" style={{ color: '#0F172A', fontWeight: 800 }}>{alert.notificationTitle || '—'}</span>
         </div>
 
         <div className="details-row">
           <span className="details-label">Priority</span>
           <span className="details-value">
-            <span className={`priority-badge ${getPriorityBadgeClass(alert.priority)}`}>
-              {alert.priority}
-            </span>
+            {alert.priority ? (
+              <span className={`priority-badge ${getPriorityBadgeClass(alert.priority)}`}>
+                {alert.priority}
+              </span>
+            ) : '—'}
           </span>
         </div>
 
         <div className="details-row">
           <span className="details-label">Created At</span>
-          <span className="details-value">{alert.createdAt}</span>
+          <span className="details-value">{alert.createdAt || '—'}</span>
         </div>
 
         <div className="details-row">

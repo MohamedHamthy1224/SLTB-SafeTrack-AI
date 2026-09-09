@@ -22,9 +22,14 @@ class ReportService:
     def get_buses_options(self):
         return self.bus_service.get_filter_options()
 
-    def export_buses_csv(self, params):
+    def export_buses_pdf(self, params, user_info="SLTB Admin"):
         data = self.bus_service.get_export_data(params)
-        return self.export_service.generate_buses_csv(data)
+        summary = self.bus_service.repository.get_summary() if hasattr(self.bus_service, 'repository') else None
+        filters = params.get('filters', {})
+        return self.export_service.generate_buses_pdf(data, summary=summary, filters=filters, user_info=user_info)
+
+    def export_buses_csv(self, params, user_info="SLTB Admin"):
+        return self.export_buses_pdf(params, user_info=user_info)
 
     # Routes Report
     def get_routes_report(self, params):
@@ -33,9 +38,14 @@ class ReportService:
     def get_routes_options(self):
         return self.route_service.get_filter_options()
 
-    def export_routes_csv(self, params):
+    def export_routes_pdf(self, params, user_info="SLTB Admin"):
         data = self.route_service.get_export_data(params)
-        return self.export_service.generate_routes_csv(data)
+        summary = self.route_service.repository.get_summary() if hasattr(self.route_service, 'repository') else None
+        filters = params.get('filters', {})
+        return self.export_service.generate_routes_pdf(data, summary=summary, filters=filters, user_info=user_info)
+
+    def export_routes_csv(self, params, user_info="SLTB Admin"):
+        return self.export_routes_pdf(params, user_info=user_info)
 
     # Drivers Report
     def get_drivers_report(self, params):
@@ -44,17 +54,27 @@ class ReportService:
     def get_drivers_options(self):
         return self.driver_service.get_filter_options()
 
-    def export_drivers_csv(self, params):
+    def export_drivers_pdf(self, params, user_info="SLTB Admin"):
         data = self.driver_service.get_export_data(params)
-        return self.export_service.generate_drivers_csv(data)
+        summary = self.driver_service.repository.get_summary() if hasattr(self.driver_service, 'repository') else None
+        filters = params.get('filters', {})
+        return self.export_service.generate_drivers_pdf(data, summary=summary, filters=filters, user_info=user_info)
+
+    def export_drivers_csv(self, params, user_info="SLTB Admin"):
+        return self.export_drivers_pdf(params, user_info=user_info)
 
     # Assignment History Report
     def get_assignment_history_report(self, params):
         return self.assignment_service.get_assignment_history_report(params)
 
-    def export_assignment_history_csv(self, params):
+    def export_assignment_history_pdf(self, params, user_info="SLTB Admin"):
         data = self.assignment_service.get_export_data(params)
-        return self.export_service.generate_assignment_history_csv(data)
+        summary = self.assignment_service.repository.get_summary() if hasattr(self.assignment_service, 'repository') else None
+        filters = params.get('filters', {})
+        return self.export_service.generate_assignment_history_pdf(data, summary=summary, filters=filters, user_info=user_info)
+
+    def export_assignment_history_csv(self, params, user_info="SLTB Admin"):
+        return self.export_assignment_history_pdf(params, user_info=user_info)
 
     # Sensors and Alerts Report
     def get_sensors_alerts_report(self, params):
@@ -63,6 +83,11 @@ class ReportService:
     def get_sensors_alerts_options(self):
         return self.alert_service.get_filter_options()
 
-    def export_sensors_alerts_csv(self, params):
+    def export_sensors_alerts_pdf(self, params, user_info="SLTB Admin"):
         data = self.alert_service.get_export_data(params)
-        return self.export_service.generate_alerts_csv(data)
+        summary = self.alert_service.repository.get_summary() if hasattr(self.alert_service, 'repository') else None
+        filters = params.get('filters', {})
+        return self.export_service.generate_alerts_pdf(data, summary=summary, filters=filters, user_info=user_info)
+
+    def export_sensors_alerts_csv(self, params, user_info="SLTB Admin"):
+        return self.export_sensors_alerts_pdf(params, user_info=user_info)

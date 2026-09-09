@@ -45,22 +45,36 @@ def get_user_summary():
         return ResponseFactory.error(message=str(e), status_code=500)
 
 @user_bp.route('/export', methods=['GET'])
-@jwt_required(optional=True)
+@user_bp.route('/export/pdf', methods=['GET'])
+@jwt_required()
 def export_users():
+    _check_police_admin_role()
     try:
+        from flask_jwt_extended import get_jwt_identity
+        user_id = get_jwt_identity()
         params = {
             'search': request.args.get('search', ''),
             'role': request.args.get('role'),
             'status': request.args.get('status')
         }
-        csv_data = user_service.export_users_csv(params)
+        pdf_bytes = user_service.export_users_pdf(params, request_user_id=user_id)
+        from datetime import datetime
+        filename = f"SLTB_SafeTrack_User_Management_{datetime.now().strftime('%Y-%m-%d')}.pdf"
         return Response(
-            csv_data,
-            mimetype='text/csv',
-            headers={'Content-Disposition': 'attachment; filename=users_export.csv'}
+            pdf_bytes,
+            mimetype='application/pdf',
+            headers={
+                'Content-Disposition': f'attachment; filename="{filename}"',
+                'Content-Type': 'application/pdf'
+            }
         )
+    except UnauthorizedRoleError as ure:
+        return ResponseFactory.error(message=str(ure), status_code=403)
+    except ApplicationError as ae:
+        return ResponseFactory.error(message=ae.message, status_code=ae.status_code)
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
+
 
 @user_bp.route('/<int:user_id>', methods=['GET'])
 @jwt_required(optional=True)
@@ -114,3 +128,35 @@ def delete_user(user_id):
         return ResponseFactory.error(message=ae.message, errors=getattr(ae, 'errors', None), status_code=ae.status_code)
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
+
+police_user_bp = Blueprint('police_user', __name__, url_prefix='/api/v1/police/users')
+
+@police_user_bp.route('/export', methods=['GET'])
+@police_user_bp.route('/export/pdf', methods=['GET'])
+@jwt_required()
+def export_police_users_pdf():
+    _check_police_admin_role()
+    try:
+        from flask_jwt_extended import get_jwt_identity
+        user_id = get_jwt_identity()
+        params = {
+            'search': request.args.get('search', ''),
+            'role': request.args.get('role'),
+            'status': request.args.get('status')
+        }
+        pdf_bytes = user_service.export_users_pdf(params, request_user_id=user_id)
+        from datetime import datetime
+        filename = f"SLTB_SafeTrack_User_Management_{datetime.now().strftime('%Y-%m-%d')}.pdf"
+        return Response(
+            pdf_bytes,
+            mimetype='application/pdf',
+            headers={
+                'Content-Disposition': f'attachment; filename="{filename}"',
+                'Content-Type': 'application/pdf'
+            }
+        )
+    except ApplicationError as ae:
+        return ResponseFactory.error(message=ae.message, status_code=ae.status_code)
+    except Exception as e:
+        return ResponseFactory.error(message=str(e), status_code=500)
+

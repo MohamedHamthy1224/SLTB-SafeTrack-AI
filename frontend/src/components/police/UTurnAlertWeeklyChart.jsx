@@ -10,16 +10,18 @@ import {
 } from 'recharts';
 import '../../styles/uTurnAlerts.css';
 
-const UTurnAlertWeeklyChart = ({ weeklyData }) => {
-  const data = weeklyData || [
-    { day: 'Mon', alerts: 18 },
-    { day: 'Tue', alerts: 22 },
-    { day: 'Wed', alerts: 15 },
-    { day: 'Thu', alerts: 27 },
-    { day: 'Fri', alerts: 20 },
-    { day: 'Sat', alerts: 14 },
-    { day: 'Sun', alerts: 10 },
-  ];
+const defaultDays = [
+  { day: 'Mon', alerts: 0 },
+  { day: 'Tue', alerts: 0 },
+  { day: 'Wed', alerts: 0 },
+  { day: 'Thu', alerts: 0 },
+  { day: 'Fri', alerts: 0 },
+  { day: 'Sat', alerts: 0 },
+  { day: 'Sun', alerts: 0 },
+];
+
+const UTurnAlertWeeklyChart = ({ weeklyData = [] }) => {
+  const data = weeklyData && weeklyData.length > 0 ? weeklyData : defaultDays;
 
   return (
     <div className="right-widget-card">
@@ -37,6 +39,7 @@ const UTurnAlertWeeklyChart = ({ weeklyData }) => {
             tickLine={false}
           />
           <YAxis
+            allowDecimals={false}
             tick={{ fontSize: 11, fontWeight: 600, fill: '#94a3b8' }}
             axisLine={false}
             tickLine={false}
