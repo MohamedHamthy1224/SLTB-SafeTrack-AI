@@ -2,69 +2,67 @@ import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import '../../../styles/uturnManagement.css';
 
-const UTurnPagination = ({
+export const UTurnPagination = ({
   currentPage = 1,
-  totalPages = 5,
-  totalItems = 48,
+  totalPages = 1,
+  totalItems = 0,
   pageSize = 10,
   onPageChange,
-  onPageSizeChange,
+  onPageSizeChange
 }) => {
-  const startItem = totalItems > 0 ? (currentPage - 1) * pageSize + 1 : 0;
-  const endItem = Math.min(currentPage * pageSize, totalItems);
+  if (totalItems === 0) return null;
+
+  const startIdx = (currentPage - 1) * pageSize + 1;
+  const endIdx = Math.min(currentPage * pageSize, totalItems);
 
   return (
-    <div className="uturn-pagination-container">
-      {/* Showing count */}
+    <div className="uturn-pagination-wrap">
       <div className="uturn-pagination-info">
-        Showing {startItem} to {endItem} of {totalItems} U-turn units
+        Showing <strong>{startIdx}</strong> to <strong>{endIdx}</strong> of <strong>{totalItems}</strong> entries
       </div>
 
-      {/* Controls */}
       <div className="uturn-pagination-controls">
-        <button
-          type="button"
-          className="btn-page-nav"
-          disabled={currentPage === 1}
-          onClick={() => onPageChange && onPageChange(currentPage - 1)}
-        >
-          <ChevronLeft size={16} />
-        </button>
+        {onPageSizeChange && (
+          <div className="uturn-pagesize-select-wrap">
+            <span className="uturn-pagesize-label">Rows per page:</span>
+            <select
+              className="uturn-pagesize-select"
+              value={pageSize}
+              onChange={(e) => onPageSizeChange(Number(e.target.value))}
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
+        )}
 
-        {[1, 2, 3, 4, 5].map((p) => (
+        <div className="uturn-page-buttons">
           <button
-            key={p}
             type="button"
-            className={`btn-page-num ${p === currentPage ? 'active' : ''}`}
-            onClick={() => onPageChange && onPageChange(p)}
+            className="btn-page-nav"
+            onClick={() => onPageChange(currentPage - 1)}
+            disabled={currentPage <= 1}
+            aria-label="Previous Page"
           >
-            {p}
+            <ChevronLeft size={16} />
           </button>
-        ))}
 
-        <button
-          type="button"
-          className="btn-page-nav"
-          disabled={currentPage >= totalPages}
-          onClick={() => onPageChange && onPageChange(currentPage + 1)}
-        >
-          <ChevronRight size={16} />
-        </button>
-      </div>
+          <span className="uturn-current-page-badge">
+            Page {currentPage} of {totalPages || 1}
+          </span>
 
-      {/* Rows per page select */}
-      <div className="uturn-rows-per-page">
-        <span>Rows per page</span>
-        <select
-          className="uturn-filter-select"
-          value={pageSize}
-          onChange={(e) => onPageSizeChange && onPageSizeChange(Number(e.target.value))}
-          style={{ padding: '0.35rem 1.75rem 0.35rem 0.65rem', fontSize: '0.8rem' }}
-        >
-          <option value={10}>10</option>
-          <option value={25}>25</option>
-          <option value={50}>50</option>
-        </select>
+          <button
+            type="button"
+            className="btn-page-nav"
+            onClick={() => onPageChange(currentPage + 1)}
+            disabled={currentPage >= totalPages}
+            aria-label="Next Page"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
       </div>
     </div>
   );

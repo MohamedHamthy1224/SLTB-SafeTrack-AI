@@ -31,6 +31,9 @@ class SensorDataModel(db.Model):
     device_timestamp = db.Column(db.DateTime, nullable=True)
     recorded_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     def to_dict(self):
         return {
             'sensor_data_id': self.sensor_data_id,

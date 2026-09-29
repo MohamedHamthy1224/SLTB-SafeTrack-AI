@@ -98,6 +98,18 @@ export const PoliceDashboard = () => {
       loadDashboard(selectedWeek);
     };
 
+    // Live U-Turn sensor card update — no REST round-trip needed
+    const handleUTurnSensorUpdate = (payload) => {
+      if (!payload) return;
+      setDashboardData((prev) => ({
+        ...prev,
+        uturnSafety: {
+          leftSensor: payload.leftSensor || prev.uturnSafety?.leftSensor,
+          rightSensor: payload.rightSensor || prev.uturnSafety?.rightSensor,
+        }
+      }));
+    };
+
     socket.on('bus_alert_created', handleRealtimeUpdate);
     socket.on('bus_alert_updated', handleRealtimeUpdate);
     socket.on('roadside_alert_created', handleRealtimeUpdate);
@@ -106,6 +118,7 @@ export const PoliceDashboard = () => {
     socket.on('device_created', handleRealtimeUpdate);
     socket.on('user_created', handleRealtimeUpdate);
     socket.on('user_updated', handleRealtimeUpdate);
+    socket.on('uturn_sensor_update', handleUTurnSensorUpdate);
 
     return () => {
       socket.off('bus_alert_created', handleRealtimeUpdate);
@@ -116,6 +129,7 @@ export const PoliceDashboard = () => {
       socket.off('device_created', handleRealtimeUpdate);
       socket.off('user_created', handleRealtimeUpdate);
       socket.off('user_updated', handleRealtimeUpdate);
+      socket.off('uturn_sensor_update', handleUTurnSensorUpdate);
       socket.disconnect();
     };
   }, [selectedWeek, loadDashboard]);

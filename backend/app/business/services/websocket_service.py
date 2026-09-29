@@ -110,3 +110,19 @@ class WebSocketService:
         self._emit_event('roadside_alert_summary_updated', summary_data)
         self._emit_event('roadside_alert_summary_updated', summary_data, room='police_admin')
 
+    def emit_new_notification(self, payload):
+        """
+        Emit a new_notification event to the police_admin Socket.IO room.
+        payload: {notification_id, title, message, priority, created_at}
+        This is consumed by the PoliceDashboardHeader notification bell.
+        """
+        self._emit_event('new_notification', payload, room='police_admin')
+
+    def emit_uturn_sensor_update(self, sensor_payload):
+        """
+        Emit a uturn_sensor_update event to the police_admin room and broadcast.
+        Used by the Police Dashboard and real-time monitoring modules.
+        """
+        self._emit_event('uturn_sensor_update', sensor_payload)
+        self._emit_event('uturn_sensor_update', sensor_payload, room='police_admin')
+

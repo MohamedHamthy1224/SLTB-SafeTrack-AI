@@ -29,9 +29,11 @@ from app.presentation.controllers.police_device_controller import police_device_
 from app.presentation.controllers.police_roadside_alert_controller import police_roadside_alert_bp
 from app.presentation.controllers.police_bus_alert_controller import police_bus_alert_bp
 from app.presentation.controllers.police_uturn_controller import police_uturn_bp
+from app.presentation.controllers.police_roadside_unit_controller import police_roadside_unit_bp
 from app.presentation.controllers.police_dashboard_controller import police_dashboard_bp
 from app.presentation.controllers.user_controller import user_bp, police_user_bp
 from app.presentation.controllers.report_controller import report_bp
+from app.presentation.controllers.hardware_sensor_controller import hardware_sensor_bp, police_notif_bp
 from app.commands.password_commands import hash_existing_passwords_command
 
 def create_app(config_name="development"):
@@ -75,9 +77,12 @@ def create_app(config_name="development"):
     app.register_blueprint(police_roadside_alert_bp)
     app.register_blueprint(police_bus_alert_bp)
     app.register_blueprint(police_uturn_bp)
+    app.register_blueprint(police_roadside_unit_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(police_user_bp)
     app.register_blueprint(report_bp)
+    app.register_blueprint(hardware_sensor_bp)
+    app.register_blueprint(police_notif_bp)
 
 
     # Register CLI commands

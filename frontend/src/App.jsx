@@ -304,6 +304,24 @@ export const App = () => {
               />
 
               <Route
+                path="/police/uturn-management/:id"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <UTurnDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
+                path="/police/u-turn-management/:id"
+                element={
+                  <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>
+                    <UTurnDetailsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              <Route
                 path="/police/uturn-management/view/:id"
                 element={
                   <ProtectedRoute allowedRoles={[USER_ROLES.POLICE_ADMIN]}>

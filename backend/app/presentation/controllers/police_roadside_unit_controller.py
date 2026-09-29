@@ -2,10 +2,10 @@ from datetime import datetime
 from flask import Blueprint, request, Response
 from flask_jwt_extended import jwt_required, get_jwt, get_jwt_identity
 from app.presentation.response_factory import ResponseFactory
-from app.business.services.roadside_unit_service import RoadsideUnitService
+from app.business.services.roadside_unit_service import RoadsideUnitService, RoadsideUnitServiceError
 from app.business.exceptions.application_exceptions import UnauthorizedRoleError, ValidationError, ApplicationError
 
-police_uturn_bp = Blueprint('police_uturn', __name__, url_prefix='/api/v1/police/uturn-units')
+police_roadside_unit_bp = Blueprint('police_roadside_unit', __name__, url_prefix='/api/v1/police/u-turn-management')
 roadside_unit_service = RoadsideUnitService()
 
 def _check_police_admin_role():
@@ -14,10 +14,10 @@ def _check_police_admin_role():
     if role not in ['Police Admin', 'Traffic Police Officer']:
         raise UnauthorizedRoleError("This action is restricted to Police Admin accounts.")
 
-@police_uturn_bp.route('', methods=['GET'])
-@police_uturn_bp.route('/', methods=['GET'])
+@police_roadside_unit_bp.route('', methods=['GET'])
+@police_roadside_unit_bp.route('/', methods=['GET'])
 @jwt_required()
-def get_uturn_units():
+def get_all_uturn_units():
     _check_police_admin_role()
     try:
         keyword = request.args.get('keyword') or request.args.get('search') or ''
@@ -31,19 +31,19 @@ def get_uturn_units():
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
 
-@police_uturn_bp.route('/summary', methods=['GET'])
+@police_roadside_unit_bp.route('/summary', methods=['GET'])
 @jwt_required()
 def get_uturn_summary():
     _check_police_admin_role()
     try:
         summary = roadside_unit_service.get_summary()
-        return ResponseFactory.success(data=summary, message="U-Turn unit summary loaded.")
+        return ResponseFactory.success(data=summary, message="U-Turn summary loaded successfully.")
     except ApplicationError as ae:
         return ResponseFactory.error(message=ae.message, errors=getattr(ae, 'errors', None), status_code=ae.status_code)
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
 
-@police_uturn_bp.route('/search', methods=['GET'])
+@police_roadside_unit_bp.route('/search', methods=['GET'])
 @jwt_required()
 def search_uturn_units():
     _check_police_admin_role()
@@ -59,7 +59,7 @@ def search_uturn_units():
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
 
-@police_uturn_bp.route('/statuses', methods=['GET'])
+@police_roadside_unit_bp.route('/statuses', methods=['GET'])
 @jwt_required()
 def get_uturn_statuses():
     _check_police_admin_role()
@@ -71,7 +71,7 @@ def get_uturn_statuses():
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
 
-@police_uturn_bp.route('/routes', methods=['GET'])
+@police_roadside_unit_bp.route('/routes', methods=['GET'])
 @jwt_required()
 def get_uturn_routes():
     _check_police_admin_role()
@@ -83,7 +83,7 @@ def get_uturn_routes():
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
 
-@police_uturn_bp.route('/devices', methods=['GET'])
+@police_roadside_unit_bp.route('/devices', methods=['GET'])
 @jwt_required()
 def get_uturn_devices():
     _check_police_admin_role()
@@ -95,7 +95,7 @@ def get_uturn_devices():
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
 
-@police_uturn_bp.route('/<int:unit_id>', methods=['GET'])
+@police_roadside_unit_bp.route('/<int:unit_id>', methods=['GET'])
 @jwt_required()
 def get_uturn_unit_by_id(unit_id):
     _check_police_admin_role()
@@ -107,8 +107,8 @@ def get_uturn_unit_by_id(unit_id):
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
 
-@police_uturn_bp.route('', methods=['POST'])
-@police_uturn_bp.route('/', methods=['POST'])
+@police_roadside_unit_bp.route('', methods=['POST'])
+@police_roadside_unit_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_uturn_unit():
     _check_police_admin_role()
@@ -124,7 +124,7 @@ def create_uturn_unit():
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
 
-@police_uturn_bp.route('/<int:unit_id>', methods=['PUT'])
+@police_roadside_unit_bp.route('/<int:unit_id>', methods=['PUT'])
 @jwt_required()
 def update_uturn_unit(unit_id):
     _check_police_admin_role()
@@ -140,7 +140,7 @@ def update_uturn_unit(unit_id):
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
 
-@police_uturn_bp.route('/<int:unit_id>/inactive', methods=['PUT', 'PATCH'])
+@police_roadside_unit_bp.route('/<int:unit_id>/inactive', methods=['PUT', 'PATCH'])
 @jwt_required()
 def deactivate_uturn_unit(unit_id):
     _check_police_admin_role()
@@ -153,7 +153,7 @@ def deactivate_uturn_unit(unit_id):
     except Exception as e:
         return ResponseFactory.error(message=str(e), status_code=500)
 
-@police_uturn_bp.route('/export/pdf', methods=['GET'])
+@police_roadside_unit_bp.route('/export/pdf', methods=['GET'])
 @jwt_required()
 def export_uturn_units_pdf():
     _check_police_admin_role()

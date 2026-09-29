@@ -36,7 +36,7 @@ export const PoliceSidebar = ({ isOpen, onClose }) => {
     { label: 'U-Turn Alerts', icon: RotateCcw, path: '/police/u-turn-alerts' },
     { label: 'Device Management', icon: Cpu, path: '/police/device-management' },
     { label: 'User Management', icon: Users, path: '/police/user-management' },
-    { label: 'U-Turn Management', icon: Compass, path: '/police/uturn-management' },
+    { label: 'U-Turn Management', icon: Compass, path: '/police/u-turn-management' },
     { label: 'AI Analysis Reports', icon: FileBarChart, path: '/police/reports' },
     { label: 'System Logs', icon: FileText, path: '/police/system-logs' },
     { label: 'Settings', icon: Settings, path: '/police/settings' }
@@ -45,6 +45,12 @@ export const PoliceSidebar = ({ isOpen, onClose }) => {
   const isItemActive = (path) => {
     if (path === '/police/dashboard') {
       return location.pathname === '/police/dashboard';
+    }
+    if (path === '/police/u-turn-management' || path === '/police/uturn-management') {
+      return (
+        location.pathname.startsWith('/police/u-turn-management') ||
+        location.pathname.startsWith('/police/uturn-management')
+      );
     }
     return location.pathname.startsWith(path);
   };

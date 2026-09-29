@@ -17,6 +17,9 @@ class BusAssignmentHistoryModel(db.Model):
     driver = db.relationship('DriverModel', backref='assignment_histories', lazy=True)
     route = db.relationship('RouteModel', backref='assignment_histories', lazy=True)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     def to_dict(self):
         return {
             'assignment_history_id': self.assignment_history_id,

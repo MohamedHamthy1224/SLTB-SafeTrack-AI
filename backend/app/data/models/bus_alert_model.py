@@ -12,6 +12,9 @@ class BusAlertModel(db.Model):
     sensor_data_id = db.Column(db.Integer, db.ForeignKey('sensor_data.sensor_data_id'), nullable=True)
     alert_time = db.Column(db.DateTime, nullable=True, default=lambda: datetime.now(timezone.utc))
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     def to_dict(self):
         return {
             'bus_alert_id': self.bus_alert_id,

@@ -31,17 +31,39 @@ class RoadsideUnitModel(db.Model):
         if self.created_at:
             created_at_str = self.created_at.strftime('%Y-%m-%d %H:%M:%S')
 
+        device_code = None
+        device_name = None
+        if self.device:
+            device_code = self.device.device_code
+            device_name = self.device.device_name
+
+        route_number = None
+        route_name = None
+        if self.route:
+            route_number = self.route.route_number
+            route_name = self.route.route_name
+
         return {
+            'id': self.roadside_unit_id,
             'roadsideUnitId': self.roadside_unit_id,
             'roadside_unit_id': self.roadside_unit_id,
+            'unitId': self.roadside_unit_id,
             'deviceId': self.device_id,
             'device_id': self.device_id,
+            'deviceCode': device_code,
+            'device_code': device_code,
+            'deviceName': device_name,
+            'device_name': device_name,
             'routeId': self.route_id,
             'route_id': self.route_id,
+            'routeNumber': route_number,
+            'route_number': route_number,
+            'routeName': route_name,
+            'route_name': route_name,
             'locationName': self.location_name,
             'location_name': self.location_name,
-            'latitude': str(self.latitude) if self.latitude is not None else None,
-            'longitude': str(self.longitude) if self.longitude is not None else None,
+            'latitude': float(self.latitude) if self.latitude is not None else None,
+            'longitude': float(self.longitude) if self.longitude is not None else None,
             'installationDate': inst_date_str,
             'installation_date': inst_date_str,
             'status': self.status or 'Active',

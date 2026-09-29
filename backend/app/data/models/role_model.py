@@ -11,6 +11,9 @@ class RoleModel(db.Model):
 
     users = db.relationship('UserModel', backref='role', lazy=True)
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
     def to_dict(self):
         return {
             'role_id': self.role_id,
