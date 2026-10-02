@@ -2,6 +2,7 @@ from app.data.database import db
 from app.data.models.roadside_alert_model import RoadsideAlertModel
 from app.data.models.roadside_unit_model import RoadsideUnitModel
 from app.data.models.notification_model import NotificationModel
+from app.data.models.sensor_data_model import SensorDataModel
 from app.data.repositories.base_repository import BaseRepository
 from sqlalchemy import func, distinct
 from datetime import datetime, timedelta
@@ -257,3 +258,17 @@ class RoadsideAlertRepository(BaseRepository):
                 db.session.commit()
             return True
         return False
+
+    def get_latest_sensor_data(self, device_id: int, roadside_unit_id: int, exclude_sensor_data_id: int = None):
+        """
+        Query the latest sensor_data record for the given device_id and roadside_unit_id.
+        Optionally excludes exclude_sensor_data_id to avoid selecting the current row.
+        """
+        query = db.session.query(SensorDataModel).filter(
+            SensorDataModel.device_id == device_id,
+            SensorDataModel.roadside_unit_id == roadside_unit_id
+        )
+        if exclude_sensor_data_id is not None:
+            query = query.filter(SensorDataModel.sensor_data_id != exclude_sensor_data_id)
+        return query.order_by(SensorDataModel.sensor_data_id.desc()).first()
+

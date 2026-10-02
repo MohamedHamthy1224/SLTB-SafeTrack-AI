@@ -37,6 +37,16 @@ class HardwareSensorEndpointsTestCase(unittest.TestCase):
 
     def test_03_uturn_sensor_data_ingestion_with_alert(self):
         """Test valid U-turn sensor data ingestion triggering alert & notification."""
+        # Baseline: Ensure sensor starts in Safe state (Low risk)
+        safe_payload = {
+            'device_id': 2,
+            'roadside_unit_id': 1,
+            'left_risk_level': 'Low',
+            'right_risk_level': 'Low'
+        }
+        self.client.post('/api/v1/hardware/uturn-sensor-data', json=safe_payload)
+
+        # Danger event: Safe -> High triggers new alert
         payload = {
             'device_id': 2,
             'roadside_unit_id': 1,
@@ -58,6 +68,13 @@ class HardwareSensorEndpointsTestCase(unittest.TestCase):
         self.assertIsNotNone(data['alert_id'])
         self.assertIsNotNone(data['notification_id'])
         self.assertGreater(data['recipients_created'], 0)
+
+        # Deduplication check: Continuous High must NOT generate a duplicate alert
+        repeat_res = self.client.post('/api/v1/hardware/uturn-sensor-data', json=payload)
+        self.assertEqual(repeat_res.status_code, 201)
+        repeat_data = repeat_res.get_json()['data']
+        self.assertFalse(repeat_data['alert_generated'])
+        self.assertIsNone(repeat_data['alert_id'])
 
     def test_04_uturn_sensor_data_ingestion_low_risk(self):
         """Test Low risk sensor data does not create alert or notifications."""
