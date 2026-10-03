@@ -79,7 +79,7 @@ class AssignmentHistoryReportRepository:
 
     def get_all_filtered_for_export(self, filters, sort_by=None, order='asc'):
         query = self._build_filtered_query(filters)
-        sort_attr = self.ALLOWED_SORT_FIELDS.get(sort_by, BusAssignmentHistoryModel.assignment_history_id)
+        sort_attr = self.ALLOWED_SORT_FIELDS.get(sort_by or '', BusAssignmentHistoryModel.assignment_history_id)
         if order == 'desc':
             query = query.order_by(sort_attr.desc())
         else:

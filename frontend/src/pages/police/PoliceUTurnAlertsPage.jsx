@@ -100,14 +100,6 @@ export const PoliceUTurnAlertsPage = () => {
     const handleAlertCreated = (newAlert) => {
       if (!newAlert) return;
 
-      // Guard: reject any payload without a real persisted roadsideAlertId.
-      // This prevents fake/temporary IDs from ever entering the table.
-      const alertId = newAlert.roadsideAlertId ?? newAlert.id;
-      if (!alertId || typeof alertId !== 'number') {
-        console.warn('[Socket] roadside_alert_created ignored — missing valid roadsideAlertId', newAlert);
-        return;
-      }
-
       // Update alert list if matches filter
       setAlerts((prevAlerts) => {
         const matchesFilter =
@@ -115,22 +107,21 @@ export const PoliceUTurnAlertsPage = () => {
           String(newAlert.priority || '').toLowerCase() === String(priorityFilter).toLowerCase();
 
         if (matchesFilter) {
-          // Avoid duplicate insertion by roadsideAlertId
+          // Avoid duplicate insertion
           const exists = prevAlerts.some(
-            (a) => (a.roadsideAlertId || a.id) === alertId
+            (a) => (a.roadsideAlertId || a.id) === (newAlert.roadsideAlertId || newAlert.id)
           );
           if (exists) return prevAlerts;
-          return [{ ...newAlert, roadsideAlertId: alertId, id: alertId }, ...prevAlerts];
+          return [newAlert, ...prevAlerts];
         }
         return prevAlerts;
       });
 
-      // Update recent notifications list using the real notificationId from the backend
+      // Update recent notifications list
       setNotifications((prevNotifs) => {
-        const notifId = newAlert.notificationId ?? alertId;
         const notifItem = {
-          id: notifId,
-          notificationId: notifId,
+          id: newAlert.roadsideAlertId || Date.now(),
+          notificationId: newAlert.roadsideAlertId || Date.now(),
           title: newAlert.notificationTitle || 'U-Turn Alert',
           message: newAlert.message || 'New U-Turn maneuver detected',
           desc: newAlert.message || 'New U-Turn maneuver detected',

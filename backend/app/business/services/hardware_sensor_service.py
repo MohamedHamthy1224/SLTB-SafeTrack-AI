@@ -28,7 +28,6 @@ from app.data.models.bus_model import BusModel
 from app.data.models.police_officer_model import PoliceOfficerModel
 from app.data.models.assignment_model import BusAssignmentModel
 from app.data.repositories.roadside_alert_repository import RoadsideAlertRepository
-from app.data.repositories.sensor_data_repository import SensorDataRepository
 from app.business.services.websocket_service import WebSocketService
 
 logger = logging.getLogger(__name__)
@@ -47,16 +46,8 @@ class HardwareSensorServiceError(Exception):
 
 class HardwareSensorService:
 
-    def __init__(self, websocket_service=None, sensor_data_repository=None, roadside_alert_repository=None):
+    def __init__(self, websocket_service=None):
         self.ws = websocket_service or WebSocketService()
-        self.sensor_data_repo = sensor_data_repository or SensorDataRepository()
-        self.roadside_alert_repo = roadside_alert_repository or RoadsideAlertRepository()
-
-    def _is_danger_level(self, risk_level):
-        """Returns True if the risk level is Medium or High."""
-        if not risk_level:
-            return False
-        return str(risk_level).strip().capitalize() in ALERT_RISK_LEVELS
 
     # ------------------------------------------------------------------
     # Validation Helpers
@@ -188,13 +179,11 @@ class HardwareSensorService:
 
     def _build_uturn_notification(self, left_risk, right_risk):
         """Determine notification title, message and priority for U-Turn sensor data."""
-        left_is_alert = self._is_danger_level(left_risk)
-        right_is_alert = self._is_danger_level(right_risk)
+        left_is_alert = str(left_risk or '').strip() in ALERT_RISK_LEVELS
+        right_is_alert = str(right_risk or '').strip() in ALERT_RISK_LEVELS
 
         # Determine overall priority (worst case)
-        norm_left = str(left_risk or '').strip().capitalize()
-        norm_right = str(right_risk or '').strip().capitalize()
-        all_risk_levels = [r for r in [norm_left, norm_right] if r in ALERT_RISK_LEVELS]
+        all_risk_levels = [r for r in [left_risk, right_risk] if r in ALERT_RISK_LEVELS]
         priority = 'High' if 'High' in all_risk_levels else 'Medium'
 
         # Build message
@@ -329,16 +318,7 @@ class HardwareSensorService:
 
         try:
             # =========================================================
-            # STEP 0 — Query previous sensor_data reading for deduplication
-            # =========================================================
-            # Find the immediately previous sensor_data record for the SAME device_id and roadside_unit_id
-            prev_sensor = self.sensor_data_repo.get_latest_uturn_reading(
-                device_id=device_id,
-                roadside_unit_id=roadside_unit_id
-            )
-
-            # =========================================================
-            # STEP 1 — Insert sensor_data (telemetry storage is preserved)
+            # STEP 1 — Insert sensor_data
             # =========================================================
             sensor = SensorDataModel(
                 device_id=device_id,
@@ -362,36 +342,18 @@ class HardwareSensorService:
             sensor_data_id = sensor.sensor_data_id
 
             # =========================================================
-            # STEP 2 — Event-based alert deduplication logic
+            # STEP 2 — Alert generation (only if Medium or High risk)
             # =========================================================
-            # Determine currentDanger:
-            # (left_risk_level is Medium/High OR right_risk_level is Medium/High)
-            current_danger = self._is_danger_level(left_risk) or self._is_danger_level(right_risk)
-
-            # Determine previousDanger from previous sensor_data record:
-            # (previous left_risk_level is Medium/High OR previous right_risk_level is Medium/High)
-            # If there is no previous record (first-ever reading), treat previousDanger as false.
-            if prev_sensor is None:
-                previous_danger = False
-            else:
-                previous_danger = (
-                    self._is_danger_level(prev_sensor.left_risk_level) or
-                    self._is_danger_level(prev_sensor.right_risk_level)
-                )
-
-            # Create a new roadside alert ONLY when:
-            # previousDanger == false AND currentDanger == true (SAFE → DANGER)
-            is_new_detection_event = (not previous_danger) and current_danger
-
             alert_id = None
             notification_id = None
             recipients_created = 0
 
-            if is_new_detection_event:
-                logger.info(
-                    "U-Turn detection event triggered (SAFE -> DANGER): device_id=%s, roadside_unit_id=%s",
-                    device_id, roadside_unit_id
-                )
+            needs_alert = (
+                left_risk in ALERT_RISK_LEVELS or
+                right_risk in ALERT_RISK_LEVELS
+            )
+
+            if needs_alert:
                 # Fetch route_id from roadside_unit
                 route_id = unit.route_id
 
@@ -426,16 +388,6 @@ class HardwareSensorService:
                 # STEP 4 — Notification recipients (all officers)
                 # =====================================================
                 recipients_created = self._create_notification_recipients(notification_id)
-            elif previous_danger and current_danger:
-                logger.debug(
-                    "U-Turn continuous danger reading suppressed for alert generation (DANGER -> DANGER): device_id=%s, roadside_unit_id=%s",
-                    device_id, roadside_unit_id
-                )
-            elif previous_danger and not current_danger:
-                logger.info(
-                    "U-Turn danger cleared, returned to safe state (DANGER -> SAFE): device_id=%s, roadside_unit_id=%s",
-                    device_id, roadside_unit_id
-                )
 
             # =========================================================
             # COMMIT — all or nothing for this pipeline
@@ -464,33 +416,23 @@ class HardwareSensorService:
                     notif_ref = db.session.query(NotificationModel).filter(
                         NotificationModel.roadside_alert_id == alert_id
                     ).first()
-                    # Fetch location name from the roadside unit
-                    loc_name = unit.location_name if unit and hasattr(unit, 'location_name') else None
-
                     alert_payload = {
-                        # Identification
                         'roadsideAlertId': alert_id,
                         'id': alert_id,
-                        # Foreign keys (all columns shown by UTurnAlertTable)
                         'roadsideUnitId': roadside_unit_id,
                         'deviceId': device_id,
-                        'routeId': alert_obj.route_id if alert_obj else (unit.route_id if unit else None),
-                        'sensorDataId': sensor_data_id,
-                        # Time
                         'alertTime': alert_obj.alert_time.strftime('%Y-%m-%d %H:%M:%S') if alert_obj and alert_obj.alert_time else None,
-                        # Location
-                        'locationName': loc_name or '—',
-                        # Notification fields
-                        'notificationId': notification_id,
+                        'priority': notif_ref.priority if notif_ref else None,
                         'notificationTitle': notif_ref.title if notif_ref else 'U-Turn Alert',
-                        'priority': notif_ref.priority if notif_ref else 'Medium',
                         'message': notif_ref.message if notif_ref else 'U-Turn detected by roadside sensor.',
                     }
                     self.ws.emit_roadside_alert_created(alert_payload)
 
                     # --- 5c: Emit updated summary stats for KPI cards ---
+                    from app.data.repositories.roadside_alert_repository import RoadsideAlertRepository
                     try:
-                        summary = self.roadside_alert_repo.get_summary()
+                        repo = RoadsideAlertRepository()
+                        summary = repo.get_summary()
                         self.ws.emit_roadside_alert_summary_updated(summary)
                     except Exception:
                         pass
@@ -521,7 +463,7 @@ class HardwareSensorService:
                         'riskLevel': (data.get('right_risk_level') or 'LOW').upper(),
                     },
                     'timestamp': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S'),
-                    'alertGenerated': is_new_detection_event,
+                    'alertGenerated': needs_alert,
                 }
                 self.ws.emit_uturn_sensor_update(sensor_update_payload)
             except Exception as e:
@@ -532,7 +474,7 @@ class HardwareSensorService:
                 'alert_id': alert_id,
                 'notification_id': notification_id,
                 'recipients_created': recipients_created,
-                'alert_generated': is_new_detection_event,
+                'alert_generated': needs_alert,
                 'device_id': device_id,
                 'roadside_unit_id': roadside_unit_id
             }
