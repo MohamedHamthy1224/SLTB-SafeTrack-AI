@@ -120,8 +120,8 @@ export const PoliceUTurnAlertsPage = () => {
       // Update recent notifications list
       setNotifications((prevNotifs) => {
         const notifItem = {
-          id: newAlert.roadsideAlertId || Date.now(),
-          notificationId: newAlert.roadsideAlertId || Date.now(),
+          id: newAlert.notificationId || newAlert.roadsideAlertId,
+          notificationId: newAlert.notificationId || newAlert.roadsideAlertId,
           title: newAlert.notificationTitle || 'U-Turn Alert',
           message: newAlert.message || 'New U-Turn maneuver detected',
           desc: newAlert.message || 'New U-Turn maneuver detected',
